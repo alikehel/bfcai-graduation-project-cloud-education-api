@@ -1,0 +1,4 @@
+.vscode
+api/package-lock.json
+api/package-old.json
+package-lock.json

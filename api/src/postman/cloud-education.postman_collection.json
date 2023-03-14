@@ -1,0 +1,93 @@
+{
+	"info": {
+		"_postman_id": "0c1fb728-18ac-4ef1-8194-97356185bb65",
+		"name": "Cloud Education",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Signup",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.a2U3ZWN2ZGZmZGV3ZGxycjJ1ZnNlcm5hbWU.GBUo60l80tUwMNG2VdouGweiveo8lNJFs0yHxdGE0bw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"ke7ecvdffdewdlrr2ufsername\",\r\n    \"password\": \"ke7el1pass\",\r\n    \"passwordConfirm\": \"ke7el1pass\",\r\n    \"firstname\": \"ali1\",\r\n    \"lastname\": \"kehel1\",\r\n    \"email\": \"ke7elfcvrderdf2mfail@gmail.com\",\r\n    \"role\": \"student\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:3000/api/v1/users/signup",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"ke7ellusername\",\r\n    \"password\": \"ke7el1pass\",\r\n    \"passwordConfirm\": \"ke7el1pass\",\r\n    \"firstname\": \"ali1\",\r\n    \"lastname\": \"kehel1\",\r\n    \"email\": \"ke7ellmail@gmail.com\",\r\n    \"role\": \"student\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:3000/api/v1/users/login",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
