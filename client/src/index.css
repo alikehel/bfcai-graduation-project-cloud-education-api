@@ -1,0 +1,18 @@
+.select-error {
+	color: #d32f2f;
+	font-weight: 400;
+	font-size: 13px;
+	line-height: 1.66;
+	text-align: left;
+	margin-top: 4px;
+	margin-right: 14px;
+	margin-left: 14px;
+}
+
+.inner-select-error {
+	all: unset;
+}
+
+.nav-link {
+	all: unset;
+}
