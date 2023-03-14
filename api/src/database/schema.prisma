@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL_DEV")
+}
+
+model User {
+  id              String         @id @default(uuid())
+  email           String         @unique
+  firstName       String
+  lastName        String
+  phoneNumber     String
+  password        String
+  passwordConfirm String
+  Role            String // Admin - Teacher - Learner
+  organizations   Organization[]
+  courses         Course[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // @@unique([firstName, lastName])
+  @@map(name: "users")
+}
+
+// enum Role {
+//   LEARNER
+//   TEACHER
+//   ADMIN
+// }
+
+model Organization {
+  id                  String   @id @default(uuid())
+  name                String   @unique
+  type                String // University - School - Independent
+  emailDomain         String   @unique // bfcai.bu.edu.eg -> blabla@bfcai.bu.edu.eg
+  subdomain           String   @unique // bfcai -> www.bfcai.cloud-education.com
+  officialPhoneNumber String   @unique
+  country             String
+  address             String
+  users               User[]
+  courses             Course[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@map(name: "organizations")
+}
+
+model Course {
+  id             String         @id @default(uuid())
+  name           String
+  description    String
+  code           String // cs101
+  // ------ Test ------ //
+  prerequisites  Course[]       @relation("Prerequisites")
+  prerequisite   Course?        @relation("Prerequisites", fields: [prerequisiteId], references: [id])
+  prerequisiteId String?
+  // ------ End Test ------ //
+  isActive       Boolean
+  category       String // CS - IS - AI
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  organizationId String
+  users          User[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  courseSection  CourseSection?
+
+  @@map(name: "courses")
+}
+
+model CourseSection {
+  id        String   @id @default(uuid())
+  content   Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course    Course?  @relation(fields: [courseId], references: [id])
+  courseId  String?  @unique
+  // ------ Test ------ //
+  // previousId   String?         @unique
+  // previous     CourseSection?  @relation("PreviousNext", fields: [previousId], references: [id])
+  // next         CourseSection?  @relation("PreviousNext")
+  // parentId     String?         @unique
+  // parent       CourseSection?  @relation("ParentChild", fields: [parentId], references: [id])
+  // childs       CourseSection[] @relation("ParentChild")
+  // ------ End Test ------ //
+
+  @@map(name: "course_section")
+}
+
+// // Not Complete
+// model Exam {
+//   id          String   @id @default(uuid())
+//   name        String
+//   description String
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+
+//   @@map(name: "exams")
+// }
+
+// // Not Complete
+// model Comment {
+//   id        String   @id @default(uuid())
+//   content   String
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@map(name: "comments")
+// }
+
+// // Not Complete
+// model Message {
+//   id        String   @id @default(uuid())
+//   content   String
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@map(name: "messages")
+// }
