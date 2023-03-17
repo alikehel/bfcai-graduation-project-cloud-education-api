@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 export default [
     {
         id: "1",
@@ -39,4 +41,4 @@ export default [
         country: "USA",
         address: "Newyork"
     }
-];
+] as Prisma.OrganizationCreateInput[];

@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 export default [
     {
         id: "1",
@@ -9,6 +11,9 @@ export default [
         organization: {
             // Benha University
             connect: { id: "1" }
+        },
+        users: {
+            connect: { id: "1" }
         }
     },
     {
@@ -18,7 +23,6 @@ export default [
         code: "CS401",
         isActive: true,
         category: "CS",
-        prerequisites: { connect: [{ id: "1" }] },
         organization: {
             // Benha University
             connect: { id: "1" }
@@ -96,4 +100,4 @@ export default [
             connect: { id: "4" }
         }
     }
-];
+] as Prisma.CourseCreateInput[];

@@ -11,20 +11,22 @@ datasource db {
 }
 
 model User {
-  id              String         @id @default(uuid())
-  email           String         @unique
-  firstName       String
-  lastName        String
-  phoneNumber     String
-  password        String
-  passwordConfirm String
-  Role            String // Admin - Teacher - Learner
-  organizations   Organization[]
-  courses         Course[]
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  id                    String       @id @default(uuid())
+  email                 String
+  firstName             String
+  lastName              String
+  phoneNumber           String
+  password              String
+  // passwordConfirm String
+  role                  String       @default("LEARNER") // ADMIN - TEACHER - LEARNER
+  // organizations Organization[]
+  organization          Organization @relation(fields: [organizationSubdomain], references: [subdomain])
+  organizationSubdomain String
+  courses               Course[]
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
 
-  // @@unique([firstName, lastName])
+  @@unique([email, organizationSubdomain], name: "emailSubdomain")
   @@map(name: "users")
 }
 
@@ -35,15 +37,16 @@ model User {
 // }
 
 model Organization {
-  id                  String   @id @default(uuid())
+  // id                  String   @id @default(uuid())
   name                String   @unique
   type                String // University - School - Independent
   emailDomain         String   @unique // bfcai.bu.edu.eg -> blabla@bfcai.bu.edu.eg
-  subdomain           String   @unique // bfcai -> www.bfcai.cloud-education.com
+  subdomain           String   @id // bfcai -> www.bfcai.cloud-education.com
   officialPhoneNumber String   @unique
   country             String
   address             String
-  users               User[]
+  // users               User[]
+  User                User[]
   courses             Course[]
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
@@ -52,23 +55,23 @@ model Organization {
 }
 
 model Course {
-  id             String         @id @default(uuid())
-  name           String
-  description    String
-  code           String // cs101
+  id                    String         @id @default(uuid())
+  name                  String
+  description           String
+  code                  String // cs101
   // ------ Test ------ //
-  prerequisites  Course[]       @relation("Prerequisites")
-  prerequisite   Course?        @relation("Prerequisites", fields: [prerequisiteId], references: [id])
-  prerequisiteId String?
+  prerequisites         Course[]       @relation("Prerequisites")
+  prerequisite          Course?        @relation("Prerequisites", fields: [prerequisiteId], references: [id])
+  prerequisiteId        String?
   // ------ End Test ------ //
-  isActive       Boolean
-  category       String // CS - IS - AI
-  organization   Organization   @relation(fields: [organizationId], references: [id])
-  organizationId String
-  users          User[]
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-  courseSection  CourseSection?
+  isActive              Boolean
+  category              String // CS - IS - AI
+  organization          Organization   @relation(fields: [organizationSubdomain], references: [subdomain])
+  organizationSubdomain String
+  users                 User[]
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  courseSection         CourseSection?
 
   @@map(name: "courses")
 }

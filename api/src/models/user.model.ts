@@ -1,3 +1,67 @@
+import { Prisma, PrismaClient } from "@prisma/client";
+import organizations from "../database/seed/data/organizations";
+import AppError from "../utils/AppError.util";
+import { UserLoginType, UserSignUpSchema, UserSignUpType } from "../validation";
+
+const prisma = new PrismaClient();
+
+export class UserModel {
+    async signup(
+        user: UserSignUpType,
+        subdomain: string
+    ): Promise<UserSignUpType> {
+        try {
+            const createdUser = await prisma.user.create({
+                data: {
+                    ...user,
+                    organization: { connect: { subdomain: subdomain } }
+                }
+            });
+            return createdUser;
+        } catch (err) {
+            throw new AppError(`Cant signup the user: ${err}`, 500);
+        }
+    }
+
+    async login(
+        user: UserLoginType,
+        subdomain: string
+    ): Promise<UserLoginType | null> {
+        try {
+            const returnedUser = await prisma.user.findUnique({
+                where: {
+                    emailSubdomain: {
+                        email: user.email,
+                        organizationSubdomain: subdomain
+                    }
+                }
+            });
+            return returnedUser;
+        } catch (err) {
+            throw new AppError(`Cant signup the user: ${err}`, 500);
+        }
+    }
+
+    // async index(): Promise<Prisma.UserCreateInput[]> {
+    //     try {
+    //         const users = await prisma.user.findMany();
+    //         return users;
+    //     } catch (err) {
+    //         throw new AppError("Cant Get All Users", 500);
+    //     }
+    // }
+    // async login({ email, password }): Promise<Prisma.UserCreateInput> {
+    //     try {
+    //         const user = await prisma.user.findUnique({
+    //             where: {}
+    //         });
+    //         return users;
+    //     } catch (err) {
+    //         throw new AppError("Cant Get All Users", 500);
+    //     }
+    // }
+}
+
 // import bcrypt from "bcrypt";
 // // import { SECRET } from "../config/config";
 // import { SECRET } from "../config/config";
@@ -6,7 +70,7 @@
 // import { User } from "../types/User";
 // import AppError from "../utils/AppError.util";
 // // import catchAsync from "../utils/catchAsync.util";
-// export class UserStore {
+// export class UserModel {
 //     async index(): Promise<User[]> {
 //         try {
 //             const conn = await client.connect();

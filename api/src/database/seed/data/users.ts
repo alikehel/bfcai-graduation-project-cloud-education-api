@@ -1,4 +1,6 @@
-// enum Role {
+import { Prisma } from "@prisma/client";
+
+// enum role {
 //     "LEARNER",
 //     "TEACHER",
 //     "ADMIN"
@@ -13,8 +15,11 @@ export default [
         lastName: "BFCAI",
         phoneNumber: "+201044260000",
         password: "AdminBFCAI*",
-        passwordConfirm: "AdminBFCAI*",
-        Role: "ADMIN"
+        // passwordConfirm: "AdminBFCAI*",
+        role: "ADMIN",
+        organization: {
+            connect: { id: "1" }
+        }
     },
     {
         id: "2",
@@ -23,8 +28,11 @@ export default [
         lastName: "Kehel",
         phoneNumber: "+201066260001",
         password: "AliKehel*",
-        passwordConfirm: "AliKehel*",
-        Role: "LEARNER"
+        // passwordConfirm: "AliKehel*",
+        role: "LEARNER",
+        organization: {
+            connect: { id: "1" }
+        }
     },
     {
         id: "3",
@@ -33,8 +41,11 @@ export default [
         lastName: "Shalaby",
         phoneNumber: "+201064004000",
         password: "DrAhmedShalaby*",
-        passwordConfirm: "DrAhmedShalaby*",
-        Role: "TEACHER"
+        // passwordConfirm: "DrAhmedShalaby*",
+        role: "TEACHER",
+        organization: {
+            connect: { id: "1" }
+        }
     },
     // Cairo University
     {
@@ -44,8 +55,11 @@ export default [
         lastName: "BFCAI",
         phoneNumber: "+201044260000",
         password: "AdminBFCAI*",
-        passwordConfirm: "AdminBFCAI*",
-        Role: "ADMIN"
+        // passwordConfirm: "AdminBFCAI*",
+        role: "ADMIN",
+        organization: {
+            connect: { id: "2" }
+        }
     },
     {
         id: "5",
@@ -54,8 +68,11 @@ export default [
         lastName: "Kehel",
         phoneNumber: "+201066260001",
         password: "AliKehel*",
-        passwordConfirm: "AliKehel*",
-        Role: "LEARNER"
+        // passwordConfirm: "AliKehel*",
+        role: "LEARNER",
+        organization: {
+            connect: { id: "2" }
+        }
     },
     {
         id: "6",
@@ -64,8 +81,11 @@ export default [
         lastName: "Shalaby",
         phoneNumber: "+201064004000",
         password: "DrAhmedShalaby*",
-        passwordConfirm: "DrAhmedShalaby*",
-        Role: "TEACHER"
+        // passwordConfirm: "DrAhmedShalaby*",
+        role: "TEACHER",
+        organization: {
+            connect: { id: "2" }
+        }
     },
     // STEM October
     {
@@ -75,8 +95,11 @@ export default [
         lastName: "BFCAI",
         phoneNumber: "+201044260000",
         password: "AdminBFCAI*",
-        passwordConfirm: "AdminBFCAI*",
-        Role: "ADMIN"
+        // passwordConfirm: "AdminBFCAI*",
+        role: "ADMIN",
+        organization: {
+            connect: { id: "3" }
+        }
     },
     {
         id: "8",
@@ -85,8 +108,11 @@ export default [
         lastName: "Kehel",
         phoneNumber: "+201066260001",
         password: "AliKehel*",
-        passwordConfirm: "AliKehel*",
-        Role: "LEARNER"
+        // passwordConfirm: "AliKehel*",
+        role: "LEARNER",
+        organization: {
+            connect: { id: "3" }
+        }
     },
     {
         id: "9",
@@ -95,8 +121,11 @@ export default [
         lastName: "Shalaby",
         phoneNumber: "+201064004000",
         password: "DrAhmedShalaby*",
-        passwordConfirm: "DrAhmedShalaby*",
-        Role: "TEACHER"
+        // passwordConfirm: "DrAhmedShalaby*",
+        role: "TEACHER",
+        organization: {
+            connect: { id: "3" }
+        }
     },
     // FreeCodeCamp
     {
@@ -106,8 +135,11 @@ export default [
         lastName: "BFCAI",
         phoneNumber: "+201044260000",
         password: "AdminBFCAI*",
-        passwordConfirm: "AdminBFCAI*",
-        Role: "ADMIN"
+        // passwordConfirm: "AdminBFCAI*",
+        role: "ADMIN",
+        organization: {
+            connect: { id: "4" }
+        }
     },
     {
         id: "11",
@@ -116,8 +148,11 @@ export default [
         lastName: "Kehel",
         phoneNumber: "+201066260001",
         password: "AliKehel*",
-        passwordConfirm: "AliKehel*",
-        Role: "LEARNER"
+        // passwordConfirm: "AliKehel*",
+        role: "LEARNER",
+        organization: {
+            connect: { id: "4" }
+        }
     },
     {
         id: "12",
@@ -126,7 +161,10 @@ export default [
         lastName: "Shalaby",
         phoneNumber: "+201064004000",
         password: "DrAhmedShalaby*",
-        passwordConfirm: "DrAhmedShalaby*",
-        Role: "TEACHER"
+        // passwordConfirm: "DrAhmedShalaby*",
+        role: "TEACHER",
+        organization: {
+            connect: { id: "4" }
+        }
     }
-];
+] as Prisma.UserCreateInput[];

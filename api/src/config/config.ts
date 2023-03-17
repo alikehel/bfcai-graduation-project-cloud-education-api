@@ -2,28 +2,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const {
+export const {
     PORT,
-    POSTGRES_DB,
-    POSTGRES_DB_TEST,
-    POSTGRES_USER,
-    POSTGRES_HOST,
-    POSTGRES_PASSWORD,
     NODE_ENV,
     JWT_SECRET,
     JWT_EXPIRES_IN,
-    SECRET
+    SECRET,
+    DATABASE_URL_DEV,
+    DATABASE_URL_TEST,
+    DATABASE_URL_PROD
 } = process.env;
-
-export {
-    PORT,
-    POSTGRES_DB,
-    POSTGRES_DB_TEST,
-    POSTGRES_USER,
-    POSTGRES_HOST,
-    POSTGRES_PASSWORD,
-    NODE_ENV,
-    JWT_SECRET,
-    JWT_EXPIRES_IN,
-    SECRET
-};

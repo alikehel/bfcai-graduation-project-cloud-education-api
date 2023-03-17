@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 export default [
     {
         id: "1",
@@ -46,26 +48,6 @@ export default [
         course: {
             connect: { id: "2" }
         }
-        // previous: {
-        //     connect: {
-        //         id: "1"
-        //     }
-        // },
-        // next: {
-        //     connect: {
-        //         id: "1"
-        //     }
-        // },
-        // parent: {
-        //     connect: {
-        //         id: "1"
-        //     }
-        // },
-        // childs: {
-        //     connect: {
-        //         id: "1"
-        //     }
-        // }
     },
     {
         id: "3",
@@ -211,4 +193,4 @@ export default [
             connect: { id: "8" }
         }
     }
-];
+] as Prisma.CourseSectionCreateInput[];

@@ -3,10 +3,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
-// import dashboardRoutes from "./controllers/services/dashboard";
 import { NODE_ENV } from "./config/config";
 import globalErrorcontroller from "./controllers/error.controller";
-import usersRoutes from "./routes/users.route";
+import router from "./routes";
 import AppError from "./utils/AppError.util";
 
 const app: express.Application = express();
@@ -25,8 +24,7 @@ app.get("/", (_req: Request, res: Response) => {
     });
 });
 
-// 3) ROUTES
-app.use("/api/v1/users", usersRoutes);
+app.use("/", router);
 
 app.all("*", (req, _res, next) => {
     console.log("err");
