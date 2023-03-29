@@ -1,5 +1,16 @@
 {
-  "dependencies": {
-    "dotenv": "^16.0.3"
-  }
+	"scripts": {
+		"client:install": "cd client && yarn -f",
+		"client:start": "cd client && yarn start",
+		"client:build": "cd client && yarn build",
+		"client:test": "cd client && yarn test",
+		"client:e2e": "cd client && yarn e2e",
+		"client:lint": "cd client && yarn lint",
+		"client:deploy": "cd client && yarn deploy",
+		"api:install": "cd api && npm install .",
+		"api:build": "cd api && npm run build",
+		"api:start": "cd api && npm run dev",
+		"api:deploy": "cd api && npm run deploy",
+		"deploy": "npm run api:deploy && npm run client:deploy"
+	}
 }

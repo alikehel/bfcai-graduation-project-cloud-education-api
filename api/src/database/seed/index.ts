@@ -10,7 +10,7 @@ async function runSeeders() {
     await Promise.all(
         Organizations.map(async (organization) =>
             prisma.organization.upsert({
-                where: { id: organization.id },
+                where: { subdomain: organization.subdomain },
                 update: {},
                 create: organization
             })

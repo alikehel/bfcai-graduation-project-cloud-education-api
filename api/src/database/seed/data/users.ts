@@ -18,7 +18,7 @@ export default [
         // passwordConfirm: "AdminBFCAI*",
         role: "ADMIN",
         organization: {
-            connect: { id: "1" }
+            connect: { subdomain: "bfcai" }
         }
     },
     {
@@ -31,7 +31,7 @@ export default [
         // passwordConfirm: "AliKehel*",
         role: "LEARNER",
         organization: {
-            connect: { id: "1" }
+            connect: { subdomain: "bfcai" }
         }
     },
     {
@@ -44,7 +44,7 @@ export default [
         // passwordConfirm: "DrAhmedShalaby*",
         role: "TEACHER",
         organization: {
-            connect: { id: "1" }
+            connect: { subdomain: "bfcai" }
         }
     },
     // Cairo University
@@ -58,7 +58,7 @@ export default [
         // passwordConfirm: "AdminBFCAI*",
         role: "ADMIN",
         organization: {
-            connect: { id: "2" }
+            connect: { subdomain: "cfcai" }
         }
     },
     {
@@ -71,7 +71,7 @@ export default [
         // passwordConfirm: "AliKehel*",
         role: "LEARNER",
         organization: {
-            connect: { id: "2" }
+            connect: { subdomain: "cfcai" }
         }
     },
     {
@@ -84,7 +84,7 @@ export default [
         // passwordConfirm: "DrAhmedShalaby*",
         role: "TEACHER",
         organization: {
-            connect: { id: "2" }
+            connect: { subdomain: "cfcai" }
         }
     },
     // STEM October
@@ -98,7 +98,7 @@ export default [
         // passwordConfirm: "AdminBFCAI*",
         role: "ADMIN",
         organization: {
-            connect: { id: "3" }
+            connect: { subdomain: "stem-october" }
         }
     },
     {
@@ -111,7 +111,7 @@ export default [
         // passwordConfirm: "AliKehel*",
         role: "LEARNER",
         organization: {
-            connect: { id: "3" }
+            connect: { subdomain: "stem-october" }
         }
     },
     {
@@ -124,7 +124,7 @@ export default [
         // passwordConfirm: "DrAhmedShalaby*",
         role: "TEACHER",
         organization: {
-            connect: { id: "3" }
+            connect: { subdomain: "stem-october" }
         }
     },
     // FreeCodeCamp
@@ -138,7 +138,7 @@ export default [
         // passwordConfirm: "AdminBFCAI*",
         role: "ADMIN",
         organization: {
-            connect: { id: "4" }
+            connect: { subdomain: "fcc" }
         }
     },
     {
@@ -151,7 +151,7 @@ export default [
         // passwordConfirm: "AliKehel*",
         role: "LEARNER",
         organization: {
-            connect: { id: "4" }
+            connect: { subdomain: "fcc" }
         }
     },
     {
@@ -164,7 +164,7 @@ export default [
         // passwordConfirm: "DrAhmedShalaby*",
         role: "TEACHER",
         organization: {
-            connect: { id: "4" }
+            connect: { subdomain: "fcc" }
         }
     }
 ] as Prisma.UserCreateInput[];

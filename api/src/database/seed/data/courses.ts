@@ -10,7 +10,7 @@ export default [
         category: "CS",
         organization: {
             // Benha University
-            connect: { id: "1" }
+            connect: { subdomain: "bfcai" }
         },
         users: {
             connect: { id: "1" }
@@ -25,7 +25,7 @@ export default [
         category: "CS",
         organization: {
             // Benha University
-            connect: { id: "1" }
+            connect: { subdomain: "bfcai" }
         }
     },
     {
@@ -37,7 +37,7 @@ export default [
         category: "IS",
         organization: {
             // Cairo University
-            connect: { id: "2" }
+            connect: { subdomain: "cfcai" }
         }
     },
     {
@@ -49,7 +49,7 @@ export default [
         category: "CS",
         organization: {
             // Cairo University
-            connect: { id: "2" }
+            connect: { subdomain: "cfcai" }
         }
     },
     {
@@ -61,7 +61,7 @@ export default [
         category: "MATH",
         organization: {
             // STEM October
-            connect: { id: "3" }
+            connect: { subdomain: "stem-october" }
         }
     },
     {
@@ -73,7 +73,7 @@ export default [
         category: "MATH",
         organization: {
             // STEM October
-            connect: { id: "3" }
+            connect: { subdomain: "stem-october" }
         }
     },
     {
@@ -85,7 +85,7 @@ export default [
         category: "WEB",
         organization: {
             // FreeCodeCamb
-            connect: { id: "4" }
+            connect: { subdomain: "fcc" }
         }
     },
     {
@@ -97,7 +97,7 @@ export default [
         category: "WEB",
         organization: {
             // FreeCodeCamb
-            connect: { id: "4" }
+            connect: { subdomain: "fcc" }
         }
     }
 ] as Prisma.CourseCreateInput[];

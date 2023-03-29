@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL_DEV")
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -73,6 +73,7 @@ model Course {
   updatedAt             DateTime       @updatedAt
   courseSection         CourseSection?
 
+  @@unique([code, organizationSubdomain], name: "codeSubdomain")
   @@map(name: "courses")
 }
 

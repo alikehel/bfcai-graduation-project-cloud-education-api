@@ -2,7 +2,6 @@ import { Prisma } from "@prisma/client";
 
 export default [
     {
-        id: "1",
         name: "Benha University",
         type: "University",
         emailDomain: "fci.bu.edu.eg",
@@ -12,7 +11,6 @@ export default [
         address: "Benha, Qalubia"
     },
     {
-        id: "2",
         name: "Cairo University",
         type: "University",
         emailDomain: "fci.cu.edu.eg",
@@ -22,7 +20,6 @@ export default [
         address: "Cairo"
     },
     {
-        id: "3",
         name: "STEM October",
         type: "School",
         emailDomain: "stemoctober.moe.edu.eg",
@@ -32,7 +29,6 @@ export default [
         address: "Giza"
     },
     {
-        id: "4",
         name: "FreeCodeCamb",
         type: "Independent",
         emailDomain: "fcc.com",
