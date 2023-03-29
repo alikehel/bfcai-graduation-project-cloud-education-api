@@ -4,14 +4,15 @@ info:
     version: 1.0.0
 servers:
     # Added by API Auto Mocking Plugin
-    -   url: https://virtserver.swaggerhub.com/alisaber272/cloud-education/1.0.0
-        description: Cloud Education API Auto Mocking
-    # -   url: https://virtserver.swaggerhub.com/alisaber272/cloud-education/1.0.0
-    #     description: Cloud Education API ( Production )
+    - url: https://virtserver.swaggerhub.com/alisaber272/cloud-education/1.0.0
+      description: Cloud Education API Auto Mocking
+    - url: https://cloud-education-api.up.railway.app/
+      description: Cloud Education API ( Production )
 paths:
     /organization/create:
         post:
             summary: Create a new organization and admin user
+            security: []
             operationId: createOrganizationAndAdmin
             requestBody:
                 description: Request body containing organization and admin information
@@ -25,6 +26,7 @@ paths:
                                     $ref: "#/components/schemas/OrganizationSignUpSchema"
                                 admin:
                                     $ref: "#/components/schemas/UserSignUpSchema"
+                            additionalProperties: false
             responses:
                 "200":
                     description: Redirects to the login page for the created organization
@@ -32,7 +34,8 @@ paths:
                     description: Bad request
     /{organization}/auth/signup:
         post:
-            summary: 'Signup user'
+            summary: "Signup user"
+            security: []
             parameters:
                 - in: path
                   name: organization
@@ -47,18 +50,18 @@ paths:
                         schema:
                             $ref: "#/components/schemas/UserSignUpSchema"
             responses:
-                '201':
+                "201":
                     $ref: "#/components/responses/loginSuccess"
-
     /{organization}/auth/login:
         post:
             summary: "Login user"
+            security: []
             parameters:
                 - in: path
                   name: organization
                   required: true
                   schema:
-                    type: string
+                      type: string
             requestBody:
                 description: Request body containing user information
                 required: true
@@ -74,102 +77,137 @@ components:
     schemas:
         UserSignUpSchema:
             type: object
+            additionalProperties: false
             properties:
                 email:
                     type: string
                     format: email
                     description: User email
-                    example: example@example.com
+                    example: studentusername@fci.bu.edu.eg
+                    pattern: ^\w+[@]\w+[.]\w+$
                 password:
                     type: string
                     description: User password
                     minLength: 6
                     maxLength: 12
                     example: password
+                    pattern: ^[\w\W]+$
                 passwordConfirm:
                     type: string
                     description: User password confirmation
                     minLength: 6
                     maxLength: 12
                     example: password
+                    pattern: ^[\w\W]+$
                 firstName:
                     type: string
                     description: User first name
                     minLength: 2
                     maxLength: 16
-                    example: John
+                    example: Ali
+                    pattern: ^[A-Za-z]+$
                 lastName:
                     type: string
                     description: User last name
                     minLength: 2
                     maxLength: 16
-                    example: Doe
+                    example: Kehel
+                    pattern: ^[A-Za-z]+$
                 phoneNumber:
                     type: string
                     description: User phone number with country code
-                    pattern: ^\+20\d{10}$
-                    example: +201234567890
-                role:
-                    type: string
-                    description: User role (optional)
-                    example: admin
+                    minLength: 2
+                    maxLength: 20
+                    pattern: ^\+\d+$
+                    example: "+201234567890"
         OrganizationSignUpSchema:
             type: object
+            additionalProperties: false
             properties:
                 name:
                     type: string
                     description: Organization name
-                    example: Example Inc.
+                    minLength: 2
+                    maxLength: 60
+                    example: "Benha Faculty Of Computers & Artificial Intelligence"
+                    pattern: ^[\w\W]+$
                 type:
                     type: string
                     description: Organization type
-                    example: Corporation
+                    minLength: 2
+                    maxLength: 16
+                    example: "University"
+                    pattern: ^[\w]+$
                 emailDomain:
                     type: string
                     description: Email domain for the organization
-                    example: example.com
+                    minLength: 2
+                    maxLength: 16
+                    example: fci.bu.edu.eg
+                    pattern: ^[\w\W]+$
                 subdomain:
                     type: string
                     description: Subdomain for the organization
                     minLength: 2
                     maxLength: 16
-                    example: example
+                    example: bfcai
+                    pattern: ^[\w]+$
                 officialPhoneNumber:
                     type: string
                     description: Official phone number for the organization with country code
                     pattern: ^\+20\d{10}$
-                    example: +201234567890
+                    example: "+201234567890"
                 country:
                     type: string
                     description: Country of the organization
+                    minLength: 2
+                    maxLength: 16
                     example: Egypt
+                    pattern: ^[\w]+$
                 address:
                     type: string
                     description: Address of the organization
+                    minLength: 2
+                    maxLength: 36
                     example: 123 Main St, Cairo
+                    pattern: ^[\w\W]+$
         UserLoginSchema:
             type: object
+            additionalProperties: false
             properties:
                 email:
                     type: string
                     format: email
                     description: User email
-                    example: example@example.com
+                    example: studentusername@fci.bu.edu.eg
+                    pattern: ^\w+[@]\w+[.]\w+$
+                    maxLength: 32
                 password:
                     type: string
                     description: User password
                     minLength: 6
                     maxLength: 12
                     example: password
+                    pattern: ^[\w\W]+$
     responses:
-        'loginSuccess':
+        "loginSuccess":
             description: Created
             content:
                 application/json:
                     schema:
                         properties:
-                            message:
+                            status:
                                 type: string
                                 example: "success"
                             token:
                                 type: string
+                        type: object
+                        additionalProperties: false
+    securitySchemes:
+        JWT:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+
+security:
+    - JWT: []

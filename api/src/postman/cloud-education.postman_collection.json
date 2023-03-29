@@ -1,93 +1,270 @@
 {
 	"info": {
-		"_postman_id": "0c1fb728-18ac-4ef1-8194-97356185bb65",
-		"name": "Cloud Education",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "8b544a7f-ee5e-4226-a285-31e2cd6a80be",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22069499"
 	},
 	"item": [
 		{
-			"name": "Signup",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.a2U3ZWN2ZGZmZGV3ZGxycjJ1ZnNlcm5hbWU.GBUo60l80tUwMNG2VdouGweiveo8lNJFs0yHxdGE0bw",
-							"type": "string"
+			"name": "Organization",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"organization\": {\r\n        \"name\": \"LMAO HAHA\",\r\n        \"type\": \"University\",\r\n        \"emailDomain\": \"lmao.com\",\r\n        \"subdomain\": \"lmao\",\r\n        \"officialPhoneNumber\": \"+201066666666\",\r\n        \"country\": \"Egypt\",\r\n        \"address\": \"Benha\"\r\n    },\r\n    \"organizationAdmin\": {\r\n        \"email\": \"admin@lmao.com\",\r\n        \"password\": \"lmaopass\",\r\n        \"passwordConfirm\": \"lmaopass\",\r\n        \"firstName\": \"fname\",\r\n        \"lastName\": \"lname\",\r\n        \"phoneNumber\": \"+201212121211\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/organization/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"organization",
+								"create"
+							]
 						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"ke7ecvdffdewdlrr2ufsername\",\r\n    \"password\": \"ke7el1pass\",\r\n    \"passwordConfirm\": \"ke7el1pass\",\r\n    \"firstname\": \"ali1\",\r\n    \"lastname\": \"kehel1\",\r\n    \"email\": \"ke7elfcvrderdf2mfail@gmail.com\",\r\n    \"role\": \"student\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "127.0.0.1:3000/api/v1/users/signup",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"v1",
-						"users",
-						"signup"
-					]
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"ke7ellusername\",\r\n    \"password\": \"ke7el1pass\",\r\n    \"passwordConfirm\": \"ke7el1pass\",\r\n    \"firstname\": \"ali1\",\r\n    \"lastname\": \"kehel1\",\r\n    \"email\": \"ke7ellmail@gmail.com\",\r\n    \"role\": \"student\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Organization Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@lmao.com\",\r\n    \"password\": \"lmaopass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/lmao/auth/login/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"lmao",
+								"auth",
+								"login",
+								""
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "127.0.0.1:3000/api/v1/users/login",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"v1",
-						"users",
-						"login"
-					]
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"abba@lmao.com\",\r\n    \"password\": \"aaaabaaa\",\r\n    \"passwordConfirm\": \"aaaabaaa\",\r\n    \"firstName\": \"fname\",\r\n    \"lastName\": \"lname\",\r\n    \"phoneNumber\": \"+201214121211\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/lmao/auth/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"lmao",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "New Request",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
+			"name": "Organization Users",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/bfcai/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"bfcai",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test",
+			"item": [
+				{
+					"name": "Test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "aaa.127.0.0.1:3000/test",
+							"host": [
+								"aaa",
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TEST",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"organization\": {\r\n        \"name\": \"Example Inc.\",\r\n        \"type\": \"Corporation\",\r\n        \"emailDomain\": \"example.com\",\r\n        \"subdomain\": \"example\",\r\n        \"officialPhoneNumber\": \"201234567890\",\r\n        \"country\": \"Egypt\",\r\n        \"address\": \"123 Main St, Cairo\"\r\n    },\r\n    \"admin\": {\r\n        \"email\": \"example@example.com\",\r\n        \"password\": \"password\",\r\n        \"passwordConfirm\": \"password\",\r\n        \"firstName\": \"John\",\r\n        \"lastName\": \"Doe\",\r\n        \"phoneNumber\": \"201234567890\",\r\n        \"role\": \"admin\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://virtserver.swaggerhub.com/alisaber272/cloud-education/1.0.0/organization/create",
+							"protocol": "https",
+							"host": [
+								"virtserver",
+								"swaggerhub",
+								"com"
+							],
+							"path": [
+								"alisaber272",
+								"cloud-education",
+								"1.0.0",
+								"organization",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"organization\": {\r\n        \"name\": \"LMAO HAHA\",\r\n        \"type\": \"University\",\r\n        \"emailDomain\": \"lmao.com\",\r\n        \"subdomain\": \"lmao\",\r\n        \"officialPhoneNumber\": \"+201066666666\",\r\n        \"country\": \"Egypt\",\r\n        \"address\": \"Benha\"\r\n    },\r\n    \"organizationAdmin\": {\r\n        \"email\": \"admin@lmao.com\",\r\n        \"password\": \"lmaopass\",\r\n        \"passwordConfirm\": \"lmaopass\",\r\n        \"firstName\": \"fname\",\r\n        \"lastName\": \"lname\",\r\n        \"phoneNumber\": \"+201212121211\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/organization/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"organization",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@lmao.com\",\r\n    \"password\": \"lmaopass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/lmao/auth/login/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"lmao",
+								"auth",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:3000",
+			"type": "string"
 		}
 	]
 }
