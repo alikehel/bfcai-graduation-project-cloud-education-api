@@ -21,6 +21,16 @@ export const create = catchAsync(async (req, res, next) => {
         return next(new AppError("Passwords dont match", 400));
     }
 
+    const emailDomain = req.body.organization.emailDomain;
+    if (organizationAdmin.email.split("@")[1] !== emailDomain) {
+        return next(
+            new AppError(
+                "You need to register using the organization email",
+                400
+            )
+        );
+    }
+
     const hashedPassword = bcrypt.hashSync(
         organizationAdmin.password + (SECRET as string),
         12
