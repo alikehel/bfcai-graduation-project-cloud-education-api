@@ -26,7 +26,7 @@ export class UserModel {
     async login(
         user: UserLoginType,
         subdomain: string
-    ): Promise<UserLoginType | null> {
+    ): Promise<{ email: string; password: string; role: string } | null> {
         try {
             const returnedUser = await prisma.user.findUnique({
                 where: {
@@ -38,7 +38,7 @@ export class UserModel {
             });
             return returnedUser;
         } catch (err) {
-            throw new AppError(`Cant signup the user: ${err}`, 500);
+            throw new AppError(`Cant login the user: ${err}`, 500);
         }
     }
 

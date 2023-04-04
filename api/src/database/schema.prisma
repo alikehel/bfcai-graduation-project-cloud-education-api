@@ -72,10 +72,26 @@ model Course {
   createdAt             DateTime       @default(now())
   updatedAt             DateTime       @updatedAt
   courseSection         CourseSection?
+  // CourseAssets          CourseAssets[]
 
   @@unique([code, organizationSubdomain], name: "codeSubdomain")
   @@map(name: "courses")
 }
+
+// model CourseAssets {
+//   id        String   @id @default(uuid())
+//   name      String
+//   url       String   @unique
+//   type      String // video - pdf - image
+//   expiresAt DateTime
+//   size      Int
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   course    Course?  @relation(fields: [courseId], references: [id])
+//   courseId  String?
+
+//   @@map(name: "course_assets")
+// }
 
 model CourseSection {
   id        String   @id @default(uuid())
