@@ -2,27 +2,171 @@ import swaggerAutogen from "swagger-autogen";
 
 const doc = {
     info: {
-        version: "1.0.0", // by default: '1.0.0'
-        title: "Cloud Education", // by default: 'REST API'
+        version: "1.0.0",
+        title: "Cloud Education API",
         description:
             "A Complete Education System on the cloud that aims to be a replacement for the traditional offline school or university education." // by default: ''
     },
-    host: "", // by default: 'localhost:3000'
-    basePath: "/api/v1/", // by default: '/'
-    schemes: [], // by default: ['http']
-    consumes: [], // by default: ['application/json']
-    produces: [], // by default: ['application/json']
+    host: "localhost:3000",
+    basePath: "/api/",
+    schemes: ["http"],
+    consumes: ["application/json"],
+    produces: ["application/json"],
     tags: [
-        // by default: empty Array
         {
-            name: "", // Tag name
-            description: "" // Tag description
+            name: "Auth Routes",
+            description: "Login & Signup Routes"
         }
-        // { ... }
     ],
-    securityDefinitions: {}, // by default: empty object
-    definitions: {}, // by default: empty object (Swagger 2.0)
-    components: {} // by default: empty object (OpenAPI 3.x)
+    securityDefinitions: {
+        bearerAuth: {
+            type: "http",
+            scheme: "bearer",
+            bearerFormat: "JWT"
+        }
+    },
+    components: {
+        examples: {},
+        "@schemas": {
+            UserLoginSchema: {
+                type: "object",
+                additionalProperties: false,
+                properties: {
+                    email: {
+                        type: "string",
+                        format: "email",
+                        description: "User email",
+                        example: "studentusername@fci.bu.edu.eg",
+                        pattern: "^\\w+[@]\\w+[.]\\w+$",
+                        maxLength: 32
+                    },
+                    password: {
+                        type: "string",
+                        description: "User password",
+                        minLength: 6,
+                        maxLength: 12,
+                        example: "password",
+                        pattern: "^[\\w\\W]+$"
+                    }
+                }
+            },
+            UserSignUpSchema: {
+                type: "object",
+                additionalProperties: false,
+                properties: {
+                    email: {
+                        type: "string",
+                        format: "email",
+                        description: "User email",
+                        example: "studentusername@fci.bu.edu.eg",
+                        pattern: "^\\w+[@]\\w+[.]\\w+$"
+                    },
+                    password: {
+                        type: "string",
+                        description: "User password",
+                        minLength: 6,
+                        maxLength: 12,
+                        example: "password",
+                        pattern: "^[\\w\\W]+$"
+                    },
+                    passwordConfirm: {
+                        type: "string",
+                        description: "User password confirmation",
+                        minLength: 6,
+                        maxLength: 12,
+                        example: "password",
+                        pattern: "^[\\w\\W]+$"
+                    },
+                    firstName: {
+                        type: "string",
+                        description: "User first name",
+                        minLength: 2,
+                        maxLength: 16,
+                        example: "Ali",
+                        pattern: "^[A-Za-z]+$"
+                    },
+                    lastName: {
+                        type: "string",
+                        description: "User last name",
+                        minLength: 2,
+                        maxLength: 16,
+                        example: "Kehel",
+                        pattern: "^[A-Za-z]+$"
+                    },
+                    phoneNumber: {
+                        type: "string",
+                        description: "User phone number with country code",
+                        minLength: 2,
+                        maxLength: 20,
+                        pattern: "^\\+\\d+$",
+                        example: "+201234567890"
+                    }
+                }
+            },
+            OrganizationSignUpSchema: {
+                type: "object",
+                additionalProperties: false,
+                properties: {
+                    name: {
+                        type: "string",
+                        description: "Organization name",
+                        minLength: 2,
+                        maxLength: 60,
+                        example:
+                            "Benha Faculty Of Computers & Artificial Intelligence",
+                        pattern: "^[\\w\\W]+$"
+                    },
+                    type: {
+                        type: "string",
+                        description: "Organization type",
+                        minLength: 2,
+                        maxLength: 16,
+                        example: "University",
+                        pattern: "^[\\w]+$"
+                    },
+                    emailDomain: {
+                        type: "string",
+                        description: "Email domain for the organization",
+                        minLength: 2,
+                        maxLength: 16,
+                        example: "fci.bu.edu.eg",
+                        pattern: "^[\\w\\W]+$"
+                    },
+                    subdomain: {
+                        type: "string",
+                        description: "Subdomain for the organization",
+                        minLength: 2,
+                        maxLength: 16,
+                        example: "bfcai",
+                        pattern: "^[\\w]+$"
+                    },
+                    officialPhoneNumber: {
+                        type: "string",
+                        description:
+                            "Official phone number for the organization with country code",
+                        pattern: "^\\+20\\d{10}$",
+                        example: "+201234567890"
+                    },
+                    country: {
+                        type: "string",
+                        description: "Country of the organization",
+                        minLength: 2,
+                        maxLength: 16,
+                        example: "Egypt",
+                        pattern: "^[\\w]+$"
+                    },
+                    address: {
+                        type: "string",
+                        description: "Address of the organization",
+                        minLength: 2,
+                        maxLength: 36,
+                        example: "123 Main St, Cairo",
+                        pattern: "^[\\w\\W]+$"
+                    }
+                }
+            }
+        }
+    }
 };
 
 const outputFile = "./src/swagger/swagger-output.json";

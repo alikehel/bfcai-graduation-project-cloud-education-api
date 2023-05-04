@@ -15,7 +15,7 @@ export class OrganizationModel {
             });
             return createdOrganization;
         } catch (err) {
-            throw new AppError(`Cant create the organization: ${err}`, 500);
+            throw new AppError(`Cant create the organization`, 500);
         }
     }
 
@@ -30,7 +30,7 @@ export class OrganizationModel {
                 return false;
             }
         } catch (err) {
-            throw new AppError(`Cant find the organization: ${err}`, 500);
+            throw new AppError(`Cant find the organization`, 500);
         }
     }
 
@@ -42,7 +42,7 @@ export class OrganizationModel {
             });
             return org;
         } catch (err) {
-            throw new AppError(`Error getting the email domain: ${err}`, 500);
+            throw new AppError(`Error getting the email domain`, 500);
         }
     }
 }
