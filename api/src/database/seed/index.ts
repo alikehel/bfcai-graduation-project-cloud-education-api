@@ -88,13 +88,13 @@ async function runSeeders() {
     // });
 }
 
-runSeeders()
-    .then(async () => {
-        console.log("Successfully seeded database. Closing connection.");
-        await prisma.$disconnect();
-    })
-    .catch(async (e) => {
-        console.error(`There was an error while seeding: ${e}`);
-        await prisma.$disconnect();
-        process.exit(1);
-    });
+// runSeeders()
+//     .then(async () => {
+//         console.log("Successfully seeded database. Closing connection.");
+//         await prisma.$disconnect();
+//     })
+//     .catch(async (e) => {
+//         console.error(`There was an error while seeding: ${e}`);
+//         await prisma.$disconnect();
+//         process.exit(1);
+//     });

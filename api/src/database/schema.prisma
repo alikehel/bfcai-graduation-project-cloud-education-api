@@ -23,8 +23,10 @@ model User {
   organization          Organization @relation(fields: [organizationSubdomain], references: [subdomain])
   organizationSubdomain String
   courses               Course[]
+  managedCourses        Course[]     @relation("Course Owner")
   createdAt             DateTime     @default(now())
   updatedAt             DateTime     @updatedAt
+  // Course                Course[]
 
   @@unique([email, organizationSubdomain], name: "emailSubdomain")
   @@map(name: "users")
@@ -60,19 +62,24 @@ model Course {
   description           String
   code                  String // cs101
   // ------ Test ------ //
-  prerequisites         Course[]       @relation("Prerequisites")
-  prerequisite          Course?        @relation("Prerequisites", fields: [prerequisiteId], references: [id])
-  prerequisiteId        String?
+  // prerequisites         Course[]       @relation("Prerequisites")
+  // prerequisiteOf        Course?        @relation("Prerequisites", fields: [prerequisiteId], references: [id])
+  // prerequisiteId        String?
+  // prerequisites         String[]
+  prerequisites         Course[]       @relation("CoursePrerequisites")
+  prerequisiteOf        Course[]       @relation("CoursePrerequisites")
   // ------ End Test ------ //
-  isActive              Boolean
+  isActive              Boolean        @default(false)
   category              String // CS - IS - AI
   organization          Organization   @relation(fields: [organizationSubdomain], references: [subdomain])
   organizationSubdomain String
   users                 User[]
+  owner                 User           @relation("Course Owner", fields: [userId], references: [id])
   createdAt             DateTime       @default(now())
   updatedAt             DateTime       @updatedAt
   courseSection         CourseSection?
   // CourseAssets          CourseAssets[]
+  userId                String
 
   @@unique([code, organizationSubdomain], name: "codeSubdomain")
   @@map(name: "courses")

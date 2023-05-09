@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+//--------------------- Users ---------------------//
+
 export const UserLoginSchema = z.object({
     email: z
         .string({ required_error: "Email is required" })
@@ -47,6 +49,8 @@ export const UserSignUpSchema = z.object({
 
 export type UserSignUpType = z.infer<typeof UserSignUpSchema>;
 
+//--------------------- Organizations ---------------------//
+
 export const OrganizationSignUpSchema = z.object({
     name: z.string({ required_error: "Organization name is required" }),
     type: z.string({ required_error: "Organization type is required" }),
@@ -64,3 +68,20 @@ export const OrganizationSignUpSchema = z.object({
     country: z.string({ required_error: "Country is required" }),
     address: z.string({ required_error: "Address is required" })
 });
+
+//--------------------- Courses ---------------------//
+
+export const CourseCreateSchema = z.object({
+    name: z.string({ required_error: "Course name is required" }),
+    description: z.string({ required_error: "Course description is required" }),
+    code: z.string({ required_error: "Course code is required" }),
+    category: z.string({ required_error: "Course category is required" }),
+    isActive: z.boolean(),
+    prerequisites: z.array(z.string()).optional()
+});
+
+export type CourseCreateType = z.infer<typeof CourseCreateSchema>;
+
+export const CourseUpdateSchema = CourseCreateSchema.partial();
+
+export type CourseUpdateType = z.infer<typeof CourseUpdateSchema>;

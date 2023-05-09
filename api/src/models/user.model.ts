@@ -41,4 +41,21 @@ export class UserModel {
             throw new AppError(`Cant login the user`, 500);
         }
     }
+
+    async getUserID(email: string, subdomain: string): Promise<string | null> {
+        try {
+            const data = (await prisma.user.findUnique({
+                where: {
+                    emailSubdomain: {
+                        email: email,
+                        organizationSubdomain: subdomain
+                    }
+                },
+                select: { id: true }
+            })) as unknown as { id: string };
+            return data.id;
+        } catch (err) {
+            throw new AppError(`Cant get the userID`, 500);
+        }
+    }
 }
