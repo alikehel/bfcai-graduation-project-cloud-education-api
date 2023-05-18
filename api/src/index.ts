@@ -18,8 +18,8 @@ process.on("unhandledRejection", (err: Error) => {
 });
 
 const server = app.listen(PORT, () => {
-    if (NODE_ENV === "dev") {
+    // if (NODE_ENV === "dev") {
         // eslint-disable-next-line no-console
         console.log(`Starting APP On -> ${address}`);
-    }
+    // }
 });
