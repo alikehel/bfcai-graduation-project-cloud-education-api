@@ -22,11 +22,11 @@ export const UserSignUpSchema = z.object({
         .string({ required_error: "Password is required" })
         .min(6, { message: "Password length is less than 6 characters" })
         .max(12, { message: "Password length is more than 12 characters" }),
-    passwordConfirm: z
-        .string({ required_error: "Password confirm is required" })
-        .min(6, { message: "Password length is less than 6 characters" })
-        .max(12, { message: "Password length is more than 12 characters" })
-        .transform((data) => {}),
+    // passwordConfirm: z
+    //     .string({ required_error: "Password confirm is required" })
+    //     .min(6, { message: "Password length is less than 6 characters" })
+    //     .max(12, { message: "Password length is more than 12 characters" })
+    //     .transform((data) => {}),
     firstName: z
         .string({ required_error: "First name is required" })
         .min(2, { message: "First name length is less than 2 characters" })

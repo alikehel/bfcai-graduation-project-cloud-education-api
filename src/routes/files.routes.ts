@@ -20,6 +20,8 @@ router.route("/:organization/courses/:courseCode/uploadImage").post(
     /*
         #swagger.tags = ['Files Routes']
 
+        #swagger.description = 'Must be a teacher or admin to upload an image'
+
         #swagger.auto = false
 
         #swagger.parameters['organization'] = {
@@ -89,6 +91,8 @@ router.route("/:organization/courses/:courseCode/uploadVideo").post(
     uploadVideo
     /*
         #swagger.tags = ['Files Routes']
+
+        #swagger.description = 'Must be a teacher or admin to upload a video'
 
         #swagger.security = [{
             "bearerAuth": []

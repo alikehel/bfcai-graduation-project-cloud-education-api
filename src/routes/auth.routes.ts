@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { login, signup } from "../controllers/auth.controller";
 
+import { isLoggedIn } from "../middlewares/isLoggedIn.middleware";
 import { orgExist } from "../middlewares/orgExist.middleware";
 
 const router = Router();
@@ -11,10 +12,6 @@ router.route("/:organization/auth/login").post(
     login
     /*
         #swagger.tags = ['Auth Routes']
-
-        #swagger.security = [{
-            "bearerAuth": []
-        }]
 
         #swagger.responses[201-1] = {
             description: 'User Logined Successfully',
@@ -65,10 +62,6 @@ router.route("/:organization/auth/signup").post(
     /*
         #swagger.tags = ['Auth Routes']
 
-        #swagger.security = [{
-            "bearerAuth": []
-        }]
-
         #swagger.responses[201-1] = {
             description: 'User Registered Successfully',
             schema: {
@@ -83,14 +76,6 @@ router.route("/:organization/auth/signup").post(
                 message: 'You need to register using the organization email'
             },
             description: 'You need to register using the organization email'
-        }
-
-        #swagger.responses[400-2] = {
-            schema: {
-                status: "fail",
-                message: 'Passwords dont match'
-            },
-            description: 'Passwords dont match'
         }
 
         #swagger.responses[500-1] = {
@@ -108,6 +93,47 @@ router.route("/:organization/auth/signup").post(
                     schema: { $ref: "#/components/schemas/UserSignUpSchema" },
                 }
             }
+        }
+    */
+);
+
+router.route("/:organization/auth/validate-token").post(
+    orgExist,
+    isLoggedIn,
+    (req, res) => {
+        res.status(200).json({
+            status: "valid"
+        });
+    }
+    /*
+        #swagger.tags = ['Auth Routes']
+
+        #swagger.description = 'User needs to be logged in'
+
+        #swagger.security = [{
+            "bearerAuth": []
+        }]
+
+        #swagger.responses[200-1] = {
+            description: 'Token is valid',
+            schema: {
+                status: "valid"
+            }
+        }
+
+        #swagger.responses[401-1] = {
+            schema: {
+                status: "invalid"
+            },
+            description: 'Token is invalid'
+        }
+
+        #swagger.responses[401-2] = {
+            schema: {
+                status: "fail",
+                message: 'Please Log In!'
+            },
+            description: 'Please Log In!'
         }
     */
 );

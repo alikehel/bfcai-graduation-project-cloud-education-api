@@ -33,6 +33,8 @@ router.route("/:organization/courses/:courseCode/sections").get(
     /*
         #swagger.tags = ['Courses Sections Routes']
 
+        #swagger.description = 'Must be a teacher, student or admin to get the course sections titles'
+
         #swagger.security = [{
             "bearerAuth": []
         }]
@@ -70,6 +72,8 @@ router.route("/:organization/courses/:courseCode/sections").post(
     createCourseSection
     /*
         #swagger.tags = ['Courses Sections Routes']
+
+        #swagger.description = 'Must be a teacher or admin to create a course section'
 
         #swagger.security = [{
             "bearerAuth": []
@@ -126,6 +130,8 @@ router.route("/:organization/courses/:courseCode/sections/:sectionOrder").get(
     /*
         #swagger.tags = ['Courses Sections Routes']
 
+        #swagger.description = 'Must be a teacher, student or admin to get the course section content'
+
         #swagger.security = [{
             "bearerAuth": []
         }]
@@ -172,6 +178,8 @@ router.route("/:organization/courses/:courseCode/sections/:sectionOrder").patch(
     updateCourseSection
     /*
         #swagger.tags = ['Courses Sections Routes']
+
+        #swagger.description = 'Must be a teacher or admin to update the course section data'
 
         #swagger.security = [{
             "bearerAuth": []
@@ -238,6 +246,8 @@ router
         deleteCourseSection
         /*
         #swagger.tags = ['Courses Sections Routes']
+
+        #swagger.description = 'Must be a teacher or admin to delete the course section'
 
         #swagger.security = [{
             "bearerAuth": []

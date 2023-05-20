@@ -483,11 +483,6 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -599,47 +594,6 @@
               }
             }
           },
-          "400-2": {
-            "description": "Passwords dont match",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "fail"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Passwords dont match"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "fail"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Passwords dont match"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
           "500-1": {
             "description": "Cant signup the user",
             "content": {
@@ -682,11 +636,6 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -699,12 +648,157 @@
         }
       }
     },
+    "/api/{organization}/auth/validate-token": {
+      "post": {
+        "tags": [
+          "Auth Routes"
+        ],
+        "description": "User needs to be logged in",
+        "parameters": [
+          {
+            "name": "organization",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200-1": {
+            "description": "Token is valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "valid"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "valid"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "401-1": {
+            "description": "Token is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "invalid"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "invalid"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "401-2": {
+            "description": "Please Log In!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Please Log In!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Please Log In!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/{organization}/courses/{courseCode}/uploadImage": {
       "post": {
         "tags": [
           "Files Routes"
         ],
-        "description": "",
+        "description": "Must be a teacher or admin to upload an image",
         "parameters": [
           {
             "name": "organization",
@@ -921,7 +1015,7 @@
         "tags": [
           "Files Routes"
         ],
-        "description": "",
+        "description": "Must be a teacher or admin to upload a video",
         "parameters": [
           {
             "name": "organization",
@@ -958,6 +1052,9 @@
         "responses": {
           "201": {
             "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "201-1": {
             "description": "Image Uploaded Successfully",
@@ -1146,7 +1243,7 @@
         "tags": [
           "Courses Routes"
         ],
-        "description": "",
+        "description": "Must be a teacher, student or admin to get the courses",
         "parameters": [
           {
             "name": "organization",
@@ -1176,6 +1273,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "200-1": {
             "description": "Got all courses",
@@ -1354,7 +1454,7 @@
         "tags": [
           "Courses Routes"
         ],
-        "description": "",
+        "description": "Must be a teacher or admin to create a course",
         "parameters": [
           {
             "name": "organization",
@@ -1375,6 +1475,9 @@
         "responses": {
           "201": {
             "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "201-1": {
             "description": "Course Created Successfully",
@@ -1592,7 +1695,7 @@
         "tags": [
           "Courses Routes"
         ],
-        "description": "",
+        "description": "Must be a teacher, student or admin to get the course",
         "parameters": [
           {
             "name": "organization",
@@ -1622,6 +1725,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "200-1": {
             "description": "Got the course data",
@@ -1794,7 +1900,7 @@
         "tags": [
           "Courses Routes"
         ],
-        "description": "",
+        "description": "Must be a teacher or admin to update a course",
         "parameters": [
           {
             "name": "organization",
@@ -1823,6 +1929,9 @@
         "responses": {
           "201": {
             "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "201-1": {
             "description": "Course Updated Successfully",
@@ -2083,7 +2192,7 @@
         "tags": [
           "Courses Routes"
         ],
-        "description": "",
+        "description": "Must be a teacher or admin to delete a course",
         "parameters": [
           {
             "name": "organization",
@@ -2113,6 +2222,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "200-1": {
             "description": "Course deleted Successfully",
@@ -2250,7 +2362,7 @@
         "tags": [
           "Courses Sections Routes"
         ],
-        "description": "",
+        "description": "Must be a teacher, student or admin to get the course sections titles",
         "parameters": [
           {
             "name": "organization",
@@ -2277,6 +2389,9 @@
           }
         ],
         "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
           "200-1": {
             "description": "Got all course sections titles",
             "content": {
@@ -2394,7 +2509,7 @@
         "tags": [
           "Courses Sections Routes"
         ],
-        "description": "",
+        "description": "Must be a teacher or admin to create a course section",
         "parameters": [
           {
             "name": "organization",
@@ -2423,6 +2538,9 @@
         "responses": {
           "201": {
             "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "201-1": {
             "description": "Course Section Created Successfully",
@@ -2518,7 +2636,7 @@
         "tags": [
           "Courses Sections Routes"
         ],
-        "description": "",
+        "description": "Must be a teacher, student or admin to get the course section content",
         "parameters": [
           {
             "name": "organization",
@@ -2556,6 +2674,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "200-1": {
             "description": "Got the course section content",
@@ -2717,7 +2838,7 @@
         "tags": [
           "Courses Sections Routes"
         ],
-        "description": "",
+        "description": "Must be a teacher or admin to update the course section data",
         "parameters": [
           {
             "name": "organization",
@@ -2752,6 +2873,9 @@
           }
         ],
         "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
           "201-1": {
             "description": "Course Section Data Updated Successfully",
             "content": {
@@ -2927,7 +3051,7 @@
         "tags": [
           "Courses Sections Routes"
         ],
-        "description": "",
+        "description": "Must be a teacher or admin to delete the course section",
         "parameters": [
           {
             "name": "organization",
@@ -2965,6 +3089,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "200-1": {
             "description": "Course Section deleted Successfully",
@@ -3137,14 +3264,6 @@
           "password": {
             "type": "string",
             "description": "User password",
-            "minLength": 6,
-            "maxLength": 12,
-            "example": "password",
-            "pattern": "^[\\w\\W]+$"
-          },
-          "passwordConfirm": {
-            "type": "string",
-            "description": "User password confirmation",
             "minLength": 6,
             "maxLength": 12,
             "example": "password",

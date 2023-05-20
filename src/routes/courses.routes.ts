@@ -21,6 +21,8 @@ router.route("/:organization/courses").get(
     /*
         #swagger.tags = ['Courses Routes']
 
+        #swagger.description = 'Must be a teacher, student or admin to get the courses'
+
         #swagger.security = [{
             "bearerAuth": []
         }]
@@ -76,6 +78,8 @@ router.route("/:organization/courses").post(
     createCourse
     /*
         #swagger.tags = ['Courses Routes']
+
+        #swagger.description = 'Must be a teacher or admin to create a course'
 
         #swagger.security = [{
             "bearerAuth": []
@@ -156,6 +160,8 @@ router.route("/:organization/courses/:courseCode").get(
     /*
         #swagger.tags = ['Courses Routes']
 
+        #swagger.description = 'Must be a teacher, student or admin to get the course'
+
         #swagger.security = [{
             "bearerAuth": []
         }]
@@ -199,6 +205,8 @@ router.route("/:organization/courses/:courseCode").patch(
     updateCourse
     /*
         #swagger.tags = ['Courses Routes']
+
+        #swagger.description = 'Must be a teacher or admin to update a course'
 
         #swagger.security = [{
             "bearerAuth": []
@@ -290,6 +298,8 @@ router.route("/:organization/courses/:courseCode").delete(
     deleteCourse
     /*
         #swagger.tags = ['Courses Routes']
+
+        #swagger.description = 'Must be a teacher or admin to delete a course'
 
         #swagger.security = [{
             "bearerAuth": []

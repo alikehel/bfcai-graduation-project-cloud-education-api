@@ -14,12 +14,12 @@ const organizationModel = new OrganizationModel();
 
 export const signup = catchAsync(async (req, res, next) => {
     const user = UserSignUpSchema.parse(req.body);
-    const passwordConfirm = req.body.passwordConfirm;
+    // const passwordConfirm = req.body.passwordConfirm;
     const subdomain = req.params.organization;
 
-    if (user.password != passwordConfirm) {
-        return next(new AppError("Passwords dont match", 400));
-    }
+    // if (user.password != passwordConfirm) {
+    //     return next(new AppError("Passwords dont match", 400));
+    // }
 
     // TODO: NEED TO IMPLEMENT EMAIL VERIFICATION
 

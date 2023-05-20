@@ -69,14 +69,14 @@ const doc = {
                         example: "password",
                         pattern: "^[\\w\\W]+$"
                     },
-                    passwordConfirm: {
-                        type: "string",
-                        description: "User password confirmation",
-                        minLength: 6,
-                        maxLength: 12,
-                        example: "password",
-                        pattern: "^[\\w\\W]+$"
-                    },
+                    // passwordConfirm: {
+                    //     type: "string",
+                    //     description: "User password confirmation",
+                    //     minLength: 6,
+                    //     maxLength: 12,
+                    //     example: "password",
+                    //     pattern: "^[\\w\\W]+$"
+                    // },
                     firstName: {
                         type: "string",
                         description: "User first name",
