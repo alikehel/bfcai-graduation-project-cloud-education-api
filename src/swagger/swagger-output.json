@@ -1141,7 +1141,215 @@
         ]
       }
     },
-    "/api/{organization}/courses/create": {
+    "/api/{organization}/courses": {
+      "get": {
+        "tags": [
+          "Courses Routes"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "organization",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page Number",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "200-1": {
+            "description": "Got all courses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "IOT"
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": "Course Description"
+                          },
+                          "code": {
+                            "type": "string",
+                            "example": "cs50"
+                          },
+                          "category": {
+                            "type": "string",
+                            "example": "CS"
+                          },
+                          "isActive": {
+                            "type": "boolean",
+                            "example": false
+                          },
+                          "prerequisites": {
+                            "type": "array",
+                            "example": [
+                              "cs50",
+                              "cs60"
+                            ],
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-05-09T18:34:12.878Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2023-05-09T18:34:12.878Z"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "IOT"
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": "Course Description"
+                          },
+                          "code": {
+                            "type": "string",
+                            "example": "cs50"
+                          },
+                          "category": {
+                            "type": "string",
+                            "example": "CS"
+                          },
+                          "isActive": {
+                            "type": "boolean",
+                            "example": false
+                          },
+                          "prerequisites": {
+                            "type": "array",
+                            "example": [
+                              "cs50",
+                              "cs60"
+                            ],
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-05-09T18:34:12.878Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2023-05-09T18:34:12.878Z"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "500-1": {
+            "description": "Cant get the courses data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Cant get the courses data"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Cant get the courses data"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
       "post": {
         "tags": [
           "Courses Routes"
@@ -1165,6 +1373,9 @@
           }
         ],
         "responses": {
+          "201": {
+            "description": "Created"
+          },
           "201-1": {
             "description": "Course Created Successfully",
             "content": {
@@ -1285,7 +1496,7 @@
             }
           },
           "500-1": {
-            "description": "Cant create the organization",
+            "description": "Cant create the course",
             "content": {
               "application/json": {
                 "schema": {
@@ -1297,7 +1508,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Cant create the organization"
+                      "example": "Cant create the course"
                     }
                   },
                   "xml": {
@@ -1315,7 +1526,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Cant create the organization"
+                      "example": "Cant create the course"
                     }
                   },
                   "xml": {
@@ -1374,461 +1585,6 @@
             }
           }
         }
-      }
-    },
-    "/api/{organization}/courses/{courseCode}/update": {
-      "patch": {
-        "tags": [
-          "Courses Routes"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "organization",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "courseCode",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "201-1": {
-            "description": "Course Updated Successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "success"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "example": "IOT"
-                        },
-                        "description": {
-                          "type": "string",
-                          "example": "Course Description"
-                        },
-                        "code": {
-                          "type": "string",
-                          "example": "cs50"
-                        },
-                        "category": {
-                          "type": "string",
-                          "example": "CS"
-                        },
-                        "isActive": {
-                          "type": "boolean",
-                          "example": false
-                        },
-                        "prerequisites": {
-                          "type": "array",
-                          "example": [
-                            "cs50",
-                            "cs60"
-                          ],
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "createdAt": {
-                          "type": "string",
-                          "example": "2023-05-09T18:34:12.878Z"
-                        },
-                        "updatedAt": {
-                          "type": "string",
-                          "example": "2023-05-09T18:34:12.878Z"
-                        }
-                      }
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "success"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "example": "IOT"
-                        },
-                        "description": {
-                          "type": "string",
-                          "example": "Course Description"
-                        },
-                        "code": {
-                          "type": "string",
-                          "example": "cs50"
-                        },
-                        "category": {
-                          "type": "string",
-                          "example": "CS"
-                        },
-                        "isActive": {
-                          "type": "boolean",
-                          "example": false
-                        },
-                        "prerequisites": {
-                          "type": "array",
-                          "example": [
-                            "cs50",
-                            "cs60"
-                          ],
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "createdAt": {
-                          "type": "string",
-                          "example": "2023-05-09T18:34:12.878Z"
-                        },
-                        "updatedAt": {
-                          "type": "string",
-                          "example": "2023-05-09T18:34:12.878Z"
-                        }
-                      }
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "401-1": {
-            "description": "You are not the owner of this course!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "fail"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "You are not the owner of this course!"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "fail"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "You are not the owner of this course!"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500-1": {
-            "description": "Cant update the organization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "error"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Cant update the organization"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "error"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Cant update the organization"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "example": "Internet Of Things",
-                    "required": false
-                  },
-                  "description": {
-                    "type": "string",
-                    "example": "Course Description",
-                    "required": false
-                  },
-                  "code": {
-                    "type": "string",
-                    "example": "cs10",
-                    "required": false
-                  },
-                  "category": {
-                    "type": "string",
-                    "example": "IS",
-                    "required": false
-                  },
-                  "isActive": {
-                    "type": "boolean",
-                    "description": "Course status",
-                    "example": false,
-                    "required": false
-                  },
-                  "prerequisites": {
-                    "type": "array",
-                    "example": [
-                      "cs50",
-                      "cs60"
-                    ],
-                    "required": false
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/{organization}/courses/{courseCode}/delete": {
-      "delete": {
-        "tags": [
-          "Courses Routes"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "organization",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "courseCode",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Course Code"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "201-1": {
-            "description": "Course deleted Successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "success"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Course deleted successfully"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "success"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Course deleted successfully"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "401-1": {
-            "description": "You are not the owner of this course!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "fail"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "You are not the owner of this course!"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "fail"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "You are not the owner of this course!"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500-1": {
-            "description": "Cant delete the course",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "error"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Cant delete the course"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "error"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Cant delete the course"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
       }
     },
     "/api/{organization}/courses/{courseCode}": {
@@ -2033,10 +1789,8 @@
             "bearerAuth": []
           }
         ]
-      }
-    },
-    "/api/{organization}/courses": {
-      "get": {
+      },
+      "patch": {
         "tags": [
           "Courses Routes"
         ],
@@ -2051,17 +1805,306 @@
             }
           },
           {
-            "name": "authorization",
-            "in": "header",
+            "name": "courseCode",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "page",
-            "in": "query",
-            "description": "Page Number",
-            "required": false,
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "201-1": {
+            "description": "Course Updated Successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "IOT"
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "Course Description"
+                        },
+                        "code": {
+                          "type": "string",
+                          "example": "cs50"
+                        },
+                        "category": {
+                          "type": "string",
+                          "example": "CS"
+                        },
+                        "isActive": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "prerequisites": {
+                          "type": "array",
+                          "example": [
+                            "cs50",
+                            "cs60"
+                          ],
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-05-09T18:34:12.878Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-05-09T18:34:12.878Z"
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "IOT"
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "Course Description"
+                        },
+                        "code": {
+                          "type": "string",
+                          "example": "cs50"
+                        },
+                        "category": {
+                          "type": "string",
+                          "example": "CS"
+                        },
+                        "isActive": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "prerequisites": {
+                          "type": "array",
+                          "example": [
+                            "cs50",
+                            "cs60"
+                          ],
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-05-09T18:34:12.878Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-05-09T18:34:12.878Z"
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "401-1": {
+            "description": "You are not the owner of this course!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not the owner of this course!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not the owner of this course!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "500-1": {
+            "description": "Cant update the course",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Cant update the course"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Cant update the course"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Internet Of Things",
+                    "required": false
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Course Description",
+                    "required": false
+                  },
+                  "code": {
+                    "type": "string",
+                    "example": "cs10",
+                    "required": false
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "IS",
+                    "required": false
+                  },
+                  "isActive": {
+                    "type": "boolean",
+                    "description": "Course status",
+                    "example": false,
+                    "required": false
+                  },
+                  "prerequisites": {
+                    "type": "array",
+                    "example": [
+                      "cs50",
+                      "cs60"
+                    ],
+                    "required": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Courses Routes"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "organization",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Course Code"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "schema": {
               "type": "string"
             }
@@ -2072,7 +2115,170 @@
             "description": "OK"
           },
           "200-1": {
-            "description": "Got all courses",
+            "description": "Course deleted Successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Course deleted successfully"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Course deleted successfully"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "401-1": {
+            "description": "You are not the owner of this course!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not the owner of this course!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not the owner of this course!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "500-1": {
+            "description": "Cant delete the course",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Cant delete the course"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Cant delete the course"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/{organization}/courses/{courseCode}/sections": {
+      "get": {
+        "tags": [
+          "Courses Sections Routes"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "organization",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200-1": {
+            "description": "Got all course sections titles",
             "content": {
               "application/json": {
                 "schema": {
@@ -2087,43 +2293,13 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "name": {
+                          "title": {
                             "type": "string",
-                            "example": "IOT"
+                            "example": "Lecture 2"
                           },
-                          "description": {
-                            "type": "string",
-                            "example": "Course Description"
-                          },
-                          "code": {
-                            "type": "string",
-                            "example": "cs50"
-                          },
-                          "category": {
-                            "type": "string",
-                            "example": "CS"
-                          },
-                          "isActive": {
-                            "type": "boolean",
-                            "example": false
-                          },
-                          "prerequisites": {
-                            "type": "array",
-                            "example": [
-                              "cs50",
-                              "cs60"
-                            ],
-                            "items": {
-                              "type": "string"
-                            }
-                          },
-                          "createdAt": {
-                            "type": "string",
-                            "example": "2023-05-09T18:34:12.878Z"
-                          },
-                          "updatedAt": {
-                            "type": "string",
-                            "example": "2023-05-09T18:34:12.878Z"
+                          "order": {
+                            "type": "number",
+                            "example": 2
                           }
                         }
                       }
@@ -2147,43 +2323,13 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "name": {
+                          "title": {
                             "type": "string",
-                            "example": "IOT"
+                            "example": "Lecture 2"
                           },
-                          "description": {
-                            "type": "string",
-                            "example": "Course Description"
-                          },
-                          "code": {
-                            "type": "string",
-                            "example": "cs50"
-                          },
-                          "category": {
-                            "type": "string",
-                            "example": "CS"
-                          },
-                          "isActive": {
-                            "type": "boolean",
-                            "example": false
-                          },
-                          "prerequisites": {
-                            "type": "array",
-                            "example": [
-                              "cs50",
-                              "cs60"
-                            ],
-                            "items": {
-                              "type": "string"
-                            }
-                          },
-                          "createdAt": {
-                            "type": "string",
-                            "example": "2023-05-09T18:34:12.878Z"
-                          },
-                          "updatedAt": {
-                            "type": "string",
-                            "example": "2023-05-09T18:34:12.878Z"
+                          "order": {
+                            "type": "number",
+                            "example": 2
                           }
                         }
                       }
@@ -2197,7 +2343,7 @@
             }
           },
           "500-1": {
-            "description": "Cant get the courses data",
+            "description": "Cant get the course sections titles",
             "content": {
               "application/json": {
                 "schema": {
@@ -2209,7 +2355,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Cant get the courses data"
+                      "example": "Cant get the course sections titles"
                     }
                   },
                   "xml": {
@@ -2227,7 +2373,713 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Cant get the courses data"
+                      "example": "Cant get the course sections titles"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Courses Sections Routes"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "organization",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "201-1": {
+            "description": "Course Section Created Successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "example": "Lecture 1"
+                        },
+                        "order": {
+                          "type": "number",
+                          "example": 1
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "example": "Lecture 1"
+                        },
+                        "order": {
+                          "type": "number",
+                          "example": 1
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Lecture 1"
+                  },
+                  "order": {
+                    "type": "number",
+                    "example": 1,
+                    "required": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{organization}/courses/{courseCode}/sections/{sectionOrder}": {
+      "get": {
+        "tags": [
+          "Courses Sections Routes"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "organization",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Course Code"
+          },
+          {
+            "name": "sectionOrder",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "200-1": {
+            "description": "Got the course section content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "example": "Lecture 1"
+                        },
+                        "order": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "EditorJS Content"
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "example": "Lecture 1"
+                        },
+                        "order": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "EditorJS Content"
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "404-1": {
+            "description": "Course section not found!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Course section not found!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Course section not found!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "500-1": {
+            "description": "Cant get the course section content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Cant get the course section content"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Cant get the course section content"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Courses Sections Routes"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "organization",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sectionOrder",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201-1": {
+            "description": "Course Section Data Updated Successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "example": "Lecture 1"
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "EditorJS Content"
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "example": "Lecture 1"
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "EditorJS Content"
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "401-1": {
+            "description": "You are not the owner of this course!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not the owner of this course!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not the owner of this course!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "500-1": {
+            "description": "Cant update the course section data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Cant update the course section data"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Cant update the course section data"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Lecture 1",
+                    "required": false
+                  },
+                  "content": {
+                    "type": "stringified json",
+                    "example": "stringified EditorJS Content",
+                    "required": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Courses Sections Routes"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "organization",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Course Code"
+          },
+          {
+            "name": "sectionOrder",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "200-1": {
+            "description": "Course Section deleted Successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Course Section deleted successfully"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Course Section deleted successfully"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "401-1": {
+            "description": "You are not the owner of this course!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not the owner of this course!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not the owner of this course!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "500-1": {
+            "description": "Cant delete the course section",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Cant delete the course section"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Cant delete the course section"
                     }
                   },
                   "xml": {

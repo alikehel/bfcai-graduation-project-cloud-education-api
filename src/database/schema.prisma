@@ -57,7 +57,7 @@ model Organization {
 }
 
 model Course {
-  id                    String         @id @default(uuid())
+  id                    String          @id @default(uuid())
   name                  String
   description           String
   code                  String // cs101
@@ -66,23 +66,40 @@ model Course {
   // prerequisiteOf        Course?        @relation("Prerequisites", fields: [prerequisiteId], references: [id])
   // prerequisiteId        String?
   // prerequisites         String[]
-  prerequisites         Course[]       @relation("CoursePrerequisites")
-  prerequisiteOf        Course[]       @relation("CoursePrerequisites")
+  prerequisites         Course[]        @relation("CoursePrerequisites")
+  prerequisiteOf        Course[]        @relation("CoursePrerequisites")
   // ------ End Test ------ //
-  isActive              Boolean        @default(false)
+  isActive              Boolean         @default(false)
   category              String // CS - IS - AI
-  organization          Organization   @relation(fields: [organizationSubdomain], references: [subdomain])
+  organization          Organization    @relation(fields: [organizationSubdomain], references: [subdomain])
   organizationSubdomain String
   users                 User[]
-  owner                 User           @relation("Course Owner", fields: [userId], references: [id])
-  createdAt             DateTime       @default(now())
-  updatedAt             DateTime       @updatedAt
-  courseSection         CourseSection?
+  owner                 User            @relation("Course Owner", fields: [userId], references: [id])
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  // courseSection         CourseSection?
   // CourseAssets          CourseAssets[]
   userId                String
+  sections              CourseSection[]
 
   @@unique([code, organizationSubdomain], name: "codeSubdomain")
   @@map(name: "courses")
+}
+
+model CourseSection {
+  id        String   @id @default(uuid())
+  content   String?
+  order     Int
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // course    Course?  @relation(fields: [courseId], references: [id])
+  // courseId  String?  @unique
+  Course    Course?  @relation(fields: [courseId], references: [id])
+  courseId  String?
+
+  @@unique([courseId, order], name: "courseOrder")
+  @@map(name: "courses_sections")
 }
 
 // model CourseAssets {
@@ -99,25 +116,6 @@ model Course {
 
 //   @@map(name: "course_assets")
 // }
-
-model CourseSection {
-  id        String   @id @default(uuid())
-  content   Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  course    Course?  @relation(fields: [courseId], references: [id])
-  courseId  String?  @unique
-  // ------ Test ------ //
-  // previousId   String?         @unique
-  // previous     CourseSection?  @relation("PreviousNext", fields: [previousId], references: [id])
-  // next         CourseSection?  @relation("PreviousNext")
-  // parentId     String?         @unique
-  // parent       CourseSection?  @relation("ParentChild", fields: [parentId], references: [id])
-  // childs       CourseSection[] @relation("ParentChild")
-  // ------ End Test ------ //
-
-  @@map(name: "course_section")
-}
 
 // // Not Complete
 // model Exam {

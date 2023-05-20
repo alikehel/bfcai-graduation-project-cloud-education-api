@@ -1,9 +1,10 @@
 import { Router } from "express";
 
 import authRoutes from "./auth.routes";
+import coursesSectionsRoutes from "./courses-sections.routes";
+import coursesRoutes from "./courses.routes";
 import filesRoutes from "./files.routes";
 import organizationRoutes from "./organization.routes";
-import coursesRoutes from "./courses.routes";
 
 const router = Router();
 
@@ -11,6 +12,7 @@ router.use("/", organizationRoutes);
 router.use("/", authRoutes);
 router.use("/", filesRoutes);
 router.use("/", coursesRoutes);
+router.use("/", coursesSectionsRoutes);
 // router.route("/:organization/courses/:courseCode").post(orgExist);
 // router.route("/:organization/courses").post(orgExist);
 // router.route("/:organization/users").post(orgExist);

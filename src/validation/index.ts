@@ -85,3 +85,29 @@ export type CourseCreateType = z.infer<typeof CourseCreateSchema>;
 export const CourseUpdateSchema = CourseCreateSchema.partial();
 
 export type CourseUpdateType = z.infer<typeof CourseUpdateSchema>;
+
+//--------------------- Course Section ---------------------//
+
+export const CourseSectionCreateSchema = z.object({
+    title: z.string({ required_error: "Course section title is required" }),
+    order: z.number().optional()
+});
+
+export type CourseSectionCreateType = z.infer<typeof CourseSectionCreateSchema>;
+
+// const literalSchema = z.union([z.string(), z.number(), z.boolean(), z.null()]);
+// type Literal = z.infer<typeof literalSchema>;
+// type Json = Literal | { [key: string]: Json } | Json[];
+// const jsonSchema: z.ZodType<Json> = z.lazy(() =>
+//     z.union([literalSchema, z.array(jsonSchema), z.record(jsonSchema)])
+// );
+
+export const CourseSectionUpdateSchema = z.object({
+    title: z
+        .string({ required_error: "Course section title is required" })
+        .optional(),
+    // content: jsonSchema.optional()
+    content: z.string().optional()
+});
+
+export type CourseSectionUpdateType = z.infer<typeof CourseSectionUpdateSchema>;
