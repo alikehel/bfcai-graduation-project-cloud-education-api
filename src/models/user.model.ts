@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import organizations from "../database/seed/data/organizations";
+// import organizations from "../database/seed/data/organizations";
 import AppError from "../utils/AppError.util";
 import { UserLoginType, UserSignUpSchema, UserSignUpType } from "../validation";
 

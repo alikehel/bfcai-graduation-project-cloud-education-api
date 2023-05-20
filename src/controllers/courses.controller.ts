@@ -13,7 +13,7 @@ import {
 const courseModel = new CourseModel();
 const userModel = new UserModel();
 
-export const create = catchAsync(async (req, res, next) => {
+export const createCourse = catchAsync(async (req, res, next) => {
     const course = CourseCreateSchema.parse(req.body);
     const subdomain = req.params.organization;
     const ownerID = (await userModel.getUserID(
@@ -33,7 +33,7 @@ export const create = catchAsync(async (req, res, next) => {
     });
 });
 
-export const update = catchAsync(async (req, res, next) => {
+export const updateCourse = catchAsync(async (req, res, next) => {
     const courseCode = req.params.courseCode;
     const course = CourseUpdateSchema.parse(req.body);
     const subdomain = req.params.organization;
