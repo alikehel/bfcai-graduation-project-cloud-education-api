@@ -15,11 +15,11 @@ export const create = catchAsync(async (req, res, next) => {
         ...UserSignUpSchema.parse(req.body.organizationAdmin),
         role: "ADMIN"
     };
-    const passwordConfirm = req.body.organizationAdmin.passwordConfirm;
+    // const passwordConfirm = req.body.organizationAdmin.passwordConfirm;
 
-    if (organizationAdmin.password != passwordConfirm) {
-        return next(new AppError("Passwords dont match", 400));
-    }
+    // if (organizationAdmin.password != passwordConfirm) {
+    //     return next(new AppError("Passwords dont match", 400));
+    // }
 
     const emailDomain = req.body.organization.emailDomain;
     if (organizationAdmin.email.split("@")[1] !== emailDomain) {
