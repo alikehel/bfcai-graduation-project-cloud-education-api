@@ -81,6 +81,8 @@ model Course {
   // CourseAssets          CourseAssets[]
   userId                String
   sections              CourseSection[]
+  rating                Float           @default(0)
+  ratingCount           Int             @default(0)
 
   @@unique([code, organizationSubdomain], name: "codeSubdomain")
   @@map(name: "courses")

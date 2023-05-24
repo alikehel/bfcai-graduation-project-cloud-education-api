@@ -86,6 +86,13 @@ export const CourseUpdateSchema = CourseCreateSchema.partial();
 
 export type CourseUpdateType = z.infer<typeof CourseUpdateSchema>;
 
+export const CourseReviewSchema = z.object({
+    rating: z.number().max(10).min(1).optional(),
+    review: z.string({ required_error: "Review is required" })
+});
+
+export type CourseReviewType = z.infer<typeof CourseReviewSchema>;
+
 //--------------------- Course Section ---------------------//
 
 export const CourseSectionCreateSchema = z.object({

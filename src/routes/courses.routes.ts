@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import {
     createCourse,
+    createCourseReview,
     deleteCourse,
     getAllCourses,
     getCourse,
@@ -10,7 +11,6 @@ import {
 
 import { isAutherized } from "../middlewares/isAutherized.middleware";
 import { isLoggedIn } from "../middlewares/isLoggedIn.middleware";
-// import { upload } from "../middlewares/upload.middleware";
 
 const router = Router();
 
@@ -332,6 +332,62 @@ router.route("/:organization/courses/:courseCode").delete(
             schema: {
                 status: "error",
                 message: 'Cant delete the course'
+            }
+        }
+    */
+);
+
+router.route("/:organization/courses/:courseCode/reviews").post(
+    isLoggedIn,
+    isAutherized(["STUDENT", "TEACHER", "ADMIN"]),
+    createCourseReview
+    /*
+        #swagger.tags = ['Courses Routes']
+
+        #swagger.description = 'Must be a student to create a course review'
+
+        #swagger.security = [{
+            "bearerAuth": []
+        }]
+
+        #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            rating: {
+                                type: "number",
+                                example: 8.5,
+                                required: false
+                            },
+                            review: {
+                                type: "string",
+                                example: "This course is very good and I recommend it to everyone",
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #swagger.responses[201-1] = {
+            description: 'Course Review Created Successfully',
+            schema: {
+                status: "success",
+                data: {
+                    rating: 8.5
+                }
+            }
+        }
+
+        #swagger.responses[500-1] = {
+            description: 'Cant update the courses rating',
+            schema: {
+                status: "error",
+                message: 'Cant update the courses rating'
             }
         }
     */

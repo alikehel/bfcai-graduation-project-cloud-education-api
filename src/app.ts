@@ -87,9 +87,36 @@ app.use(
 //     }
 // );
 
-if (NODE_ENV === "dev") {
-    app.use(morgan("short"));
-}
+// MORGAN
+
+// // if (NODE_ENV === "dev") {
+// //     app.use(morgan("short"));
+// // }
+
+// // Define a custom logging format that includes errors
+// const logFormat =
+//     ":method :url :status :res[content-length] - :response-time ms";
+// const errorLogFormat =
+//     ":method :url :status :res[content-length] - :response-time ms :error-message";
+
+// // Log all requests with the custom format
+// app.use(morgan(logFormat));
+
+// // // Error handling middleware to log errors
+// // app.use((err, req, res, next) => {
+// //     // Add the error message to the request object
+// //     req["error-message"] = err.message;
+// //     next(err);
+// // });
+
+// // Log errors with the custom error format
+// app.use(
+//     morgan(errorLogFormat, {
+//         skip: (req, res) => res.statusCode < 400 // Skip logging if status code < 400 (non-error responses)
+//     })
+// );
+
+// End MORGAN
 
 app.use(bodyParser.json()); // Parse incoming request bodies in a middleware before your handlers, available under the req.body property.
 app.use(cookieParser()); // Parse Cookie header and populate req.cookies with an object keyed by the cookie names.

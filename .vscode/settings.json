@@ -1,3 +1,8 @@
 {
-    "conventionalCommits.scopes": ["courses", "courses-sections", "auth"]
+    "conventionalCommits.scopes": [
+        "courses",
+        "courses-sections",
+        "auth",
+        "courses-reviews"
+    ]
 }

@@ -193,4 +193,56 @@ export class CourseModel {
             throw new AppError(`Cant get the courses data`, 500);
         }
     }
+
+    async updateCourseRating(
+        subdomain: string,
+        courseCode: string,
+        rating: number
+    ) {
+        try {
+            // Get the old rating
+            const oldRating = (await prisma.course.findUnique({
+                where: {
+                    codeSubdomain: {
+                        code: courseCode,
+                        organizationSubdomain: subdomain
+                    }
+                },
+                select: {
+                    rating: true,
+                    ratingCount: true
+                }
+            })) as { rating: number; ratingCount: number };
+
+            // Calculate the new rating
+            const newRating =
+                (oldRating?.rating * oldRating?.ratingCount + rating) /
+                (oldRating?.ratingCount + 1);
+
+            // console.log(rating);
+            // console.log(oldRating);
+            // console.log(newRating);
+
+            // Update or create the rating if it doesn't exist
+            const updatedNewRating = await prisma.course.update({
+                where: {
+                    codeSubdomain: {
+                        code: courseCode,
+                        organizationSubdomain: subdomain
+                    }
+                },
+                data: {
+                    rating: newRating,
+                    ratingCount: oldRating?.ratingCount + 1
+                },
+                select: {
+                    rating: true,
+                    ratingCount: true
+                }
+            });
+            return updatedNewRating;
+        } catch (err) {
+            throw new AppError(`Cant update the courses rating ${err}`, 500);
+        }
+    }
 }

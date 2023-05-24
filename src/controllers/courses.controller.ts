@@ -6,9 +6,12 @@ import catchAsync from "../utils/catchAsync.util";
 import {
     CourseCreateSchema,
     CourseCreateType,
+    CourseReviewSchema,
     CourseUpdateSchema,
     CourseUpdateType
 } from "../validation";
+
+import { getSentiment } from "../services/ai.service";
 
 const courseModel = new CourseModel();
 const userModel = new UserModel();
@@ -58,7 +61,7 @@ export const updateCourse = catchAsync(async (req, res, next) => {
 
     res.status(201).json({
         status: "success",
-        data:  updatedCourse
+        data: updatedCourse
     });
 });
 
@@ -145,5 +148,39 @@ export const getAllCourses = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: "success",
         data: courses
+    });
+});
+
+export const createCourseReview = catchAsync(async (req, res, next) => {
+    const review = CourseReviewSchema.parse(req.body);
+    const subdomain = req.params.organization;
+    const courseCode = req.params.courseCode;
+
+    // Check if the course exists
+
+    // Check if the user has already reviewed the course
+
+    // Get the sentiment score of the review text from the sentiment analysis service
+    // const sentimentScore = await getSentiment(review.review);
+    const sentimentScore = Math.random() * 10;
+
+    // Calculate the rating of the review using the sentiment score
+    let rating;
+    if (review.rating) {
+        rating = (sentimentScore + review.rating) / 2;
+    } else {
+        rating = sentimentScore;
+    }
+
+    // Update the course rating in the database
+    const newRating = await courseModel.updateCourseRating(
+        subdomain,
+        courseCode,
+        rating
+    );
+
+    res.status(201).json({
+        status: "success",
+        data: newRating
     });
 });

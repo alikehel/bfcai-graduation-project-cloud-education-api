@@ -46,7 +46,7 @@ export const signup = catchAsync(async (req, res, next) => {
     );
 
     const token = jwt.sign(
-        { email: user.email, subdomain: subdomain, role: "LEARNER" },
+        { email: user.email, subdomain: subdomain, role: "STUDENT" },
         JWT_SECRET as string,
         { expiresIn: JWT_EXPIRES_IN }
     );
