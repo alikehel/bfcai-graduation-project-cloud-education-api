@@ -31,7 +31,7 @@ export class CourseSectionModel {
             });
             return courseSectionsTitles;
         } catch (err) {
-            throw new AppError(`Cant get the course sections titles`, 500);
+            throw err;
         }
     }
 
@@ -82,7 +82,7 @@ export class CourseSectionModel {
             });
             return createdCourseSection;
         } catch (err) {
-            throw new AppError(`Can't create the course section`, 500);
+            throw err;
         }
     }
 
@@ -108,7 +108,7 @@ export class CourseSectionModel {
             });
             return courseSectionContent;
         } catch (err) {
-            throw new AppError(`Cant get the course section content`, 500);
+            throw err;
         }
     }
 
@@ -152,7 +152,7 @@ export class CourseSectionModel {
             });
             return updatedCourseSectionData;
         } catch (err) {
-            throw new AppError(`Cant update the course section data`, 500);
+            throw err;
         }
     }
 
@@ -216,7 +216,7 @@ export class CourseSectionModel {
 
             return true;
         } catch (err) {
-            throw new AppError(`Cant delete the course section`, 500);
+            throw err;
         }
     }
 }

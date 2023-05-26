@@ -1,32 +1,31 @@
+import { Prisma } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
-import { DatabaseError } from "pg";
 import AppError from "../utils/AppError.util";
 
-// const handleCastErrorDB = (err) => {
-//     const message = `Invalid ${err.path}: ${err.value}.`;
-//     return new AppError(message, 400);
-// };
+const handlePrismaConstraintError = (
+    err: Prisma.PrismaClientKnownRequestError
+) => {
+    // The .code property can be accessed in a type-safe manner
+    const errMeta = err.meta as unknown as { target: string };
+    const errTarget = errMeta.target[0] as string;
+    return new AppError(
+        `Unique constraint failed on the (${errTarget}) field (already exists)`,
+        400
+    );
+};
 
-const handleDuplicateFieldsDB = (err: DatabaseError) => {
-    // const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
-    // console.log(value);
-
-    // const message = `Duplicate field value: ${value}. Please use another value!`;
-    const message = err.detail as string;
-    return new AppError(message, 400);
+const handlePrismaDependencyError = (
+    err: Prisma.PrismaClientKnownRequestError
+) => {
+    const errMeta = err.meta as unknown as { cause: string };
+    const errCause = errMeta.cause as string;
+    return new AppError(`${errCause}`, 400);
 };
 
 const handleJWTError = (err: Error) => {
     const message = err.message;
     return new AppError(message, 401);
 };
-
-// const handleValidationErrorDB = (err) => {
-//     const errors = Object.values(err.errors).map((el) => el.message);
-
-//     const message = `Invalid input data. ${errors.join(". ")}`;
-//     return new AppError(message, 400);
-// };
 
 const sendErrorDev = (err: AppError & Error, res: Response) => {
     res.status(err.statusCode).json({
@@ -66,6 +65,7 @@ export default (
     _next: NextFunction
 ) => {
     // console.log(err.stack);
+    console.log(err);
 
     err.statusCode = err.statusCode || 500;
     err.status = err.status || "error";
@@ -74,12 +74,25 @@ export default (
         sendErrorDev(err, res);
     } else if (process.env.NODE_ENV === "prod") {
         let error = { ...err };
+        console.log(error);
 
-        if (error.code === "23505") {
-            error = handleDuplicateFieldsDB(error as unknown as DatabaseError);
-        }
         if (error.name === "JsonWebTokenError") {
             error = handleJWTError(error);
+        }
+        if (error.code === "P2002") {
+            error = handlePrismaConstraintError(
+                error as unknown as Prisma.PrismaClientKnownRequestError
+            );
+        } else if (error.code === "P2025") {
+            error = handlePrismaDependencyError(
+                error as unknown as Prisma.PrismaClientKnownRequestError
+            );
+        } else if (error.code && error.code.startsWith("P")) {
+            console.log(error);
+            error = new AppError(
+                `Something probably went wrong with the database [code: ${error.code}]`,
+                500
+            );
         }
 
         sendErrorProd(error, res);

@@ -64,7 +64,7 @@ export class CourseModel {
             };
             return newCreatedCourse;
         } catch (err) {
-            throw new AppError(`Cant create the course ${err}`, 500);
+            throw err;
         }
     }
 
@@ -111,7 +111,7 @@ export class CourseModel {
             });
             return updatedCourse;
         } catch (err) {
-            throw new AppError(`Cant update the course \n ${err}`, 500);
+            throw err;
         }
     }
 
@@ -130,7 +130,7 @@ export class CourseModel {
             })) as Course;
             return course.userId;
         } catch (err) {
-            throw new AppError(`Cant get the course owner`, 500);
+            throw err;
         }
     }
 
@@ -146,7 +146,7 @@ export class CourseModel {
             });
             return true;
         } catch (err) {
-            throw new AppError(`Cant delete the course`, 500);
+            throw err;
         }
     }
 
@@ -174,7 +174,7 @@ export class CourseModel {
             });
             return courseData;
         } catch (err) {
-            throw new AppError(`Cant get the course data`, 500);
+            throw err;
         }
     }
 
@@ -190,7 +190,7 @@ export class CourseModel {
             });
             return courseData;
         } catch (err) {
-            throw new AppError(`Cant get the courses data`, 500);
+            throw err;
         }
     }
 
@@ -242,7 +242,27 @@ export class CourseModel {
             });
             return updatedNewRating;
         } catch (err) {
-            throw new AppError(`Cant update the courses rating ${err}`, 500);
+            throw err;
+        }
+    }
+
+    async courseExist(subdomain: string, courseCode: string) {
+        try {
+            const course = await prisma.course.findUnique({
+                where: {
+                    codeSubdomain: {
+                        code: courseCode,
+                        organizationSubdomain: subdomain
+                    }
+                }
+            });
+            if (course) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (err) {
+            throw err;
         }
     }
 }

@@ -9,12 +9,15 @@ import {
     updateCourse
 } from "../controllers/courses.controller";
 
+import { courseExist } from "../middlewares/courseExist.middleware";
 import { isAutherized } from "../middlewares/isAutherized.middleware";
 import { isLoggedIn } from "../middlewares/isLoggedIn.middleware";
+import { orgExist } from "../middlewares/orgExist.middleware";
 
 const router = Router();
 
 router.route("/:organization/courses").get(
+    orgExist,
     isLoggedIn,
     isAutherized(["ADMIN", "TEACHER", "STUDENT"]),
     getAllCourses
@@ -73,6 +76,7 @@ router.route("/:organization/courses").get(
 );
 
 router.route("/:organization/courses").post(
+    orgExist,
     isLoggedIn,
     isAutherized(["ADMIN", "TEACHER"]),
     createCourse
@@ -154,6 +158,8 @@ router.route("/:organization/courses").post(
 );
 
 router.route("/:organization/courses/:courseCode").get(
+    orgExist,
+    courseExist,
     isLoggedIn,
     isAutherized(["ADMIN", "TEACHER", "STUDENT"]),
     getCourse
@@ -200,6 +206,8 @@ router.route("/:organization/courses/:courseCode").get(
 );
 
 router.route("/:organization/courses/:courseCode").patch(
+    orgExist,
+    courseExist,
     isLoggedIn,
     isAutherized(["ADMIN", "TEACHER"]),
     updateCourse
@@ -293,6 +301,8 @@ router.route("/:organization/courses/:courseCode").patch(
 );
 
 router.route("/:organization/courses/:courseCode").delete(
+    orgExist,
+    courseExist,
     isLoggedIn,
     isAutherized(["ADMIN", "TEACHER"]),
     deleteCourse
@@ -338,6 +348,8 @@ router.route("/:organization/courses/:courseCode").delete(
 );
 
 router.route("/:organization/courses/:courseCode/reviews").post(
+    orgExist,
+    courseExist,
     isLoggedIn,
     isAutherized(["STUDENT", "TEACHER", "ADMIN"]),
     createCourseReview

@@ -10,6 +10,8 @@ import {
 
 import { isAutherized } from "../middlewares/isAutherized.middleware";
 import { isLoggedIn } from "../middlewares/isLoggedIn.middleware";
+import { courseExist } from "../middlewares/courseExist.middleware";
+import { orgExist } from "../middlewares/orgExist.middleware";
 
 const router = Router();
 
@@ -27,6 +29,8 @@ POST     -   /:courseCode/sections/:sectionOrder/reorder  -    reorder the secti
 */
 
 router.route("/:organization/courses/:courseCode/sections").get(
+    orgExist,
+    courseExist,
     isLoggedIn,
     isAutherized(["ADMIN", "TEACHER", "STUDENT"]),
     getAllCourseSectionsTitles
@@ -67,6 +71,8 @@ router.route("/:organization/courses/:courseCode/sections").get(
 );
 
 router.route("/:organization/courses/:courseCode/sections").post(
+    orgExist,
+    courseExist,
     isLoggedIn,
     isAutherized(["ADMIN", "TEACHER"]),
     createCourseSection
@@ -124,6 +130,8 @@ router.route("/:organization/courses/:courseCode/sections").post(
 );
 
 router.route("/:organization/courses/:courseCode/sections/:sectionOrder").get(
+    orgExist,
+    courseExist,
     isLoggedIn,
     isAutherized(["ADMIN", "TEACHER", "STUDENT"]),
     getCourseSection
@@ -173,6 +181,8 @@ router.route("/:organization/courses/:courseCode/sections/:sectionOrder").get(
 );
 
 router.route("/:organization/courses/:courseCode/sections/:sectionOrder").patch(
+    orgExist,
+    courseExist,
     isLoggedIn,
     isAutherized(["ADMIN", "TEACHER"]),
     updateCourseSection
@@ -241,6 +251,8 @@ router.route("/:organization/courses/:courseCode/sections/:sectionOrder").patch(
 router
     .route("/:organization/courses/:courseCode/sections/:sectionOrder")
     .delete(
+        orgExist,
+        courseExist,
         isLoggedIn,
         isAutherized(["ADMIN", "TEACHER"]),
         deleteCourseSection

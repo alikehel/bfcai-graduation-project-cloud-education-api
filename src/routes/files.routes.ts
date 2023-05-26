@@ -4,6 +4,7 @@ import { uploadImage, uploadVideo } from "../services/upload.service";
 
 import { isAutherized } from "../middlewares/isAutherized.middleware";
 import { isLoggedIn } from "../middlewares/isLoggedIn.middleware";
+import { orgExist } from "../middlewares/orgExist.middleware";
 import { upload } from "../middlewares/upload.middleware";
 
 const router = Router();
@@ -13,6 +14,7 @@ const router = Router();
 //     .get(getUploadedFileURL);
 
 router.route("/:organization/courses/:courseCode/uploadImage").post(
+    orgExist,
     isLoggedIn,
     isAutherized(["ADMIN", "TEACHER"]),
     upload.single("image"),
@@ -85,6 +87,7 @@ router.route("/:organization/courses/:courseCode/uploadImage").post(
 );
 
 router.route("/:organization/courses/:courseCode/uploadVideo").post(
+    orgExist,
     isLoggedIn,
     isAutherized(["ADMIN", "TEACHER"]),
     upload.single("video"),

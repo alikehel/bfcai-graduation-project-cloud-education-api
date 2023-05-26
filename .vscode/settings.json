@@ -3,6 +3,7 @@
         "courses",
         "courses-sections",
         "auth",
-        "courses-reviews"
+        "courses-reviews",
+        "error-handeling"
     ]
 }

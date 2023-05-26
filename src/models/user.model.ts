@@ -19,7 +19,7 @@ export class UserModel {
             });
             return createdUser;
         } catch (err) {
-            throw new AppError(`Cant signup the user`, 500);
+            throw err;
         }
     }
 
@@ -38,7 +38,7 @@ export class UserModel {
             });
             return returnedUser;
         } catch (err) {
-            throw new AppError(`Cant login the user`, 500);
+            throw err;
         }
     }
 
@@ -55,7 +55,7 @@ export class UserModel {
             })) as unknown as { id: string };
             return data.id;
         } catch (err) {
-            throw new AppError(`Cant get the userID`, 500);
+            throw err;
         }
     }
 }
