@@ -8,9 +8,9 @@ import {
     updateCourseSection
 } from "../controllers/courses-sections.controller";
 
+import { courseExist } from "../middlewares/courseExist.middleware";
 import { isAutherized } from "../middlewares/isAutherized.middleware";
 import { isLoggedIn } from "../middlewares/isLoggedIn.middleware";
-import { courseExist } from "../middlewares/courseExist.middleware";
 import { orgExist } from "../middlewares/orgExist.middleware";
 
 const router = Router();
@@ -120,10 +120,10 @@ router.route("/:organization/courses/:courseCode/sections").post(
         }
 
         #swagger.responses[500-1] = {
-            description: 'Can't create the course section',
+            description: 'Cant create the course section',
             schema: {
                 status: "error",
-                message: 'Can't create the course section'
+                message: 'Cant create the course section'
             }
         }
     */

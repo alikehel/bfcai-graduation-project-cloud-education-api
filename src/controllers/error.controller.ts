@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
+import { ZodError } from "zod";
 import AppError from "../utils/AppError.util";
 
 const handlePrismaConstraintError = (
@@ -25,6 +26,11 @@ const handlePrismaDependencyError = (
 const handleJWTError = (err: Error) => {
     const message = err.message;
     return new AppError(message, 401);
+};
+
+const handleZODError = (err: ZodError) => {
+    const message = err.issues[0].message;
+    return new AppError(message, 400);
 };
 
 const sendErrorDev = (err: AppError & Error, res: Response) => {
@@ -79,6 +85,11 @@ export default (
         if (error.name === "JsonWebTokenError") {
             error = handleJWTError(error);
         }
+
+        if (error.name === "ZodError") {
+            error = handleZODError(error as unknown as ZodError);
+        }
+
         if (error.code === "P2002") {
             error = handlePrismaConstraintError(
                 error as unknown as Prisma.PrismaClientKnownRequestError
