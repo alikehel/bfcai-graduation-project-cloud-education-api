@@ -156,16 +156,14 @@ export const createCourseReview = catchAsync(async (req, res, next) => {
     const subdomain = req.params.organization;
     const courseCode = req.params.courseCode;
 
-    // Check if the course exists
-
     // Check if the user has already reviewed the course
 
     // Get the sentiment score of the review text from the sentiment analysis service
-    // const sentimentScore = await getSentiment(review.review);
-    const sentimentScore = Math.random() * 10;
+    const sentimentScore = await getSentiment(review.review);
+    // const sentimentScore = Math.random() * 10;
 
     // Calculate the rating of the review using the sentiment score
-    let rating;
+    let rating:number;
     if (review.rating) {
         rating = (sentimentScore + review.rating) / 2;
     } else {

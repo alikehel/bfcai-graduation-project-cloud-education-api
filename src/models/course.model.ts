@@ -45,6 +45,8 @@ export class CourseModel {
                     // organizationSubdomain: "bfcai",
                     createdAt: true,
                     updatedAt: true,
+                    rating: true,
+                    ratingCount: true,
                     prerequisites: {
                         select: {
                             code: true
@@ -105,7 +107,9 @@ export class CourseModel {
                     category: true,
                     // organizationSubdomain: "bfcai",
                     createdAt: true,
-                    updatedAt: true
+                    updatedAt: true,
+                    rating: true,
+                    ratingCount: true
                     // userId: "24c9704b-9aa9-45ae-9a10-aead10353741"
                 }
             });
@@ -168,7 +172,9 @@ export class CourseModel {
                     category: true,
                     // organizationSubdomain: "bfcai",
                     createdAt: true,
-                    updatedAt: true
+                    updatedAt: true,
+                    rating: true,
+                    ratingCount: true
                     // userId: "24c9704b-9aa9-45ae-9a10-aead10353741"
                 }
             });

@@ -6,7 +6,7 @@ const organizationModel = new OrganizationModel();
 
 export const orgExist = catchAsync(async (req, res, next) => {
     if (!(await organizationModel.orgExist(req.params.organization))) {
-        return next(new AppError("ORGANIZATION NOT FOUND", 404));
+        return next(new AppError("Organization not found", 404));
     }
 
     return next();

@@ -2,16 +2,33 @@ import axios from "axios";
 import AppError from "../utils/AppError.util";
 import catchAsync from "../utils/catchAsync.util";
 
-const apiLink = "http://graduation-project-ai-api-production.up.railway.app";
+const sentimentAnalyzerEndpoint =
+    "https://graduation-project-ai-api.onrender.com/sentiment_analyzer/";
+
+const toxicDetectionEndpoint =
+    "https://graduation-project-ai-api.onrender.com/toxic_comment/";
+
+// const summarizationEndpoint = "https://graduation-project-ai-api.onrender.com";
+
+// const gradingEndpoint = "https://graduation-project-ai-api.onrender.com";
 
 export const getSentiment = async (review: string) => {
-    const response = await axios.post(apiLink + "/sentiment_analyzer", {
-        string: review
-    });
+    try {
+        const response = await axios.post(sentimentAnalyzerEndpoint, {
+            string: review
+        });
 
-    if (response.status !== 200) {
-        throw new AppError("Something went wrong!", 500);
+        const rating =
+            (response.data.result.pos + response.data.result.neu) * 10;
+
+        console.log(response.data);
+        console.log(rating);
+
+        return rating;
+    } catch (err) {
+        throw new AppError(
+            "Something went wrong with the sentiment analyzer ai api",
+            500
+        );
     }
-
-    return response.data;
 };
