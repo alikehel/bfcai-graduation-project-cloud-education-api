@@ -26,9 +26,7 @@ export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
 
         // Is user still registered on the current subdomain?
         if (subdomain !== req.params.organization) {
-            return next(
-                new AppError("YOU ARE NOT AUTHORIZED TO DO THIS!!", 401)
-            );
+            return next(new AppError("You are not authorized to do this", 401));
         }
 
         // TODO: Check if user still exists

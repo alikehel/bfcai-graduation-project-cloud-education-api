@@ -13,7 +13,7 @@ export const isAutherized = (allowedRoles: string[]) => {
         if (req.user && allowedRoles.includes(role)) {
             next(); // If user is authorized, call the next middleware function
         } else {
-            return next(new AppError("Unauthorized", 401));
+            return next(new AppError("You are not authorized to do this", 401));
         }
     };
 };

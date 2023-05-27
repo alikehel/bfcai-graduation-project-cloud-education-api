@@ -11,7 +11,7 @@ export const courseExist = catchAsync(async (req, res, next) => {
             req.params.courseCode
         ))
     ) {
-        return next(new AppError("COURSE NOT FOUND", 404));
+        return next(new AppError("Course not found", 404));
     }
 
     return next();

@@ -159,9 +159,9 @@ router.route("/:organization/courses").post(
 
 router.route("/:organization/courses/:courseCode").get(
     orgExist,
-    courseExist,
     isLoggedIn,
     isAutherized(["ADMIN", "TEACHER", "STUDENT"]),
+    courseExist,
     getCourse
     /*
         #swagger.tags = ['Courses Routes']
@@ -207,9 +207,9 @@ router.route("/:organization/courses/:courseCode").get(
 
 router.route("/:organization/courses/:courseCode").patch(
     orgExist,
-    courseExist,
     isLoggedIn,
     isAutherized(["ADMIN", "TEACHER"]),
+    courseExist,
     updateCourse
     /*
         #swagger.tags = ['Courses Routes']
@@ -302,9 +302,9 @@ router.route("/:organization/courses/:courseCode").patch(
 
 router.route("/:organization/courses/:courseCode").delete(
     orgExist,
-    courseExist,
     isLoggedIn,
     isAutherized(["ADMIN", "TEACHER"]),
+    courseExist,
     deleteCourse
     /*
         #swagger.tags = ['Courses Routes']
@@ -349,9 +349,9 @@ router.route("/:organization/courses/:courseCode").delete(
 
 router.route("/:organization/courses/:courseCode/reviews").post(
     orgExist,
-    courseExist,
     isLoggedIn,
     isAutherized(["STUDENT", "TEACHER", "ADMIN"]),
+    courseExist,
     createCourseReview
     /*
         #swagger.tags = ['Courses Routes']
@@ -400,6 +400,14 @@ router.route("/:organization/courses/:courseCode/reviews").post(
             schema: {
                 status: "error",
                 message: 'Cant update the courses rating'
+            }
+        }
+
+        #swagger.responses[500-2] = {
+            description: 'Something went wrong with the sentiment analyzer ai api',
+            schema: {
+                status: "error",
+                message: 'Something went wrong with the sentiment analyzer ai api'
             }
         }
     */
