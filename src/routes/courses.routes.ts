@@ -50,6 +50,8 @@ router.route("/:organization/courses").get(
                         prerequisites: ["cs50","cs60"],
                         "createdAt": "2023-05-09T18:34:12.878Z",
                         "updatedAt": "2023-05-09T18:34:12.878Z",
+                        "rating": 0,
+                        "ratingCount": 0
                     },
                     {
                         name: "IOT",
@@ -60,6 +62,8 @@ router.route("/:organization/courses").get(
                         prerequisites: ["cs50","cs60"],
                         "createdAt": "2023-05-09T18:34:12.878Z",
                         "updatedAt": "2023-05-09T18:34:12.878Z",
+                        "rating": 0,
+                        "ratingCount": 0
                     }
                 ]
             }
@@ -143,6 +147,8 @@ router.route("/:organization/courses").post(
                     prerequisites: ["cs50","cs60"],
                     "createdAt": "2023-05-09T18:34:12.878Z",
                     "updatedAt": "2023-05-09T18:34:12.878Z",
+                    "rating": 0,
+                    "ratingCount": 0
                 }
             }
         }
@@ -191,6 +197,8 @@ router.route("/:organization/courses/:courseCode").get(
                     prerequisites: ["cs50","cs60"],
                     "createdAt": "2023-05-09T18:34:12.878Z",
                     "updatedAt": "2023-05-09T18:34:12.878Z",
+                    "rating": 0,
+                    "ratingCount": 0
                 }
             }
         }
@@ -278,6 +286,8 @@ router.route("/:organization/courses/:courseCode").patch(
                     prerequisites: ["cs50","cs60"],
                     "createdAt": "2023-05-09T18:34:12.878Z",
                     "updatedAt": "2023-05-09T18:34:12.878Z",
+                    "rating": 0,
+                    "ratingCount": 0
                 }
             }
         }
