@@ -1330,6 +1330,14 @@
                           "updatedAt": {
                             "type": "string",
                             "example": "2023-05-09T18:34:12.878Z"
+                          },
+                          "rating": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "ratingCount": {
+                            "type": "number",
+                            "example": 0
                           }
                         }
                       }
@@ -1390,6 +1398,14 @@
                           "updatedAt": {
                             "type": "string",
                             "example": "2023-05-09T18:34:12.878Z"
+                          },
+                          "rating": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "ratingCount": {
+                            "type": "number",
+                            "example": 0
                           }
                         }
                       }
@@ -1530,6 +1546,14 @@
                         "updatedAt": {
                           "type": "string",
                           "example": "2023-05-09T18:34:12.878Z"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "ratingCount": {
+                          "type": "number",
+                          "example": 0
                         }
                       }
                     }
@@ -1587,6 +1611,14 @@
                         "updatedAt": {
                           "type": "string",
                           "example": "2023-05-09T18:34:12.878Z"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "ratingCount": {
+                          "type": "number",
+                          "example": 0
                         }
                       }
                     }
@@ -1780,6 +1812,14 @@
                         "updatedAt": {
                           "type": "string",
                           "example": "2023-05-09T18:34:12.878Z"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "ratingCount": {
+                          "type": "number",
+                          "example": 0
                         }
                       }
                     }
@@ -1837,6 +1877,14 @@
                         "updatedAt": {
                           "type": "string",
                           "example": "2023-05-09T18:34:12.878Z"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "ratingCount": {
+                          "type": "number",
+                          "example": 0
                         }
                       }
                     }
@@ -1984,6 +2032,14 @@
                         "updatedAt": {
                           "type": "string",
                           "example": "2023-05-09T18:34:12.878Z"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "ratingCount": {
+                          "type": "number",
+                          "example": 0
                         }
                       }
                     }
@@ -2041,6 +2097,14 @@
                         "updatedAt": {
                           "type": "string",
                           "example": "2023-05-09T18:34:12.878Z"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "ratingCount": {
+                          "type": "number",
+                          "example": 0
                         }
                       }
                     }
@@ -2478,6 +2542,47 @@
                     "message": {
                       "type": "string",
                       "example": "Cant update the courses rating"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "500-2": {
+            "description": "Something went wrong with the sentiment analyzer ai api",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Something went wrong with the sentiment analyzer ai api"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Something went wrong with the sentiment analyzer ai api"
                     }
                   },
                   "xml": {
@@ -3408,6 +3513,834 @@
                     "message": {
                       "type": "string",
                       "example": "Cant delete the course section"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/{organization}/courses/{courseCode}/sections/{sectionOrder}/comments": {
+      "get": {
+        "tags": [
+          "Courses Sections Comment Routes"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "organization",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sectionOrder",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page Number",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200-1": {
+            "description": "Get all course section comments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "0fde5fd4-0f50-40fb-a50f-7c1f791f8168"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-05-28T14:16:34.986Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2023-05-28T14:16:34.986Z"
+                          },
+                          "content": {
+                            "type": "string",
+                            "example": "comment content"
+                          },
+                          "user": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "0fde5fd4-0f50-40fb-a50f-7c1f791f8168"
+                              },
+                              "firstName": {
+                                "type": "string",
+                                "example": "Ali"
+                              },
+                              "lastName": {
+                                "type": "string",
+                                "example": "Kehel"
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "ali@fci.bu.edu.eg"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "0fde5fd4-0f50-40fb-a50f-7c1f791f8168"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-05-28T14:16:34.986Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2023-05-28T14:16:34.986Z"
+                          },
+                          "content": {
+                            "type": "string",
+                            "example": "comment content"
+                          },
+                          "user": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "0fde5fd4-0f50-40fb-a50f-7c1f791f8168"
+                              },
+                              "firstName": {
+                                "type": "string",
+                                "example": "Ali"
+                              },
+                              "lastName": {
+                                "type": "string",
+                                "example": "Kehel"
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "ali@fci.bu.edu.eg"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Courses Sections Comment Routes"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "organization",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sectionOrder",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200-1": {
+            "description": "Comment Added Successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "0fde5fd4-0f50-40fb-a50f-7c1f791f8168"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-05-28T14:16:34.986Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-05-28T14:16:34.986Z"
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "comment content"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "0fde5fd4-0f50-40fb-a50f-7c1f791f8168"
+                            },
+                            "firstName": {
+                              "type": "string",
+                              "example": "Ali"
+                            },
+                            "lastName": {
+                              "type": "string",
+                              "example": "Kehel"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "ali@fci.bu.edu.eg"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "0fde5fd4-0f50-40fb-a50f-7c1f791f8168"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-05-28T14:16:34.986Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-05-28T14:16:34.986Z"
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "comment content"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "0fde5fd4-0f50-40fb-a50f-7c1f791f8168"
+                            },
+                            "firstName": {
+                              "type": "string",
+                              "example": "Ali"
+                            },
+                            "lastName": {
+                              "type": "string",
+                              "example": "Kehel"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "ali@fci.bu.edu.eg"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "400-1": {
+            "description": "Your comment violated our guidelines. Not posted. Warning issued. Please review the guidelines.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Your comment violated our guidelines. Not posted. Warning issued. Please review the guidelines."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Your comment violated our guidelines. Not posted. Warning issued. Please review the guidelines."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "example": "comment content"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{organization}/courses/{courseCode}/sections/{sectionOrder}/comments/{commentId}": {
+      "patch": {
+        "tags": [
+          "Courses Sections Comment Routes"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "organization",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sectionOrder",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200-1": {
+            "description": "Comment Updated Successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "0fde5fd4-0f50-40fb-a50f-7c1f791f8168"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-05-28T14:16:34.986Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-05-28T14:16:34.986Z"
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "comment content"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "0fde5fd4-0f50-40fb-a50f-7c1f791f8168"
+                            },
+                            "firstName": {
+                              "type": "string",
+                              "example": "Ali"
+                            },
+                            "lastName": {
+                              "type": "string",
+                              "example": "Kehel"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "ali@fci.bu.edu.eg"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "0fde5fd4-0f50-40fb-a50f-7c1f791f8168"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-05-28T14:16:34.986Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-05-28T14:16:34.986Z"
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "comment content"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "0fde5fd4-0f50-40fb-a50f-7c1f791f8168"
+                            },
+                            "firstName": {
+                              "type": "string",
+                              "example": "Ali"
+                            },
+                            "lastName": {
+                              "type": "string",
+                              "example": "Kehel"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "ali@fci.bu.edu.eg"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "401-1": {
+            "description": "You are not the owner of this comment!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not the owner of this comment!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not the owner of this comment!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "400-1": {
+            "description": "Your comment violated our guidelines. Not posted. Warning issued. Please review the guidelines.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Your comment violated our guidelines. Not posted. Warning issued. Please review the guidelines."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Your comment violated our guidelines. Not posted. Warning issued. Please review the guidelines."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "example": "comment content"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Courses Sections Comment Routes"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "organization",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Course Code"
+          },
+          {
+            "name": "sectionOrder",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200-1": {
+            "description": "Comment deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Comment deleted successfully"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Comment deleted successfully"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "401-1": {
+            "description": "You are not the owner of this comment!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not the owner of this comment!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not the owner of this comment!"
                     }
                   },
                   "xml": {

@@ -11,22 +11,23 @@ datasource db {
 }
 
 model User {
-  id                    String       @id @default(uuid())
+  id                    String                 @id @default(uuid())
   email                 String
   firstName             String
   lastName              String
   phoneNumber           String
   password              String
   // passwordConfirm String
-  role                  String       @default("LEARNER") // ADMIN - TEACHER - LEARNER
+  role                  String                 @default("LEARNER") // ADMIN - TEACHER - LEARNER
   // organizations Organization[]
-  organization          Organization @relation(fields: [organizationSubdomain], references: [subdomain])
+  organization          Organization           @relation(fields: [organizationSubdomain], references: [subdomain])
   organizationSubdomain String
   courses               Course[]
-  managedCourses        Course[]     @relation("Course Owner")
-  createdAt             DateTime     @default(now())
-  updatedAt             DateTime     @updatedAt
+  managedCourses        Course[]               @relation("Course Owner")
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
   // Course                Course[]
+  CourseSectionComment  CourseSectionComment[]
 
   @@unique([email, organizationSubdomain], name: "emailSubdomain")
   @@map(name: "users")
@@ -89,19 +90,33 @@ model Course {
 }
 
 model CourseSection {
-  id        String   @id @default(uuid())
-  content   String?
-  order     Int
-  title     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                   String                 @id @default(uuid())
+  content              String?
+  order                Int
+  title                String
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
   // course    Course?  @relation(fields: [courseId], references: [id])
   // courseId  String?  @unique
-  Course    Course?  @relation(fields: [courseId], references: [id])
-  courseId  String?
+  Course               Course?                @relation(fields: [courseId], references: [id])
+  courseId             String?
+  CourseSectionComment CourseSectionComment[]
 
   @@unique([courseId, order], name: "courseOrder")
   @@map(name: "courses_sections")
+}
+
+model CourseSectionComment {
+  id              String        @id @default(uuid())
+  content         String
+  courseSection   CourseSection @relation(fields: [courseSectionId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  courseSectionId String
+  user            User          @relation(fields: [userId], references: [id])
+  userId          String
+
+  @@map(name: "comments")
 }
 
 // model CourseAssets {
@@ -128,16 +143,6 @@ model CourseSection {
 //   updatedAt   DateTime @updatedAt
 
 //   @@map(name: "exams")
-// }
-
-// // Not Complete
-// model Comment {
-//   id        String   @id @default(uuid())
-//   content   String
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-
-//   @@map(name: "comments")
 // }
 
 // // Not Complete

@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import authRoutes from "./auth.routes";
+import coursesSectionsCommentsRoutes from "./courses-sections-comments.routes";
 import coursesSectionsRoutes from "./courses-sections.routes";
 import coursesRoutes from "./courses.routes";
 import filesRoutes from "./files.routes";
@@ -13,6 +14,7 @@ router.use("/", authRoutes);
 router.use("/", filesRoutes);
 router.use("/", coursesRoutes);
 router.use("/", coursesSectionsRoutes);
+router.use("/", coursesSectionsCommentsRoutes);
 // router.route("/:organization/courses/:courseCode").post(orgExist);
 // router.route("/:organization/courses").post(orgExist);
 // router.route("/:organization/users").post(orgExist);

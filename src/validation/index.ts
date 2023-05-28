@@ -118,3 +118,20 @@ export const CourseSectionUpdateSchema = z.object({
 });
 
 export type CourseSectionUpdateType = z.infer<typeof CourseSectionUpdateSchema>;
+
+//------------------ Course Section Comment ------------------//
+
+export const CourseSectionCommentCreateSchema = z.object({
+    content: z.string({ required_error: "Comment can't be empty" })
+});
+
+export type CourseSectionCommentCreateType = z.infer<
+    typeof CourseSectionCommentCreateSchema
+>;
+
+export const CourseSectionCommentUpdateSchema =
+    CourseSectionCommentCreateSchema;
+
+export type CourseSectionCommentUpdateType = z.infer<
+    typeof CourseSectionCommentUpdateSchema
+>;

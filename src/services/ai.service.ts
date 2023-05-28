@@ -21,13 +21,33 @@ export const getSentiment = async (review: string) => {
         const rating =
             (response.data.result.pos + response.data.result.neu) * 10;
 
-        console.log(response.data);
-        console.log(rating);
+        // console.log(response.data);
+        // console.log(rating);
 
         return rating;
     } catch (err) {
         throw new AppError(
             "Something went wrong with the sentiment analyzer ai api",
+            500
+        );
+    }
+};
+
+export const checkToxicity = async (comment: string) => {
+    try {
+        const response = await axios.post(toxicDetectionEndpoint, {
+            string: comment
+        });
+
+        const toxicity = +response.data.result;
+
+        // console.log(response.data);
+        // console.log(toxicity);
+
+        return toxicity;
+    } catch (err) {
+        throw new AppError(
+            "Something went wrong with the toxicity detection ai api",
             500
         );
     }

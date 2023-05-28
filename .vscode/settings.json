@@ -4,6 +4,7 @@
         "courses-sections",
         "auth",
         "courses-reviews",
-        "error-handeling"
+        "error-handeling",
+        "course-section-comments"
     ]
 }
