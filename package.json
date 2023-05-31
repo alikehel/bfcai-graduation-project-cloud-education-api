@@ -48,7 +48,8 @@
         "swagger-ui-express": "^4.6.2",
         "uuid": "^9.0.0",
         "winston": "^3.8.2",
-        "zod": "^3.21.4"
+        "zod": "^3.21.4",
+        "zod_utilz": "^0.7.3"
     },
     "devDependencies": {
         "@types/bcrypt": "^5.0.0",

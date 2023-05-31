@@ -143,7 +143,8 @@ export class CourseSectionModel {
                     }
                 },
                 data: {
-                    ...courseSectionData
+                    ...courseSectionData,
+                    content: JSON.stringify(courseSectionData.content)
                 },
                 select: {
                     title: true,

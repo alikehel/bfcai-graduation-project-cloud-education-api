@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { zu } from "zod_utilz";
 
 //--------------------- Users ---------------------//
 
@@ -102,19 +103,9 @@ export const CourseSectionCreateSchema = z.object({
 
 export type CourseSectionCreateType = z.infer<typeof CourseSectionCreateSchema>;
 
-// const literalSchema = z.union([z.string(), z.number(), z.boolean(), z.null()]);
-// type Literal = z.infer<typeof literalSchema>;
-// type Json = Literal | { [key: string]: Json } | Json[];
-// const jsonSchema: z.ZodType<Json> = z.lazy(() =>
-//     z.union([literalSchema, z.array(jsonSchema), z.record(jsonSchema)])
-// );
-
 export const CourseSectionUpdateSchema = z.object({
-    title: z
-        .string({ required_error: "Course section title is required" })
-        .optional(),
-    // content: jsonSchema.optional()
-    content: z.string().optional()
+    title: z.string().optional(),
+    content: zu.stringToJSON().optional()
 });
 
 export type CourseSectionUpdateType = z.infer<typeof CourseSectionUpdateSchema>;
