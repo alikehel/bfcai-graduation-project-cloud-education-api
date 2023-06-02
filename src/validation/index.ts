@@ -50,6 +50,34 @@ export const UserSignUpSchema = z.object({
 
 export type UserSignUpType = z.infer<typeof UserSignUpSchema>;
 
+export const UserUpdateSchema = z.object({
+    firstName: z
+        .string({ required_error: "First name is required" })
+        .min(2, { message: "First name length is less than 2 characters" })
+        .max(16, {
+            message: "First name length is more than 6 characters"
+        })
+        .optional(),
+    lastName: z
+        .string({ required_error: "Last name is required" })
+        .min(2, { message: "Last name length is less than 2 characters" })
+        .max(16, {
+            message: "Last name length is more than 16 characters"
+        })
+        .optional(),
+    phoneNumber: z
+        .string({ required_error: "Phone number is required" })
+        .startsWith("+20", {
+            message: "Don't forget to add the country code"
+        })
+        .length(13, { message: "Phone number is invalid" })
+        .optional(),
+    role: z.enum(["STUDENT", "TEACHER"]).optional(),
+    courses: z.array(z.string()).optional()
+});
+
+export type UserUpdateType = z.infer<typeof UserUpdateSchema>;
+
 //--------------------- Organizations ---------------------//
 
 export const OrganizationSignUpSchema = z.object({

@@ -5,6 +5,7 @@
         "auth",
         "courses-reviews",
         "error-handeling",
-        "course-section-comments"
+        "course-section-comments",
+        "users"
     ]
 }

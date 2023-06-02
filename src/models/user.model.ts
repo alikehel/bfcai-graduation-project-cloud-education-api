@@ -1,7 +1,12 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 // import organizations from "../database/seed/data/organizations";
 import AppError from "../utils/AppError.util";
-import { UserLoginType, UserSignUpSchema, UserSignUpType } from "../validation";
+import {
+    UserLoginType,
+    UserSignUpSchema,
+    UserSignUpType,
+    UserUpdateType
+} from "../validation";
 
 const prisma = new PrismaClient();
 
@@ -54,6 +59,142 @@ export class UserModel {
                 select: { id: true }
             })) as unknown as { id: string };
             return data.id;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async getAllUsers(subdomain: string, skip: number, take: number) {
+        try {
+            const users = await prisma.user.findMany({
+                skip: skip,
+                take: take,
+                orderBy: {
+                    firstName: "desc"
+                },
+                where: {
+                    organizationSubdomain: subdomain
+                },
+                select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    email: true,
+                    phoneNumber: true,
+                    role: true,
+                    courses: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            code: true
+                        }
+                    }
+                }
+            });
+            return users;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async getUsersCount(subdomain: string) {
+        try {
+            const count = await prisma.user.count({
+                where: {
+                    organizationSubdomain: subdomain
+                }
+            });
+            return count;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async getUser(subdomain: string, userID: string) {
+        try {
+            const user = await prisma.user.findUnique({
+                where: {
+                    id: userID
+                },
+                select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    email: true,
+                    phoneNumber: true,
+                    role: true,
+                    courses: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            code: true
+                        }
+                    }
+                }
+            });
+            return user;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async updateUser(
+        subdomain: string,
+        userID: string,
+        userData: UserUpdateType
+    ) {
+        try {
+            const user = await prisma.user.update({
+                where: {
+                    id: userID
+                },
+                data: {
+                    courses: {
+                        connect: userData.courses?.map((courseCode) => ({
+                            codeSubdomain: {
+                                code: courseCode,
+                                organizationSubdomain: subdomain
+                            }
+                        }))
+                    },
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                    phoneNumber: userData.phoneNumber,
+                    role: userData.role
+                },
+                select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    email: true,
+                    phoneNumber: true,
+                    role: true,
+                    courses: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            code: true
+                        }
+                    }
+                }
+            });
+            return user;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async deleteUser(subdomain: string, userID: string) {
+        try {
+            const user = await prisma.user.delete({
+                where: {
+                    id: userID
+                }
+            });
+            return user;
         } catch (err) {
             throw err;
         }
