@@ -11,7 +11,7 @@ import {
     CourseUpdateType
 } from "../validation";
 
-import { getSentiment } from "../services/ai.service";
+import { checkToxicity, getSentiment } from "../services/ai.service";
 
 const courseModel = new CourseModel();
 const userModel = new UserModel();
@@ -120,10 +120,10 @@ export const getCourse = catchAsync(async (req, res, next) => {
 
 export const getAllCourses = catchAsync(async (req, res, next) => {
     const subdomain = req.params.organization;
-    // const userID = (await userModel.getUserID(
-    //     res.locals.user.email,
-    //     subdomain
-    // )) as string;
+    const userID = (await userModel.getUserID(
+        res.locals.user.email,
+        subdomain
+    )) as string;
 
     // Check if the current user is the owner or the admin
     // if (
@@ -132,21 +132,56 @@ export const getAllCourses = catchAsync(async (req, res, next) => {
     // ) {
     //     throw new AppError("You are not the owner of this course!", 401);
     // }
+    let coursesCount;
+    if (
+        res.locals.user.role === "ADMIN" ||
+        res.locals.user.role === "TEACHER"
+    ) {
+        coursesCount = await courseModel.getCoursesCount(subdomain);
+    } else {
+        coursesCount = await courseModel.getCoursesCountForUser(
+            subdomain,
+            userID
+        );
+    }
+
+    const pagesCount = Math.ceil(coursesCount / 10);
 
     let page = 1;
-    if (req.query.page) {
+    if (
+        req.query.page &&
+        !Number.isNaN(+req.query.page) &&
+        +req.query.page > 0
+    ) {
         page = +req.query.page;
+    }
+    if (page > pagesCount) {
+        throw new AppError("Page number out of range", 400);
     }
     const take = page * 10;
     const skip = (page - 1) * 10;
     // if (Number.isNaN(offset)) {
     //     skip = 0;
     // }
-
-    const courses = await courseModel.getAllCourseData(subdomain, skip, take);
+    let courses;
+    if (
+        res.locals.user.role === "ADMIN" ||
+        res.locals.user.role === "TEACHER"
+    ) {
+        courses = await courseModel.getAllCourseData(subdomain, skip, take);
+    } else {
+        courses = await courseModel.getAllCourseDataForUser(
+            subdomain,
+            userID,
+            skip,
+            take
+        );
+    }
 
     res.status(200).json({
         status: "success",
+        page: page,
+        pagesCount: pagesCount,
         data: courses
     });
 });
@@ -155,15 +190,43 @@ export const createCourseReview = catchAsync(async (req, res, next) => {
     const review = CourseReviewSchema.parse(req.body);
     const subdomain = req.params.organization;
     const courseCode = req.params.courseCode;
+    const userID = (await userModel.getUserID(
+        res.locals.user.email,
+        subdomain
+    )) as string;
+
+    const toxicity = await checkToxicity(review.review);
+    // console.log(toxicity);
+
+    if (toxicity > 0.7) {
+        throw new AppError(
+            "Your review violated our guidelines. Not posted. Warning issued. Please review the guidelines.",
+            400
+        );
+    }
 
     // Check if the user has already reviewed the course
+    const userReviewedCourses = await courseModel.getUserReviewedCourses(
+        subdomain,
+        courseCode,
+        userID
+    );
+
+    // console.log(userReviewedCourses?.reviewedCourses);
+
+    if (
+        userReviewedCourses &&
+        userReviewedCourses.reviewedCourses.includes(courseCode)
+    ) {
+        throw new AppError("You have already reviewed this course!", 400);
+    }
 
     // Get the sentiment score of the review text from the sentiment analysis service
     const sentimentScore = await getSentiment(review.review);
     // const sentimentScore = Math.random() * 10;
 
     // Calculate the rating of the review using the sentiment score
-    let rating:number;
+    let rating: number;
     if (review.rating) {
         rating = (sentimentScore + review.rating) / 2;
     } else {
@@ -173,6 +236,7 @@ export const createCourseReview = catchAsync(async (req, res, next) => {
     // Update the course rating in the database
     const newRating = await courseModel.updateCourseRating(
         subdomain,
+        userID,
         courseCode,
         rating
     );

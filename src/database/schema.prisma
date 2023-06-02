@@ -28,6 +28,7 @@ model User {
   updatedAt             DateTime               @updatedAt
   // Course                Course[]
   CourseSectionComment  CourseSectionComment[]
+  reviewedCourses       String[]
 
   @@unique([email, organizationSubdomain], name: "emailSubdomain")
   @@map(name: "users")
