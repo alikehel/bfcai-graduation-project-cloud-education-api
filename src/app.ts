@@ -125,6 +125,13 @@ app.use(helmet()); // Set security HTTP headers
 
 app.use("/api", apiRouter);
 
+app.route("/").get((_req, res) => {
+    // #swagger.ignore = true
+    res.send(
+        "<h1 style='display:inline-block; position:relative; top:40%; left:50%; transform:translate(-50%, -50%);'>Hello, World! 🌍</h1>"
+    );
+});
+
 app.all("*", (req, _res, next) => {
     console.log("err");
     next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

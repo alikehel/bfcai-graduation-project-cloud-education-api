@@ -31,13 +31,6 @@ router.route("/test").get((req, res) => {
     });
 });
 
-router.route("/").get((_req, res) => {
-    // #swagger.ignore = true
-    res.send(
-        "<h1 style='display:inline-block; position:relative; top:40%; left:50%; transform:translate(-50%, -50%);'>Hello, World! 🌍</h1>"
-    );
-});
-
 //*******************************************************************************//
 
 export default router;
