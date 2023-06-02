@@ -128,7 +128,7 @@ app.use("/api", apiRouter);
 app.route("/").get((_req, res) => {
     // #swagger.ignore = true
     res.send(
-        "<h1 style='display:inline-block; position:relative; top:40%; left:50%; transform:translate(-50%, -50%);'>Hello, World! 🌍</h1>"
+        "<h1>Hello, World! 🌍</h1>"
     );
 });
 
