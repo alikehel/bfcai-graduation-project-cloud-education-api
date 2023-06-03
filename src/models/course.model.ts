@@ -363,4 +363,22 @@ export class CourseModel {
             throw err;
         }
     }
+
+    async getAllCoursesCodes(subdomain: string, exclude: string) {
+        try {
+            const coursesCodes = await prisma.course.findMany({
+                where: { organizationSubdomain: subdomain , code: { not: exclude }},
+                orderBy: {
+                    name: "asc"
+                },
+                select: {
+                    code: true,
+                    name: true
+                }
+            });
+            return coursesCodes;
+        } catch (err) {
+            throw err;
+        }
+    }
 }

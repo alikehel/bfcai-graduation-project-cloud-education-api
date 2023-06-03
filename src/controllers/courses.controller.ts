@@ -246,3 +246,18 @@ export const createCourseReview = catchAsync(async (req, res, next) => {
         data: newRating
     });
 });
+
+export const getAllCoursesCodes = catchAsync(async (req, res, next) => {
+    const subdomain = req.params.organization;
+    const exclude = req.query.exclude as string;
+
+    const courseCodes = await courseModel.getAllCoursesCodes(
+        subdomain,
+        exclude
+    );
+
+    res.status(200).json({
+        status: "success",
+        data: courseCodes
+    });
+});

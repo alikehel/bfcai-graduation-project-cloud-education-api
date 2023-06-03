@@ -5,6 +5,7 @@ import {
     createCourseReview,
     deleteCourse,
     getAllCourses,
+    getAllCoursesCodes,
     getCourse,
     updateCourse
 } from "../controllers/courses.controller";
@@ -420,6 +421,22 @@ router.route("/:organization/courses/:courseCode/reviews").post(
                 message: 'Something went wrong with the sentiment analyzer ai api'
             }
         }
+    */
+);
+
+router.route("/:organization/coursesCodes").get(
+    orgExist,
+    isLoggedIn,
+    isAutherized(["ADMIN", "TEACHER", "STUDENT"]),
+    getAllCoursesCodes
+    /*
+        #swagger.tags = ['Courses Routes']
+
+        #swagger.description = 'Must be a teacher, student or admin to get the courses'
+
+        #swagger.security = [{
+            "bearerAuth": []
+        }]
     */
 );
 
