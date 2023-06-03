@@ -39,20 +39,18 @@ export class CourseModel {
                     name: true,
                     description: true,
                     code: true,
-                    // prerequisiteId: null,
                     isActive: true,
                     category: true,
-                    // organizationSubdomain: "bfcai",
                     createdAt: true,
                     updatedAt: true,
                     rating: true,
                     ratingCount: true,
                     prerequisites: {
                         select: {
-                            code: true
+                            code: true,
+                            name: true
                         }
                     }
-                    // userId: "24c9704b-9aa9-45ae-9a10-aead10353741"
                 }
             });
             const { prerequisites, ...createdCourseWithoutPrerequisites } =
@@ -74,7 +72,7 @@ export class CourseModel {
         course: CourseUpdateType,
         subdomain: string,
         courseCode: string
-    ): Promise<CourseUpdateType> {
+    ) {
         const { prerequisites, ...courseData } = course;
         const prerequisitesConnect = prerequisites?.map((el) => {
             return {
@@ -102,15 +100,18 @@ export class CourseModel {
                     name: true,
                     description: true,
                     code: true,
-                    // prerequisiteId: null,
                     isActive: true,
                     category: true,
-                    // organizationSubdomain: "bfcai",
                     createdAt: true,
                     updatedAt: true,
                     rating: true,
-                    ratingCount: true
-                    // userId: "24c9704b-9aa9-45ae-9a10-aead10353741"
+                    ratingCount: true,
+                    prerequisites: {
+                        select: {
+                            code: true,
+                            name: true
+                        }
+                    }
                 }
             });
             return updatedCourse;
@@ -167,15 +168,18 @@ export class CourseModel {
                     name: true,
                     description: true,
                     code: true,
-                    // prerequisiteId: null,
                     isActive: true,
                     category: true,
-                    // organizationSubdomain: "bfcai",
                     createdAt: true,
                     updatedAt: true,
                     rating: true,
-                    ratingCount: true
-                    // userId: "24c9704b-9aa9-45ae-9a10-aead10353741"
+                    ratingCount: true,
+                    prerequisites: {
+                        select: {
+                            code: true,
+                            name: true
+                        }
+                    }
                 }
             });
             return courseData;
@@ -192,6 +196,23 @@ export class CourseModel {
                 where: { organizationSubdomain: subdomain },
                 orderBy: {
                     name: "asc"
+                },
+                select: {
+                    name: true,
+                    description: true,
+                    code: true,
+                    isActive: true,
+                    category: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    rating: true,
+                    ratingCount: true,
+                    prerequisites: {
+                        select: {
+                            code: true,
+                            name: true
+                        }
+                    }
                 }
             });
             return courseData;
@@ -220,6 +241,23 @@ export class CourseModel {
                 },
                 orderBy: {
                     name: "asc"
+                },
+                select: {
+                    name: true,
+                    description: true,
+                    code: true,
+                    isActive: true,
+                    category: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    rating: true,
+                    ratingCount: true,
+                    prerequisites: {
+                        select: {
+                            code: true,
+                            name: true
+                        }
+                    }
                 }
             });
             return courseData;
@@ -367,7 +405,10 @@ export class CourseModel {
     async getAllCoursesCodes(subdomain: string, exclude: string) {
         try {
             const coursesCodes = await prisma.course.findMany({
-                where: { organizationSubdomain: subdomain , code: { not: exclude }},
+                where: {
+                    organizationSubdomain: subdomain,
+                    code: { not: exclude }
+                },
                 orderBy: {
                     name: "asc"
                 },
