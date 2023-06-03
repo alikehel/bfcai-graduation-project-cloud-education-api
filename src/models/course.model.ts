@@ -93,6 +93,7 @@ export class CourseModel {
                 data: {
                     ...courseData,
                     prerequisites: {
+                        set: [],
                         connect: prerequisitesConnect
                     }
                 },
