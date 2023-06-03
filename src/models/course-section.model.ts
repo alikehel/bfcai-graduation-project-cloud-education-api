@@ -103,10 +103,30 @@ export class CourseSectionModel {
                 select: {
                     title: true,
                     order: true,
-                    content: true
+                    content: true,
+                    Course: {
+                        select: {
+                            userId: true
+                        }
+                    }
                 }
             });
-            return courseSectionContent;
+
+            const ownerEmail = await prisma.user.findUnique({
+                where: {
+                    id: courseSectionContent?.Course?.userId
+                },
+                select: {
+                    email: true
+                }
+            });
+
+            const { Course, ...courseSectionContentWithOwner } = {
+                ...courseSectionContent,
+                ownerEmail: ownerEmail?.email
+            };
+
+            return courseSectionContentWithOwner;
         } catch (err) {
             throw err;
         }
