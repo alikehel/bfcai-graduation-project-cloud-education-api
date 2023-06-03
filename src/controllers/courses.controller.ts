@@ -155,9 +155,10 @@ export const getAllCourses = catchAsync(async (req, res, next) => {
     ) {
         page = +req.query.page;
     }
-    if (page > pagesCount) {
-        throw new AppError("Page number out of range", 400);
-    }
+
+    // if (page > pagesCount) {
+    //     throw new AppError("Page number out of range", 400);
+    // }
     const take = page * 10;
     const skip = (page - 1) * 10;
     // if (Number.isNaN(offset)) {
