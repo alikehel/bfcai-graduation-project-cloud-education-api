@@ -76,7 +76,6 @@ export class UserModel {
                     organizationSubdomain: subdomain
                 },
                 select: {
-                    id: true,
                     firstName: true,
                     lastName: true,
                     email: true,
@@ -84,9 +83,7 @@ export class UserModel {
                     role: true,
                     courses: {
                         select: {
-                            id: true,
                             name: true,
-                            description: true,
                             code: true
                         }
                     }
@@ -118,7 +115,6 @@ export class UserModel {
                     id: userID
                 },
                 select: {
-                    id: true,
                     firstName: true,
                     lastName: true,
                     email: true,
@@ -126,9 +122,7 @@ export class UserModel {
                     role: true,
                     courses: {
                         select: {
-                            id: true,
                             name: true,
-                            description: true,
                             code: true
                         }
                     }
