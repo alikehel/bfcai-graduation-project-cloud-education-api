@@ -18,7 +18,7 @@ model User {
   phoneNumber           String
   password              String
   // passwordConfirm String
-  role                  String                 @default("LEARNER") // ADMIN - TEACHER - LEARNER
+  role                  String                 @default("STUDENT") // ADMIN - TEACHER - STUDENT
   // organizations Organization[]
   organization          Organization           @relation(fields: [organizationSubdomain], references: [subdomain])
   organizationSubdomain String
