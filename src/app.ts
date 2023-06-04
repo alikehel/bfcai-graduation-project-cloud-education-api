@@ -127,9 +127,12 @@ app.use("/api", apiRouter);
 
 app.route("/").get((_req, res) => {
     // #swagger.ignore = true
-    res.send(
-        "<h1>Hello, World! 🌍</h1>"
-    );
+    res.send("<h1>Hello, World! 🌍</h1>");
+});
+
+app.route("/health").get((_req, res) => {
+    // #swagger.ignore = true
+    res.sendStatus(200);
 });
 
 app.all("*", (req, _res, next) => {
