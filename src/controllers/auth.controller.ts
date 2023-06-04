@@ -46,7 +46,12 @@ export const signup = catchAsync(async (req, res, next) => {
     );
 
     const token = jwt.sign(
-        { email: user.email, subdomain: subdomain, role: "STUDENT" },
+        {
+            id: createdUser?.id,
+            email: user.email,
+            subdomain: subdomain,
+            role: "STUDENT"
+        },
         JWT_SECRET as string,
         { expiresIn: JWT_EXPIRES_IN }
     );
@@ -84,7 +89,12 @@ export const login = catchAsync(async (req, res, next) => {
     }
 
     const token = jwt.sign(
-        { email: user.email, subdomain: subdomain, role: returnedUser.role },
+        {
+            id: returnedUser?.id,
+            email: user.email,
+            subdomain: subdomain,
+            role: returnedUser.role
+        },
         JWT_SECRET as string,
         { expiresIn: JWT_EXPIRES_IN }
     );

@@ -6,6 +6,7 @@ export const isAutherized = (allowedRoles: string[]) => {
     return (req: Request, res: Response, next: NextFunction) => {
         // Check if the user is logged in and has the appropriate role
         const { role } = req.user as {
+            id: string;
             email: string;
             subdomain: string;
             role: string;

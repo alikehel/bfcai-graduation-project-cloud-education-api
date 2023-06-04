@@ -14,12 +14,23 @@ export class UserModel {
     async signup(
         user: UserSignUpType,
         subdomain: string
-    ): Promise<UserSignUpType> {
+    ): Promise<{
+        id: string;
+        email: string;
+        role: string;
+        organizationSubdomain: string;
+    } | null> {
         try {
             const createdUser = await prisma.user.create({
                 data: {
                     ...user,
                     organization: { connect: { subdomain: subdomain } }
+                },
+                select: {
+                    id: true,
+                    email: true,
+                    role: true,
+                    organizationSubdomain: true
                 }
             });
             return createdUser;
@@ -31,7 +42,13 @@ export class UserModel {
     async login(
         user: UserLoginType,
         subdomain: string
-    ): Promise<{ email: string; password: string; role: string } | null> {
+    ): Promise<{
+        id: string;
+        email: string;
+        role: string;
+        organizationSubdomain: string;
+        password: string;
+    } | null> {
         try {
             const returnedUser = await prisma.user.findUnique({
                 where: {
@@ -39,6 +56,13 @@ export class UserModel {
                         email: user.email,
                         organizationSubdomain: subdomain
                     }
+                },
+                select: {
+                    id: true,
+                    email: true,
+                    role: true,
+                    organizationSubdomain: true,
+                    password: true
                 }
             });
             return returnedUser;

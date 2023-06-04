@@ -19,10 +19,10 @@ export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
         }
 
         // IS TOKEN VALID
-        const { email, subdomain, role } = jwt.verify(
+        const { id, email, subdomain, role } = jwt.verify(
             token,
             JWT_SECRET as string
-        ) as { email: string; subdomain: string; role: string };
+        ) as { id: string; email: string; subdomain: string; role: string };
 
         // Is user still registered on the current subdomain?
         if (subdomain !== req.params.organization) {
@@ -33,8 +33,8 @@ export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
 
         // TODO: Check if user changed password after the token was issued
 
-        req.user = { email, subdomain, role };
-        res.locals.user = { email, subdomain, role };
+        req.user = { id, email, subdomain, role };
+        res.locals.user = { id, email, subdomain, role };
 
         //GRANT ACCESS
         return next();
