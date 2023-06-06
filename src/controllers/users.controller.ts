@@ -53,10 +53,8 @@ export const getUser = catchAsync(async (req, res, next) => {
 export const updateUser = catchAsync(async (req, res, next) => {
     const subdomain = req.params.organization;
     const userID = req.params["userId"];
-    const loggedInUserID = (await userModel.getUserID(
-        res.locals.user.email,
-        subdomain
-    )) as string;
+
+    const loggedInUserID = res.locals.user.id;
     const userType = res.locals.user.role;
 
     const userData = UserUpdateSchema.parse(req.body);

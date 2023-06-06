@@ -85,6 +85,7 @@ model Course {
   sections              CourseSection[]
   rating                Float           @default(0)
   ratingCount           Int             @default(0)
+  Exam                  Exam[]
 
   @@unique([code, organizationSubdomain], name: "codeSubdomain")
   @@map(name: "courses")
@@ -120,38 +121,32 @@ model CourseSectionComment {
   @@map(name: "comments")
 }
 
-// model CourseAssets {
-//   id        String   @id @default(uuid())
-//   name      String
-//   url       String   @unique
-//   type      String // video - pdf - image
-//   expiresAt DateTime
-//   size      Int
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-//   course    Course?  @relation(fields: [courseId], references: [id])
-//   courseId  String?
+model Exam {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  duration    Int
+  startTime   String
+  endTime     String
+  questions   String
+  course      Course   @relation(fields: [courseId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  courseId    String
 
-//   @@map(name: "course_assets")
-// }
+  @@map(name: "exams")
+}
 
-// // Not Complete
-// model Exam {
-//   id          String   @id @default(uuid())
-//   name        String
-//   description String
-//   createdAt   DateTime @default(now())
-//   updatedAt   DateTime @updatedAt
-
-//   @@map(name: "exams")
-// }
-
-// // Not Complete
-// model Message {
+// model Question {
 //   id        String   @id @default(uuid())
 //   content   String
+//   type      String
+//   choices   String[]
+//   answer    String
 //   createdAt DateTime @default(now())
 //   updatedAt DateTime @updatedAt
+//   Exam      Exam?    @relation(fields: [examId], references: [id])
+//   examId    String?
 
-//   @@map(name: "messages")
+//   @@map(name: "questions")
 // }

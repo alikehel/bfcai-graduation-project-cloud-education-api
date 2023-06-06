@@ -7,6 +7,10 @@ import coursesRoutes from "./courses.routes";
 import filesRoutes from "./files.routes";
 import organizationRoutes from "./organization.routes";
 import usersRoutes from "./users.routes";
+import examsRoutes from "./exams.routes";
+
+import { gradeAnswer } from "../services/gpt.service";
+import catchAsync from "../utils/catchAsync.util";
 
 const router = Router();
 
@@ -17,19 +21,27 @@ router.use("/", coursesRoutes);
 router.use("/", coursesSectionsRoutes);
 router.use("/", coursesSectionsCommentsRoutes);
 router.use("/", usersRoutes);
+router.use("/", examsRoutes);
 
 /*******************************************************************************
  * TEST ROUTES
  * TODO: Remove these routes
  *******************************************************************************/
 
-router.route("/test").get((req, res) => {
-    // #swagger.ignore = true
-    res.status(200).json({
-        status: "success",
-        data: req.subdomains
-    });
-});
+router.route("/test").post(
+    catchAsync(async (req, res) => {
+        // #swagger.ignore = true
+        const response = await gradeAnswer(
+            "Explain Raspberry Pi",
+            "Raspberry Pi is a computer which is capable of doing all the operations like a conventional computer. It has other features such as onboard WiFi, GPIO pins, and Bluetooth in order to communicate with external things.",
+            "Raspberry Pi is a series of small single-board computers (SBCs) developed in the United Kingdom by the Raspberry Pi Foundation in association with Broadcom. The Raspberry Pi project originally leaned towards the promotion of teaching basic computer science in schools. The original model became more popular than anticipated, selling outside its target market for uses such as robotics."
+        );
+        res.status(200).json({
+            status: "success",
+            data: response
+        });
+    })
+);
 
 //*******************************************************************************//
 

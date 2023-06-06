@@ -154,3 +154,41 @@ export const CourseSectionCommentUpdateSchema =
 export type CourseSectionCommentUpdateType = z.infer<
     typeof CourseSectionCommentUpdateSchema
 >;
+
+//------------------ Exams ------------------//
+
+const MCQQuestionSchema = z.object({
+    questionText: z.string().min(1),
+    questionType: z.literal("mcq"),
+    questionChoices: z.array(
+        z.object({
+            choiceText: z.string().min(1),
+            isCorrect: z.boolean()
+        })
+    )
+});
+
+const EssayQuestionSchema = z.object({
+    questionText: z.string().min(1),
+    questionType: z.literal("essay"),
+    questionAnswer: z.string().min(1)
+});
+
+export const ExamCreateSchema = z.object({
+    name: z.string().min(1),
+    description: z.string().min(1),
+    duration: z.number().int().positive(),
+    startTime: z.string().min(1),
+    endTime: z.string().min(1),
+    // questions: z.array(zu.stringToJSON())
+    questions: z.array(MCQQuestionSchema.or(EssayQuestionSchema))
+});
+
+export type ExamCreateType = z.infer<typeof ExamCreateSchema>;
+
+// const answerSchema = z.object({
+//     questionId: z.string().min(1),
+//     answer: z.string().min(1)
+// });
+
+// const answerArraySchema = z.array(answerSchema);

@@ -15,5 +15,6 @@ export const {
     AWS_PROFILE,
     AWS_REGION,
     AWS_ACCESS_KEY_ID,
-    AWS_SECRET_ACCESS_KEY
+    AWS_SECRET_ACCESS_KEY,
+    OPENAI_API_KEY
 } = process.env;
