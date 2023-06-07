@@ -57,21 +57,24 @@ export const updateUser = catchAsync(async (req, res, next) => {
     const loggedInUserID = res.locals.user.id;
     const userType = res.locals.user.role;
 
-    const userData = UserUpdateSchema.parse(req.body);
+    let userData = UserUpdateSchema.parse(req.body);
 
     if (userType === "STUDENT") {
         if (loggedInUserID !== userID) {
             throw new AppError("You are not the owner of this user!", 401);
         }
         if (userData.role) {
-            throw new AppError("You cannot change your role!", 400);
+            userData = { ...userData, role: undefined };
+            // throw new AppError("You cannot change your role!", 400);
         }
         if (userData.courses) {
-            throw new AppError("You cannot enroll in courses!", 400);
+            userData = { ...userData, courses: undefined };
+            // throw new AppError("You cannot enroll in courses!", 400);
         }
     } else if (userType === "TEACHER") {
         if (userData.role) {
-            throw new AppError("You cannot change the role!", 400);
+            userData = { ...userData, role: undefined };
+            // throw new AppError("You cannot change the role!", 400);
         }
     }
 
