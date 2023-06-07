@@ -40,7 +40,12 @@ export class ExamModel {
                     description: true,
                     duration: true,
                     startTime: true,
-                    endTime: true
+                    endTime: true,
+                    course: {
+                        select: {
+                            name: true
+                        }
+                    }
                 },
                 where: {
                     course: {

@@ -11,10 +11,12 @@ import {
     CourseUpdateType
 } from "../validation";
 
+import { CourseSectionModel } from "../models/course-section.model";
 import { checkToxicity, getSentiment } from "../services/ai.service";
 
 const courseModel = new CourseModel();
 const userModel = new UserModel();
+const courseSectionModel = new CourseSectionModel();
 
 export const createCourse = catchAsync(async (req, res, next) => {
     const course = CourseCreateSchema.parse(req.body);
@@ -28,6 +30,12 @@ export const createCourse = catchAsync(async (req, res, next) => {
         { ...course },
         subdomain,
         ownerID
+    );
+
+    await courseSectionModel.createSection(
+        { title: "Section 1" },
+        subdomain,
+        createdCourse.code
     );
 
     res.status(201).json({
