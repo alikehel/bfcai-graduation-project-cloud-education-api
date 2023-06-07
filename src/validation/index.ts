@@ -186,6 +186,15 @@ export const ExamCreateSchema = z.object({
 
 export type ExamCreateType = z.infer<typeof ExamCreateSchema>;
 
+export const ExamAnswerSchema = z.array(
+    z.object({
+        questionType: z.enum(["mcq", "essay"]),
+        questionAnswer: z.string().min(1)
+    })
+);
+
+export type ExamAnswerType = z.infer<typeof ExamAnswerSchema>;
+
 // const answerSchema = z.object({
 //     questionId: z.string().min(1),
 //     answer: z.string().min(1)

@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { ExamModel } from "../models/exam.model";
 import { UserModel } from "../models/user.model";
+import { checkToxicity } from "../services/ai.service";
+import { gradeAnswer } from "../services/gpt.service";
 import AppError from "../utils/AppError.util";
 import catchAsync from "../utils/catchAsync.util";
-import { ExamCreateSchema } from "../validation";
+import { ExamAnswerSchema, ExamCreateSchema } from "../validation";
 
 const examModel = new ExamModel();
 const userModel = new UserModel();
@@ -68,6 +70,100 @@ export const getExamWithoutAnswers = catchAsync(
         });
     }
 );
+
+export const answerExam = catchAsync(async (req: Request, res: Response) => {
+    const subdomain = req.params.organization;
+    const examAnswers = ExamAnswerSchema.parse(req.body);
+    // const courseCode = req.params.courseCode;
+    const examId = req.params.examId;
+    // const userID = res.locals.user.id;
+
+    const exam = await examModel.getExamWithAnswers(examId);
+
+    // if (!exam) {
+    //     throw new AppError("Exam not found.", 404);
+    // }
+
+    // // Check if the exam is available
+    // const currentDateTime = new Date();
+    // const examEndTime = new Date(
+    //     currentDateTime.getTime() + exam.examDurationInMinutes * 60000
+    // );
+    // if (currentDateTime >= examEndTime) {
+    //     // Exam duration has ended, send 'Exam Not Available' response
+    //     throw new AppError("Exam Not Available.", 200);
+    // }
+
+    // Check if the user has already answered the exam
+
+    // Grade the exam
+    let examResult = new Array();
+    for (let i = 0; i < exam.length; i++) {
+        const question = exam[i];
+        const answer = examAnswers[i];
+        let answerResult;
+
+        if (question.questionType === "essay") {
+            const toxicity = await checkToxicity(answer.questionAnswer);
+            if (toxicity > 0.7) {
+                throw new AppError(
+                    "You violated our guidelines. Not Submitted. Warning issued. Please review the guidelines.",
+                    400
+                );
+            }
+
+            const essayAnswerGrade = await gradeAnswer(
+                question.questionText,
+                question.questionAnswer,
+                answer.questionAnswer
+            );
+            if (essayAnswerGrade > 50) {
+                answerResult = {
+                    questionText: question.questionText,
+                    ...answer,
+                    isCorrect: true
+                };
+            } else {
+                answerResult = {
+                    questionText: question.questionText,
+                    ...answer,
+                    isCorrect: false
+                };
+            }
+        } else if (question.questionType === "mcq") {
+            question.questionChoices.forEach((choice: any) => {
+                if (choice.isCorrect) {
+                    if (choice.choiceText === answer.questionAnswer) {
+                        answerResult = {
+                            questionText: question.questionText,
+                            ...answer,
+                            isCorrect: true
+                        };
+                    } else {
+                        answerResult = {
+                            questionText: question.questionText,
+                            ...answer,
+                            isCorrect: false
+                        };
+                    }
+                }
+            });
+        }
+        examResult.push(answerResult);
+    }
+
+    // const examResult = await examModel.answerExam(
+    //     subdomain,
+    //     examId,
+    //     userID,
+    //     examAnswers
+    // );
+
+    res.status(200).json({
+        status: "success",
+        data: examResult
+    });
+});
 
 // export const getExamWithAnswers = catchAsync(
 //     async (req: Request, res: Response) => {

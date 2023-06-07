@@ -1,6 +1,6 @@
 import express from "express";
 
-import { createExam, getExamWithoutAnswers, getExams } from "../controllers/exams.controller";
+import { answerExam, createExam, getExamWithoutAnswers, getExams } from "../controllers/exams.controller";
 
 import { courseExist } from "../middlewares/courseExist.middleware";
 import { isAutherized } from "../middlewares/isAutherized.middleware";
@@ -61,12 +61,12 @@ router.get(
 //     deleteExam
 // );
 
-// router.post(
-//     "/:organization/exams/:examId/answers",
-//     orgExist,
-//     isLoggedIn,
-//     isAutherized(["STUDENT"]),
-//     answerExam
-// );
+router.post(
+    "/:organization/exams/:examId/answers",
+    orgExist,
+    isLoggedIn,
+    isAutherized(["STUDENT"]),
+    answerExam
+);
 
 export default router;

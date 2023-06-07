@@ -123,6 +123,40 @@ export class ExamModel {
         }
     }
 
+    async getExamWithAnswers(examId: string) {
+        try {
+            const examDataWithAnswers = (await prisma.exam.findUnique({
+                where: {
+                    id: examId
+                },
+                select: {
+                    questions: true
+                }
+            })) as Exam;
+
+            const parsedQuestions: any = JSON.parse(
+                examDataWithAnswers.questions
+            );
+
+            return parsedQuestions;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    // async answerExam(
+    //     subdomain: string,
+    //     examId: string,
+    //     userID: string,
+    //     exmaAnswers: any
+    // ) {
+    //     try {
+
+    //     } catch (err) {
+    //         throw err;
+    //     }
+    // }
+
     // async getExamWithAnswers(id: string) {
     //     try {
     //         const examData = await prisma.exam.findUnique({
