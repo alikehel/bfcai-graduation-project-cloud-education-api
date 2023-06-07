@@ -118,6 +118,13 @@ export const gradeAnswer = async (
         });
 
         // const response = await openai.createCompletion({
+        //     model: "text-similarity-davinci-001",
+        //     temperature: 1,
+        //     max_tokens: 20,
+        //     prompt: `Question: ${question}, Teacher Answer: ${teacherAnswer}, Student Answer: ${studentAnswer}, What is the similarity percentage between the student answer and the teacher answer?`
+        // });
+
+        // const response = await openai.createCompletion({
         //     model: "text-davinci-003",
         //     // prompt: `Question: ${question}, Teacher Answer: ${teacherAnswer}, Student Answer: ${studentAnswer}, Is the student answer right or wrong based only on the teacher answer?`,
         //     prompt: `Question: ${question}, Teacher Answer: ${teacherAnswer}, Student Answer: ${studentAnswer}, What is the similarity percentage between the student answer and the teacher answer?`,
@@ -130,9 +137,9 @@ export const gradeAnswer = async (
 
         console.log(response.data.choices[0]);
 
-        return response.data.choices[0].message?.content;
-        // return response.data.choices[0].text?.includes("Right");
+        // return response.data.choices[0].message?.content;
+        return +(response.data.choices[0].message?.content.match(/\d+/)?.at(0) as string);
     } catch (err) {
-        throw new AppError(`Something went wrong with gpt-3.5 | ${err}`, 500);
+        throw new AppError(`Something went wrong with gpt`, 500);
     }
 };
