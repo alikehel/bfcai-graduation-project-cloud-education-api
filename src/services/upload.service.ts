@@ -16,6 +16,10 @@ import {
 import AppError from "../utils/AppError.util";
 import catchAsync from "../utils/catchAsync.util";
 
+import { UserModel } from "../models/user.model";
+
+const userModel = new UserModel();
+
 const s3Client = new S3Client({
     region: AWS_REGION,
     credentials: {
@@ -62,6 +66,53 @@ export const uploadImage = catchAsync(async (req, res, next) => {
     res.status(201).json({
         success: 1,
         file: {
+            url: `${bucketURL}${key}`
+        }
+    });
+});
+
+export const updateProfilePicture = catchAsync(async (req, res, next) => {
+    const { file } = req;
+    const organization = req.params.organization;
+    const userId = res.locals.user.id;
+
+    if (!file) {
+        return next(new AppError("Please upload a file", 400));
+    }
+
+    if (file.size > 1_000_000) {
+        return next(new AppError("Please upload an image less than 1MB", 400));
+    }
+
+    if (!file.mimetype.startsWith("image")) {
+        return next(new AppError("Please upload an image file", 400));
+    }
+
+    const fileName = file.originalname
+        .split(".")[0]
+        .replace(/[^A-Za-z0-9]/g, "-")
+        .toLowerCase();
+    const fileExtension = file.originalname.split(".")[1];
+    const key = `${organization}/profile-images/${fileName}-${uuid()}.${fileExtension}`;
+    const command = new PutObjectCommand({
+        Bucket: AWS_S3_BUCKET,
+        Key: key,
+        Body: file.buffer,
+        ContentType: file.mimetype,
+        ACL: "public-read"
+    });
+
+    await s3Client.send(command);
+
+    await userModel.updateProfilePicture(
+        organization,
+        userId,
+        `${bucketURL}${key}`
+    );
+
+    res.status(201).json({
+        success: 1,
+        data: {
             url: `${bucketURL}${key}`
         }
     });

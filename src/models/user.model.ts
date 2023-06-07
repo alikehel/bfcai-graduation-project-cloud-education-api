@@ -146,6 +146,7 @@ export class UserModel {
                     email: true,
                     phoneNumber: true,
                     role: true,
+                    profilePicture: true,
                     courses: {
                         select: {
                             name: true,
@@ -210,6 +211,25 @@ export class UserModel {
             const user = await prisma.user.delete({
                 where: {
                     id: userID
+                }
+            });
+            return user;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async updateProfilePicture(subdomain: string, userID: string, url: string) {
+        try {
+            const user = await prisma.user.update({
+                where: {
+                    id: userID
+                },
+                data: {
+                    profilePicture: url
+                },
+                select: {
+                    profilePicture: true
                 }
             });
             return user;
