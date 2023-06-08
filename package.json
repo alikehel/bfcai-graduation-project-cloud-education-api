@@ -17,7 +17,7 @@
         "prisma:studio": "npx prisma studio"
     },
     "prisma": {
-        "seed": "ts-node src/database/seed/index.ts",
+        "seed": "ts-node src/database/seed/index2.ts",
         "schema": "src/database/schema.prisma"
     },
     "keywords": [],
