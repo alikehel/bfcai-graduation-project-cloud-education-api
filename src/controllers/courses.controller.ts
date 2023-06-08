@@ -55,10 +55,13 @@ export const updateCourse = catchAsync(async (req, res, next) => {
 
     // Check if the current user is the owner or the admin
     if (
-        (await courseModel.getOwner(subdomain, courseCode)) !== userID ||
+        (await courseModel.getOwner(subdomain, courseCode)) !== userID &&
         res.locals.user.role !== "ADMIN"
     ) {
-        throw new AppError("You are not the owner of this course!", 401);
+        throw new AppError(
+            "You are not the owner of this course, or the admin!",
+            401
+        );
     }
 
     const updatedCourse = await courseModel.update(

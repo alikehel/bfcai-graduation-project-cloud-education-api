@@ -13,7 +13,7 @@ async function seed() {
             type: "University",
             emailDomain: "fci.bu.edu.eg",
             subdomain: "bfcai",
-            officialPhoneNumber: "+111111111111",
+            officialPhoneNumber: "+201111111111",
             country: "Egypt",
             address: "Benha, Egypt"
         }
@@ -25,7 +25,7 @@ async function seed() {
     //         type: "University",
     //         emailDomain: "fci.cu.edu.eg",
     //         subdomain: "cfcai",
-    //         officialPhoneNumber: "+111111111112",
+    //         officialPhoneNumber: "+201111111112",
     //         country: "Egypt",
     //         address: "Cairo, Egypt"
     //     }
@@ -37,7 +37,7 @@ async function seed() {
             email: "admin@fci.bu.edu.eg",
             firstName: "Ali",
             lastName: "Kehel",
-            phoneNumber: "+111111111119",
+            phoneNumber: "+201111111119",
             password: bcrypt.hashSync("password" + (SECRET as string), 12),
             role: "ADMIN",
             organization: {
@@ -51,7 +51,7 @@ async function seed() {
             email: "student1@fci.bu.edu.eg",
             firstName: "Wagih",
             lastName: "Mohamed",
-            phoneNumber: "+121212121212",
+            phoneNumber: "+201212121212",
             password: bcrypt.hashSync("password" + (SECRET as string), 12),
             role: "STUDENT",
             organization: {
@@ -65,7 +65,7 @@ async function seed() {
             email: "student2@fci.bu.edu.eg",
             firstName: "Shawky",
             lastName: "Sobhy",
-            phoneNumber: "+131313131313",
+            phoneNumber: "+201313131313",
             password: bcrypt.hashSync("password" + (SECRET as string), 12),
             role: "STUDENT",
             organization: {
@@ -79,7 +79,7 @@ async function seed() {
             email: "teacher1@fci.bu.edu.eg",
             firstName: "Dr, Ahmed",
             lastName: "Shalaby",
-            phoneNumber: "+141414141414",
+            phoneNumber: "+201414141414",
             password: bcrypt.hashSync("password" + (SECRET as string), 12),
             role: "TEACHER",
             organization: {
@@ -93,7 +93,7 @@ async function seed() {
             email: "teacher2@fci.bu.edu.eg",
             firstName: "Dr, Ahmed",
             lastName: "Taha",
-            phoneNumber: "+151515151515",
+            phoneNumber: "+201515151515",
             password: bcrypt.hashSync("password" + (SECRET as string), 12),
             role: "TEACHER",
             organization: {
