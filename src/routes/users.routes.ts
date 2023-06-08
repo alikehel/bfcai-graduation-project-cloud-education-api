@@ -35,12 +35,12 @@ router.route("/:organization/users").get(
 router.route("/:organization/users/:userId").get(
     orgExist,
     isLoggedIn,
-    isAutherized(["ADMIN", "TEACHER"]),
+    isAutherized(["ADMIN", "TEACHER", "STUDENT"]),
     getUser
     /*
         #swagger.tags = ['Users Routes']
 
-        #swagger.description = 'Must be a teacher or admin'
+        #swagger.description = 'Must be a teacher or admin, or student'
 
         #swagger.security = [{
             "bearerAuth": []
