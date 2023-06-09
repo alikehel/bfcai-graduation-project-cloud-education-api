@@ -30,6 +30,7 @@ model User {
   // Course                Course[]
   CourseSectionComment  CourseSectionComment[]
   reviewedCourses       String[]
+  examResult            ExamResult[]
 
   @@unique([email, organizationSubdomain], name: "emailSubdomain")
   @@map(name: "users")
@@ -123,19 +124,37 @@ model CourseSectionComment {
 }
 
 model Exam {
-  id          String   @id @default(uuid())
+  id          String       @id @default(uuid())
   name        String
   description String
   duration    Int
   startTime   String
   endTime     String
   questions   String
-  course      Course   @relation(fields: [courseId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  course      Course       @relation(fields: [courseId], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   courseId    String
+  examResult  ExamResult[]
 
   @@map(name: "exams")
+}
+
+model ExamResult {
+  id          String   @id @default(uuid())
+  exam        Exam     @relation(fields: [examId], references: [id])
+  examId      String
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  answers     String
+  status      String   @default("INPROGRESS") // INPROGRESS - GRADING - FINISHED - MISSED
+  durationEnd String
+  score       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([examId, userId], name: "examId_userId")
+  @@map(name: "exams-results")
 }
 
 // model Question {

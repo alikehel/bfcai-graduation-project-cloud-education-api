@@ -186,8 +186,8 @@ async function seed() {
             name: "Internet of Things Exam 1",
             description: "This is an exam about Internet of Things",
             duration: 60,
-            startTime: "2023-02-12T09:00:00Z",
-            endTime: "2023-02-12T10:00:00Z",
+            startTime: "2023-01-01",
+            endTime: "2023-12-31",
             course: {
                 connect: { id: bfcaiTeacher1Course1.id }
             },
@@ -200,8 +200,8 @@ async function seed() {
             name: "Internet of Things Exam 2",
             description: "This is an exam about Internet of Things",
             duration: 60,
-            startTime: "2023-02-12T09:00:00Z",
-            endTime: "2023-02-12T10:00:00Z",
+            startTime: "2023-01-01",
+            endTime: "2023-12-31",
             course: {
                 connect: { id: bfcaiTeacher1Course1.id }
             },
@@ -214,8 +214,8 @@ async function seed() {
             name: "Digital Signal Processing Exam 1",
             description: "This is an exam about Digital Signal Processing",
             duration: 60,
-            startTime: "2023-02-12T09:00:00Z",
-            endTime: "2023-02-12T10:00:00Z",
+            startTime: "2023-01-01",
+            endTime: "2023-12-31",
             course: {
                 connect: { id: bfcaiTeacher1Course2.id }
             },
@@ -228,8 +228,8 @@ async function seed() {
             name: "Digital Signal Processing Exam 2",
             description: "This is an exam about Digital Signal Processing",
             duration: 60,
-            startTime: "2023-02-12T09:00:00Z",
-            endTime: "2023-02-12T10:00:00Z",
+            startTime: "2023-01-01",
+            endTime: "2023-12-31",
             course: {
                 connect: { id: bfcaiTeacher1Course2.id }
             },
@@ -243,8 +243,8 @@ async function seed() {
             description:
                 "This is an exam about Introduction to Computer Science",
             duration: 60,
-            startTime: "2023-02-12T09:00:00Z",
-            endTime: "2023-02-12T10:00:00Z",
+            startTime: "2023-01-01",
+            endTime: "2023-12-31",
             course: {
                 connect: { id: bfcaiTeacher2Course1.id }
             },
@@ -258,8 +258,8 @@ async function seed() {
             description:
                 "This is an exam about Introduction to Computer Science",
             duration: 60,
-            startTime: "2023-02-12T09:00:00Z",
-            endTime: "2023-02-12T10:00:00Z",
+            startTime: "2023-01-01",
+            endTime: "2023-12-31",
             course: {
                 connect: { id: bfcaiTeacher2Course1.id }
             },
@@ -272,8 +272,8 @@ async function seed() {
             name: "Object Oriented Programming Exam 1",
             description: "This is an exam about Object Oriented Programming",
             duration: 60,
-            startTime: "2023-02-12T09:00:00Z",
-            endTime: "2023-02-12T10:00:00Z",
+            startTime: "2023-01-01",
+            endTime: "2023-12-31",
             course: {
                 connect: { id: bfcaiTeacher2Course2.id }
             },
@@ -286,8 +286,8 @@ async function seed() {
             name: "Object Oriented Programming Exam 2",
             description: "This is an exam about Object Oriented Programming",
             duration: 60,
-            startTime: "2023-02-12T09:00:00Z",
-            endTime: "2023-02-12T10:00:00Z",
+            startTime: "2023-01-01",
+            endTime: "2023-12-31",
             course: {
                 connect: { id: bfcaiTeacher2Course2.id }
             },

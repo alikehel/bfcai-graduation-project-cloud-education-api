@@ -68,7 +68,21 @@ export class ExamModel {
                     description: true,
                     duration: true,
                     startTime: true,
-                    endTime: true
+                    endTime: true,
+                    course: {
+                        select: {
+                            name: true
+                        }
+                    },
+                    examResult: {
+                        select: {
+                            status: true,
+                            score: true
+                        },
+                        where: {
+                            userId: userID
+                        }
+                    }
                 },
                 where: {
                     course: {
@@ -86,7 +100,7 @@ export class ExamModel {
         }
     }
 
-    async getExamWithoutAnswers(examId: string) {
+    async getExamWithoutAnswers(examId: string, userId: string) {
         try {
             const examDataWithAnswers = (await prisma.exam.findUnique({
                 where: {
@@ -117,6 +131,25 @@ export class ExamModel {
                 }
             );
 
+            await prisma.examResult.upsert({
+                where: {
+                    examId_userId: {
+                        examId: examId,
+                        userId: userId
+                    }
+                },
+                update: {},
+                create: {
+                    examId: examId,
+                    userId: userId,
+                    answers: JSON.stringify([]),
+                    durationEnd: (
+                        Date.now() +
+                        examDataWithAnswers.duration * 60 * 1000
+                    ).toString()
+                }
+            });
+
             const examDataWithoutAnswers = {
                 ...examDataWithAnswers,
                 questions: questionsWithoutAnswers
@@ -135,7 +168,10 @@ export class ExamModel {
                     id: examId
                 },
                 select: {
-                    questions: true
+                    questions: true,
+                    startTime: true,
+                    endTime: true,
+                    duration: true
                 }
             })) as Exam;
 
@@ -143,171 +179,78 @@ export class ExamModel {
                 examDataWithAnswers.questions
             );
 
-            return parsedQuestions;
+            return {
+                parsedQuestions,
+                startTime: examDataWithAnswers.startTime,
+                endTime: examDataWithAnswers.endTime,
+                duration: examDataWithAnswers.duration
+            };
         } catch (err) {
             throw err;
         }
     }
 
-    // async answerExam(
-    //     subdomain: string,
-    //     examId: string,
-    //     userID: string,
-    //     exmaAnswers: any
-    // ) {
-    //     try {
+    async updateExamStatus(examId: string, userId: string, status: string) {
+        try {
+            await prisma.examResult.update({
+                where: {
+                    examId_userId: {
+                        examId: examId,
+                        userId: userId
+                    }
+                },
+                data: {
+                    status: status
+                }
+            });
+        } catch (err) {
+            throw err;
+        }
+    }
 
-    //     } catch (err) {
-    //         throw err;
-    //     }
-    // }
+    async getExamStatus(examId: string, userId: string) {
+        try {
+            const status = await prisma.examResult.findUnique({
+                where: {
+                    examId_userId: {
+                        examId: examId,
+                        userId: userId
+                    }
+                },
+                select: {
+                    status: true,
+                    createdAt: true,
+                    durationEnd: true
+                }
+            });
+            return status;
+        } catch (err) {
+            throw err;
+        }
+    }
 
-    // async getExamWithAnswers(id: string) {
-    //     try {
-    //         const examData = await prisma.exam.findUnique({
-    //             where: { id },
-    //             select: {
-    //                 mcqQuestions: {
-    //                     select: {
-    //                         id: true,
-    //                         questionText: true,
-    //                         answerId: true,
-    //                         choices: {
-    //                             select: {
-    //                                 id: true,
-    //                                 choiceText: true,
-    //                                 choiceId: true
-    //                             }
-    //                         }
-    //                     }
-    //                 },
-    //                 essayQuestions: {
-    //                     select: {
-    //                         id: true,
-    //                         questionText: true,
-    //                         questionAnswer: true
-    //                     }
-    //                 }
-    //             }
-    //         });
-
-    //         return examData;
-    //     } catch (err) {
-    //         throw err;
-    //     }
-    // }
-
-    // async updateExam(exam: ExamCreateType, id: string) {
-    //     try {
-    //         const updateExam = await prisma.exam.update({
-    //             where: { id },
-    //             data: {
-    //                 ...exam,
-    //                 mcqQuestions: {
-    //                     create: exam.mcqQuestions?.map((question) => ({
-    //                         questionText: question.questionText,
-    //                         answerId: question.answerId,
-    //                         choices: {
-    //                             create: question.choices.map((choice) => ({
-    //                                 choiceText: choice.choiceText,
-    //                                 choiceId: choice.choiceId
-    //                             }))
-    //                         }
-    //                     }))
-    //                 },
-    //                 essayQuestions: exam.essayQuestions
-    //                     ? {
-    //                           create: exam.essayQuestions.map((question) => ({
-    //                               questionText: question.questionText,
-    //                               questionAnswer: question.questionAnswer
-    //                           }))
-    //                       }
-    //                     : undefined
-    //             }
-    //         });
-    //         return updateExam;
-    //     } catch (err) {
-    //         throw err;
-    //     }
-    // }
-
-    // async deleteExam(examId: string) {
-    //     return prisma.exam.delete({
-    //         where: { id: examId }
-    //     });
-    // }
-
-    // async getExam(examId: string) {
-    //     return prisma.exam.findUnique({
-    //         where: { id: examId },
-    //         include: { mcqQuestions: true }
-    //     });
-    // }
-
-    //  async getUserExamList(userId:string) {
-    //     try {
-    //       const user = await prisma.user.findUnique({
-    //         where: { id: userId },
-    //         select: {
-    //           examList: {
-    //             include: {
-    //               exams: true
-    //             }
-    //           }
-    //         }
-    //       });
-
-    //       if (!user) {
-    //         throw new Error("User not found");
-    //       }
-
-    //       return user.examList;
-    //     } catch (error) {
-    //       console.error("Failed to get user's exam list:", error);
-    //       throw error;
-    //     }
-    //   }
-
-    // async updateExamList(userId: string, examId: string) {
-    //     return prisma.examList.update({
-    //         where: { userId },
-    //         data: {
-    //             exams: {
-    //                 connect: { id: examId }
-    //             }
-    //         }
-    //     });
-    // }
-
-    // async updateExamListForAllUsers(
-    //     users: User[],
-    //     examId: string
-    // ): Promise<void> {
-    //     await Promise.all(
-    //         users.map(async (user) => {
-    //             await this.updateExamList(user.id, examId);
-    //         })
-    //     );
-    // }
-
-    // async getOwner() {
-    //     try {
-    //     } catch (err) {
-    //         throw err;
-    //     }
-    // }
-
-    // async answerExam() {
-    //     try {
-    //     } catch (err) {
-    //         throw err;
-    //     }
-    // }
-
-    // async examExist() {
-    //     try {
-    //     } catch (err) {
-    //         throw err;
-    //     }
-    // }
+    async answerExam(
+        examId: string,
+        userId: string,
+        answers: any,
+        score: number
+    ) {
+        try {
+            await prisma.examResult.update({
+                where: {
+                    examId_userId: {
+                        examId: examId,
+                        userId: userId
+                    }
+                },
+                data: {
+                    status: "FINISHED",
+                    score: score,
+                    answers: JSON.stringify(answers)
+                }
+            });
+        } catch (err) {
+            throw err;
+        }
+    }
 }
