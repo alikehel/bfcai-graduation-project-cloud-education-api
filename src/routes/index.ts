@@ -1,17 +1,16 @@
 import { Router } from "express";
 
+import { gradeAnswer } from "../services/gpt.service";
+import catchAsync from "../utils/catchAsync.util";
 import authRoutes from "./auth.routes";
 import coursesSectionsCommentsRoutes from "./courses-sections-comments.routes";
 import coursesSectionsRoutes from "./courses-sections.routes";
 import coursesRoutes from "./courses.routes";
+import examsRoutes from "./exams.routes";
 import filesRoutes from "./files.routes";
+import notificationsRoutes from "./notifications.routes";
 import organizationRoutes from "./organization.routes";
 import usersRoutes from "./users.routes";
-import examsRoutes from "./exams.routes";
-
-import { gradeAnswer } from "../services/gpt.service";
-import catchAsync from "../utils/catchAsync.util";
-
 const router = Router();
 
 router.use("/", organizationRoutes);
@@ -22,6 +21,7 @@ router.use("/", coursesSectionsRoutes);
 router.use("/", coursesSectionsCommentsRoutes);
 router.use("/", usersRoutes);
 router.use("/", examsRoutes);
+router.use("/", notificationsRoutes);
 
 /*******************************************************************************
  * TEST ROUTES

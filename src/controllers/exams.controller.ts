@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { ExamModel } from "../models/exam.model";
+import { NotificationModel } from "../models/notification.model";
 import { UserModel } from "../models/user.model";
 import { checkToxicity } from "../services/ai.service";
 import { gradeAnswer } from "../services/gpt.service";
 import AppError from "../utils/AppError.util";
 import catchAsync from "../utils/catchAsync.util";
 import { ExamAnswerSchema, ExamCreateSchema } from "../validation";
-
 const examModel = new ExamModel();
+const notificationModel = new NotificationModel();
 const userModel = new UserModel();
 export const createExam = catchAsync(async (req: Request, res: Response) => {
     const exam = ExamCreateSchema.parse(req.body);
@@ -182,6 +183,19 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
         );
     }
 
+    // Check if the user hasfailed the exam
+    if (status?.status === "FAILED") {
+        throw new AppError(
+            "You have failed this exam and you can't submit it again",
+            400
+        );
+    }
+
+    res.status(200).json({
+        status: "success",
+        data: "Exam submitted successfully. You will be notified with your grade."
+    });
+
     // Check Toxicity
     for (let i = 0; i < exam.length; i++) {
         const question = exam[i];
@@ -190,18 +204,17 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
         if (question.questionType === "essay") {
             const toxicity = await checkToxicity(answer.questionAnswer);
             if (toxicity > 0.7) {
-                throw new AppError(
-                    "You violated our guidelines. Not Submitted. Warning issued. Please review the guidelines.",
-                    400
+                await notificationModel.sendNotification(
+                    "Exams",
+                    `Your exam has not been graded because your answer "${answer.questionAnswer}" contains inappropriate content.`,
+                    userID,
+                    examId
                 );
+                await examModel.updateExamStatus(examId, userID, "FAILED");
+                return;
             }
         }
     }
-
-    res.status(200).json({
-        status: "success",
-        data: "Exam submitted successfully. You will be notified with your grade."
-    });
 
     // Grade the exam
     await examModel.updateExamStatus(examId, userID, "GRADING");
@@ -257,4 +270,11 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
     score = Math.round((score / exam.length) * 100);
 
     await examModel.answerExam(examId, userID, examResult, score);
+
+    await notificationModel.sendNotification(
+        "Exams",
+        "Your exam has been graded",
+        userID,
+        examId
+    );
 });

@@ -34,6 +34,7 @@ async function seed() {
     // Create users
     const bfcaiAdmin = await prisma.user.create({
         data: {
+            id: "00ea6784-4626-4b49-aa88-02f46afd30d0",
             email: "admin@fci.bu.edu.eg",
             firstName: "Ali",
             lastName: "Kehel",
@@ -48,6 +49,7 @@ async function seed() {
 
     const bfcaiStudent1 = await prisma.user.create({
         data: {
+            id: "4dc8b81b-c33b-4d16-8c70-0a981c3c97f4",
             email: "student1@fci.bu.edu.eg",
             firstName: "Wagih",
             lastName: "Mohamed",
@@ -62,6 +64,7 @@ async function seed() {
 
     const bfcaiStudent2 = await prisma.user.create({
         data: {
+            id: "8a37bf2a-6f47-419f-b85d-de7c65b921e3",
             email: "student2@fci.bu.edu.eg",
             firstName: "Shawky",
             lastName: "Sobhy",
@@ -76,8 +79,9 @@ async function seed() {
 
     const bfcaiTeacher1 = await prisma.user.create({
         data: {
+            id: "e129249e-4ea3-426b-9a36-91de6811224b",
             email: "teacher1@fci.bu.edu.eg",
-            firstName: "Dr, Ahmed",
+            firstName: "Dr. Ahmed",
             lastName: "Shalaby",
             phoneNumber: "+201414141414",
             password: bcrypt.hashSync("password" + (SECRET as string), 12),
@@ -90,8 +94,9 @@ async function seed() {
 
     const bfcaiTeacher2 = await prisma.user.create({
         data: {
+            id: "7fcd59ce-6763-4a1e-b714-da4fc16a632c",
             email: "teacher2@fci.bu.edu.eg",
-            firstName: "Dr, Ahmed",
+            firstName: "Dr. Ahmed",
             lastName: "Taha",
             phoneNumber: "+201515151515",
             password: bcrypt.hashSync("password" + (SECRET as string), 12),
