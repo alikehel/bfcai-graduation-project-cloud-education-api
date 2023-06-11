@@ -5,7 +5,7 @@ import { UserUpdateSchema } from "../validation";
 
 const userModel = new UserModel();
 
-export const getAllUsers = catchAsync(async (req, res, next) => {
+export const getAllUsers = catchAsync(async (req, res) => {
     const subdomain = req.params.organization;
 
     const usersCount = await userModel.getUsersCount(subdomain);
@@ -38,7 +38,7 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
     });
 });
 
-export const getUser = catchAsync(async (req, res, next) => {
+export const getUser = catchAsync(async (req, res) => {
     const subdomain = req.params.organization;
     const userID = req.params["userId"];
 
@@ -50,7 +50,7 @@ export const getUser = catchAsync(async (req, res, next) => {
     });
 });
 
-export const updateUser = catchAsync(async (req, res, next) => {
+export const updateUser = catchAsync(async (req, res) => {
     const subdomain = req.params.organization;
     const userID = req.params["userId"];
 
@@ -86,7 +86,7 @@ export const updateUser = catchAsync(async (req, res, next) => {
     });
 });
 
-export const deleteUser = catchAsync(async (req, res, next) => {
+export const deleteUser = catchAsync(async (req, res) => {
     const subdomain = req.params.organization;
     const userID = req.params["userId"];
 

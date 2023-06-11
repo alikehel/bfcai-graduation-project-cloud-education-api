@@ -1,6 +1,6 @@
 import axios from "axios";
 import AppError from "../utils/AppError.util";
-import catchAsync from "../utils/catchAsync.util";
+// import catchAsync from "../utils/catchAsync.util";
 
 const sentimentAnalyzerEndpoint =
     "https://graduation-project-ai-api.onrender.com/sentiment_analyzer/";

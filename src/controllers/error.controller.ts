@@ -67,7 +67,7 @@ export default (
     err: AppError,
     _req: Request,
     res: Response,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
     _next: NextFunction
 ) => {
     // console.log(err.stack);

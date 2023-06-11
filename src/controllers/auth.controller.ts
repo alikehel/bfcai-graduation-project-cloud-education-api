@@ -1,4 +1,3 @@
-import { json } from "body-parser";
 import jwt from "jsonwebtoken";
 import { JWT_EXPIRES_IN, JWT_SECRET, SECRET } from "../config/config";
 import { OrganizationModel } from "../models/organization.model";
@@ -69,7 +68,7 @@ export const signup = catchAsync(async (req, res, next) => {
     });
 });
 
-export const login = catchAsync(async (req, res, next) => {
+export const login = catchAsync(async (req, res) => {
     const user = UserLoginSchema.parse(req.body);
     const subdomain = req.params.organization;
 

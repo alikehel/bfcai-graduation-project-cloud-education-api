@@ -3,11 +3,11 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
-import morgan from "morgan";
-import { SwaggerTheme, SwaggerThemeName } from "swagger-themes";
+// import morgan from "morgan";
+import { SwaggerTheme } from "swagger-themes";
 import swaggerUi from "swagger-ui-express";
 
-import { NODE_ENV } from "./config/config";
+// import { NODE_ENV } from "./config/config";
 import globalErrorcontroller from "./controllers/error.controller";
 import apiRouter from "./routes";
 import swaggerDocument from "./swagger/swagger-output.json";

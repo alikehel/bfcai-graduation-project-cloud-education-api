@@ -1,8 +1,7 @@
-import axios from "axios";
 import { Configuration, OpenAIApi } from "openai";
 import { OPENAI_API_KEY } from "../config/config";
 import AppError from "../utils/AppError.util";
-import catchAsync from "../utils/catchAsync.util";
+// import catchAsync from "../utils/catchAsync.util";
 const configuration = new Configuration({
     organization: "org-hL7T3fZitPutyZeZ8etu8PqS",
     apiKey: OPENAI_API_KEY
@@ -138,7 +137,9 @@ export const gradeAnswer = async (
         console.log(response.data.choices[0]);
 
         // return response.data.choices[0].message?.content;
-        return +(response.data.choices[0].message?.content.match(/\d+/)?.at(0) as string);
+        return +(response.data.choices[0].message?.content
+            .match(/\d+/)
+            ?.at(0) as string);
     } catch (err) {
         throw new AppError(`Something went wrong with gpt`, 500);
     }

@@ -1,6 +1,11 @@
 import express from "express";
 
-import { answerExam, createExam, getExamWithoutAnswers, getExams } from "../controllers/exams.controller";
+import {
+    answerExam,
+    createExam,
+    getExamWithoutAnswers,
+    getExams
+} from "../controllers/exams.controller";
 
 import { courseExist } from "../middlewares/courseExist.middleware";
 import { isAutherized } from "../middlewares/isAutherized.middleware";

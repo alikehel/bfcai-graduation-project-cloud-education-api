@@ -186,6 +186,10 @@ export const ExamCreateSchema = z.object({
 
 export type ExamCreateType = z.infer<typeof ExamCreateSchema>;
 
+const QuestionsSchema = z.array(MCQQuestionSchema.or(EssayQuestionSchema));
+
+export type QuestionsType = z.infer<typeof QuestionsSchema>;
+
 export const ExamAnswerSchema = z.array(
     z.object({
         questionType: z.enum(["mcq", "essay"]),

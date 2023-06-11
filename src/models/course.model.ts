@@ -1,12 +1,7 @@
-import { Course, Prisma, PrismaClient } from "@prisma/client";
+import { Course, PrismaClient } from "@prisma/client";
 // import organizations from "../database/seed/data/organizations";
-import AppError from "../utils/AppError.util";
-import {
-    CourseCreateSchema,
-    CourseCreateType,
-    CourseUpdateSchema,
-    CourseUpdateType
-} from "../validation";
+// import AppError from "../utils/AppError.util";
+import { CourseCreateType, CourseUpdateType } from "../validation";
 
 const prisma = new PrismaClient();
 
@@ -16,8 +11,8 @@ export class CourseModel {
         subdomain: string,
         ownerID: string
     ): Promise<CourseCreateType> {
-        const { prerequisites, ...courseData } = course;
-        const prerequisitesConnect = prerequisites?.map((el) => {
+        const { prerequisites: prerequisitess, ...courseData } = course;
+        const prerequisitesConnect = prerequisitess?.map((el) => {
             return {
                 codeSubdomain: {
                     code: el,
@@ -25,47 +20,44 @@ export class CourseModel {
                 }
             };
         });
-        try {
-            const createdCourse = await prisma.course.create({
-                data: {
-                    ...courseData,
-                    organization: { connect: { subdomain: subdomain } },
-                    owner: { connect: { id: ownerID } },
-                    prerequisites: {
-                        connect: prerequisitesConnect
-                    }
-                },
-                select: {
-                    name: true,
-                    description: true,
-                    code: true,
-                    isActive: true,
-                    category: true,
-                    createdAt: true,
-                    updatedAt: true,
-                    rating: true,
-                    ratingCount: true,
-                    prerequisites: {
-                        select: {
-                            code: true,
-                            name: true
-                        }
+
+        const createdCourse = await prisma.course.create({
+            data: {
+                ...courseData,
+                organization: { connect: { subdomain: subdomain } },
+                owner: { connect: { id: ownerID } },
+                prerequisites: {
+                    connect: prerequisitesConnect
+                }
+            },
+            select: {
+                name: true,
+                description: true,
+                code: true,
+                isActive: true,
+                category: true,
+                createdAt: true,
+                updatedAt: true,
+                rating: true,
+                ratingCount: true,
+                prerequisites: {
+                    select: {
+                        code: true,
+                        name: true
                     }
                 }
-            });
-            const { prerequisites, ...createdCourseWithoutPrerequisites } =
-                createdCourse;
-            const newPrerequisites = prerequisites.map((el) => {
-                return el.code;
-            });
-            const newCreatedCourse = {
-                ...createdCourseWithoutPrerequisites,
-                prerequisites: newPrerequisites
-            };
-            return newCreatedCourse;
-        } catch (err) {
-            throw err;
-        }
+            }
+        });
+        const { prerequisites, ...createdCourseWithoutPrerequisites } =
+            createdCourse;
+        const newPrerequisites = prerequisites.map((el) => {
+            return el.code;
+        });
+        const newCreatedCourse = {
+            ...createdCourseWithoutPrerequisites,
+            prerequisites: newPrerequisites
+        };
+        return newCreatedCourse;
     }
 
     async update(
@@ -82,144 +74,125 @@ export class CourseModel {
                 }
             };
         });
-        try {
-            const updatedCourse = await prisma.course.update({
-                where: {
-                    codeSubdomain: {
-                        code: courseCode,
-                        organizationSubdomain: subdomain
-                    }
-                },
-                data: {
-                    ...courseData,
-                    prerequisites: {
-                        set: [],
-                        connect: prerequisitesConnect
-                    }
-                },
-                select: {
-                    name: true,
-                    description: true,
-                    code: true,
-                    isActive: true,
-                    category: true,
-                    createdAt: true,
-                    updatedAt: true,
-                    rating: true,
-                    ratingCount: true,
-                    prerequisites: {
-                        select: {
-                            code: true,
-                            name: true
-                        }
+
+        const updatedCourse = await prisma.course.update({
+            where: {
+                codeSubdomain: {
+                    code: courseCode,
+                    organizationSubdomain: subdomain
+                }
+            },
+            data: {
+                ...courseData,
+                prerequisites: {
+                    set: [],
+                    connect: prerequisitesConnect
+                }
+            },
+            select: {
+                name: true,
+                description: true,
+                code: true,
+                isActive: true,
+                category: true,
+                createdAt: true,
+                updatedAt: true,
+                rating: true,
+                ratingCount: true,
+                prerequisites: {
+                    select: {
+                        code: true,
+                        name: true
                     }
                 }
-            });
-            return updatedCourse;
-        } catch (err) {
-            throw err;
-        }
+            }
+        });
+        return updatedCourse;
     }
 
     async getOwner(subdomain: string, courseCode: string) {
-        try {
-            const course = (await prisma.course.findUnique({
-                where: {
-                    codeSubdomain: {
-                        code: courseCode,
-                        organizationSubdomain: subdomain
-                    }
+        const course = (await prisma.course.findUnique({
+            where: {
+                codeSubdomain: {
+                    code: courseCode,
+                    organizationSubdomain: subdomain
                 }
-                // select: {
-                //     userId: true
-                // }
-            })) as Course;
-            return course.userId;
-        } catch (err) {
-            throw err;
-        }
+            }
+            // select: {
+            //     userId: true
+            // }
+        })) as Course;
+        return course.userId;
     }
 
     async delete(subdomain: string, courseCode: string): Promise<boolean> {
-        try {
-            await prisma.course.delete({
-                where: {
-                    codeSubdomain: {
-                        code: courseCode,
-                        organizationSubdomain: subdomain
-                    }
+        await prisma.course.delete({
+            where: {
+                codeSubdomain: {
+                    code: courseCode,
+                    organizationSubdomain: subdomain
                 }
-            });
-            return true;
-        } catch (err) {
-            throw err;
-        }
+            }
+        });
+        return true;
     }
 
     async getCourseData(subdomain: string, courseCode: string) {
-        try {
-            const courseData = await prisma.course.findUnique({
-                where: {
-                    codeSubdomain: {
-                        code: courseCode,
-                        organizationSubdomain: subdomain
-                    }
-                },
-                select: {
-                    name: true,
-                    description: true,
-                    code: true,
-                    isActive: true,
-                    category: true,
-                    createdAt: true,
-                    updatedAt: true,
-                    rating: true,
-                    ratingCount: true,
-                    prerequisites: {
-                        select: {
-                            code: true,
-                            name: true
-                        }
+        const courseData = await prisma.course.findUnique({
+            where: {
+                codeSubdomain: {
+                    code: courseCode,
+                    organizationSubdomain: subdomain
+                }
+            },
+            select: {
+                name: true,
+                description: true,
+                code: true,
+                isActive: true,
+                category: true,
+                createdAt: true,
+                updatedAt: true,
+                rating: true,
+                ratingCount: true,
+                prerequisites: {
+                    select: {
+                        code: true,
+                        name: true
                     }
                 }
-            });
-            return courseData;
-        } catch (err) {
-            throw err;
-        }
+            }
+        });
+        return courseData;
     }
 
     async getAllCourseData(subdomain: string, skip: number, take: number) {
-        try {
-            const courseData = await prisma.course.findMany({
-                skip: skip,
-                take: take,
-                where: { organizationSubdomain: subdomain },
-                orderBy: {
-                    name: "asc"
-                },
-                select: {
-                    name: true,
-                    description: true,
-                    code: true,
-                    isActive: true,
-                    category: true,
-                    createdAt: true,
-                    updatedAt: true,
-                    rating: true,
-                    ratingCount: true,
-                    prerequisites: {
-                        select: {
-                            code: true,
-                            name: true
-                        }
+        const courseData = await prisma.course.findMany({
+            skip: skip,
+            take: take,
+            where: { organizationSubdomain: subdomain },
+            orderBy: {
+                name: "asc"
+            },
+            select: {
+                name: true,
+                description: true,
+                code: true,
+                isActive: true,
+                category: true,
+                createdAt: true,
+                updatedAt: true,
+                rating: true,
+                ratingCount: true,
+                prerequisites: {
+                    select: {
+                        code: true,
+                        name: true
                     }
                 }
-            });
-            return courseData;
-        } catch (err) {
-            throw err;
-        }
+            }
+        });
+        return courseData;
     }
 
     async getAllCourseDataForUser(
@@ -228,74 +201,62 @@ export class CourseModel {
         skip: number,
         take: number
     ) {
-        try {
-            const courseData = await prisma.course.findMany({
-                skip: skip,
-                take: take,
-                where: {
-                    organizationSubdomain: subdomain,
-                    users: {
-                        some: {
-                            id: userID
-                        }
-                    }
-                },
-                orderBy: {
-                    name: "asc"
-                },
-                select: {
-                    name: true,
-                    description: true,
-                    code: true,
-                    isActive: true,
-                    category: true,
-                    createdAt: true,
-                    updatedAt: true,
-                    rating: true,
-                    ratingCount: true,
-                    prerequisites: {
-                        select: {
-                            code: true,
-                            name: true
-                        }
+        const courseData = await prisma.course.findMany({
+            skip: skip,
+            take: take,
+            where: {
+                organizationSubdomain: subdomain,
+                users: {
+                    some: {
+                        id: userID
                     }
                 }
-            });
-            return courseData;
-        } catch (err) {
-            throw err;
-        }
+            },
+            orderBy: {
+                name: "asc"
+            },
+            select: {
+                name: true,
+                description: true,
+                code: true,
+                isActive: true,
+                category: true,
+                createdAt: true,
+                updatedAt: true,
+                rating: true,
+                ratingCount: true,
+                prerequisites: {
+                    select: {
+                        code: true,
+                        name: true
+                    }
+                }
+            }
+        });
+        return courseData;
     }
 
     async getCoursesCount(subdomain: string) {
-        try {
-            const count = await prisma.course.count({
-                where: {
-                    organizationSubdomain: subdomain
-                }
-            });
-            return count;
-        } catch (err) {
-            throw err;
-        }
+        const count = await prisma.course.count({
+            where: {
+                organizationSubdomain: subdomain
+            }
+        });
+        return count;
     }
 
     async getCoursesCountForUser(subdomain: string, userID: string) {
-        try {
-            const count = await prisma.course.count({
-                where: {
-                    organizationSubdomain: subdomain,
-                    users: {
-                        some: {
-                            id: userID
-                        }
+        const count = await prisma.course.count({
+            where: {
+                organizationSubdomain: subdomain,
+                users: {
+                    some: {
+                        id: userID
                     }
                 }
-            });
-            return count;
-        } catch (err) {
-            throw err;
-        }
+            }
+        });
+        return count;
     }
 
     async updateCourseRating(
@@ -304,63 +265,59 @@ export class CourseModel {
         courseCode: string,
         rating: number
     ) {
-        try {
-            // Get the old rating
-            const oldRating = (await prisma.course.findUnique({
-                where: {
-                    codeSubdomain: {
-                        code: courseCode,
-                        organizationSubdomain: subdomain
-                    }
-                },
-                select: {
-                    rating: true,
-                    ratingCount: true
+        // Get the old rating
+        const oldRating = (await prisma.course.findUnique({
+            where: {
+                codeSubdomain: {
+                    code: courseCode,
+                    organizationSubdomain: subdomain
                 }
-            })) as { rating: number; ratingCount: number };
+            },
+            select: {
+                rating: true,
+                ratingCount: true
+            }
+        })) as { rating: number; ratingCount: number };
 
-            // Calculate the new rating
-            const newRating =
-                (oldRating?.rating * oldRating?.ratingCount + rating) /
-                (oldRating?.ratingCount + 1);
+        // Calculate the new rating
+        const newRating =
+            (oldRating?.rating * oldRating?.ratingCount + rating) /
+            (oldRating?.ratingCount + 1);
 
-            // console.log(rating);
-            // console.log(oldRating);
-            // console.log(newRating);
+        // console.log(rating);
+        // console.log(oldRating);
+        // console.log(newRating);
 
-            // Update or create the rating if it doesn't exist
-            const updatedNewRating = await prisma.course.update({
-                where: {
-                    codeSubdomain: {
-                        code: courseCode,
-                        organizationSubdomain: subdomain
-                    }
-                },
-                data: {
-                    rating: newRating,
-                    ratingCount: oldRating?.ratingCount + 1
-                },
-                select: {
-                    rating: true,
-                    ratingCount: true
+        // Update or create the rating if it doesn't exist
+        const updatedNewRating = await prisma.course.update({
+            where: {
+                codeSubdomain: {
+                    code: courseCode,
+                    organizationSubdomain: subdomain
                 }
-            });
+            },
+            data: {
+                rating: newRating,
+                ratingCount: oldRating?.ratingCount + 1
+            },
+            select: {
+                rating: true,
+                ratingCount: true
+            }
+        });
 
-            await prisma.user.update({
-                where: {
-                    id: userID
-                },
-                data: {
-                    reviewedCourses: {
-                        push: courseCode
-                    }
+        await prisma.user.update({
+            where: {
+                id: userID
+            },
+            data: {
+                reviewedCourses: {
+                    push: courseCode
                 }
-            });
+            }
+        });
 
-            return updatedNewRating;
-        } catch (err) {
-            throw err;
-        }
+        return updatedNewRating;
     }
 
     async getUserReviewedCourses(
@@ -368,59 +325,47 @@ export class CourseModel {
         courseCode: string,
         userID: string
     ) {
-        try {
-            const userReviewedCourses = await prisma.user.findUnique({
-                where: {
-                    id: userID
-                },
-                select: {
-                    reviewedCourses: true
-                }
-            });
-            return userReviewedCourses;
-        } catch (err) {
-            throw err;
-        }
+        const userReviewedCourses = await prisma.user.findUnique({
+            where: {
+                id: userID
+            },
+            select: {
+                reviewedCourses: true
+            }
+        });
+        return userReviewedCourses;
     }
 
     async courseExist(subdomain: string, courseCode: string) {
-        try {
-            const course = await prisma.course.findUnique({
-                where: {
-                    codeSubdomain: {
-                        code: courseCode,
-                        organizationSubdomain: subdomain
-                    }
+        const course = await prisma.course.findUnique({
+            where: {
+                codeSubdomain: {
+                    code: courseCode,
+                    organizationSubdomain: subdomain
                 }
-            });
-            if (course) {
-                return true;
-            } else {
-                return false;
             }
-        } catch (err) {
-            throw err;
+        });
+        if (course) {
+            return true;
+        } else {
+            return false;
         }
     }
 
     async getAllCoursesCodes(subdomain: string, exclude: string) {
-        try {
-            const coursesCodes = await prisma.course.findMany({
-                where: {
-                    organizationSubdomain: subdomain,
-                    code: { not: exclude }
-                },
-                orderBy: {
-                    name: "asc"
-                },
-                select: {
-                    code: true,
-                    name: true
-                }
-            });
-            return coursesCodes;
-        } catch (err) {
-            throw err;
-        }
+        const coursesCodes = await prisma.course.findMany({
+            where: {
+                organizationSubdomain: subdomain,
+                code: { not: exclude }
+            },
+            orderBy: {
+                name: "asc"
+            },
+            select: {
+                code: true,
+                name: true
+            }
+        });
+        return coursesCodes;
     }
 }

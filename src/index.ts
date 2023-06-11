@@ -1,7 +1,14 @@
 import app from "./app";
-import { NODE_ENV, PORT } from "./config/config";
+import { PORT } from "./config/config";
 
 const address = `http://localhost:${PORT}`;
+
+const server = app.listen(PORT, () => {
+    // if (NODE_ENV === "dev") {
+    // eslint-disable-next-line no-console
+    console.log(`Starting APP On -> ${address}`);
+    // }
+});
 
 process.on("uncaughtException", (err) => {
     console.log("UNCAUGHT EXCEPTION! 💥 Shutting down...");
@@ -15,11 +22,4 @@ process.on("unhandledRejection", (err: Error) => {
     server.close(() => {
         process.exit(1);
     });
-});
-
-const server = app.listen(PORT, () => {
-    // if (NODE_ENV === "dev") {
-        // eslint-disable-next-line no-console
-        console.log(`Starting APP On -> ${address}`);
-    // }
 });

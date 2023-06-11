@@ -4443,7 +4443,7 @@
         "tags": [
           "Users Routes"
         ],
-        "description": "Must be a teacher or admin",
+        "description": "Must be a teacher or admin, or student",
         "parameters": [
           {
             "name": "organization",
@@ -4720,6 +4720,36 @@
           },
           {
             "name": "examId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/{organization}/notifications": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "organization",
             "in": "path",
             "required": true,
             "schema": {

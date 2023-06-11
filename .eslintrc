@@ -23,7 +23,9 @@
         // "no-console": 1, // Means warning
         "no-var": "error",
         "prefer-const": "error"
+        // "no-unused-vars": 1
         // "linebreak-style": "off"
     },
-    "exclude": "build"
+    "ignorePatterns": ["build/*"]
+    // "exclude": "build"
 }

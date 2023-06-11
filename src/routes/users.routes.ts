@@ -7,7 +7,6 @@ import {
     updateUser
 } from "../controllers/users.controller";
 
-import { courseExist } from "../middlewares/courseExist.middleware";
 import { isAutherized } from "../middlewares/isAutherized.middleware";
 import { isLoggedIn } from "../middlewares/isLoggedIn.middleware";
 import { orgExist } from "../middlewares/orgExist.middleware";

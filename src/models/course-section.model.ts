@@ -1,11 +1,9 @@
-import { CourseSection, Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 // import organizations from "../database/seed/data/organizations";
 import { UUID } from "crypto";
-import AppError from "../utils/AppError.util";
+// import AppError from "../utils/AppError.util";
 import {
-    CourseSectionCreateSchema,
     CourseSectionCreateType,
-    CourseSectionUpdateSchema,
     CourseSectionUpdateType
 } from "../validation";
 
@@ -13,26 +11,22 @@ const prisma = new PrismaClient();
 
 export class CourseSectionModel {
     async getAllCourseSectionsTitles(subdomain: string, courseCode: string) {
-        try {
-            const courseSectionsTitles = await prisma.courseSection.findMany({
-                select: {
-                    title: true,
-                    order: true
-                },
-                where: {
-                    Course: {
-                        code: courseCode,
-                        organizationSubdomain: subdomain
-                    }
-                },
-                orderBy: {
-                    order: "asc"
+        const courseSectionsTitles = await prisma.courseSection.findMany({
+            select: {
+                title: true,
+                order: true
+            },
+            where: {
+                Course: {
+                    code: courseCode,
+                    organizationSubdomain: subdomain
                 }
-            });
-            return courseSectionsTitles;
-        } catch (err) {
-            throw err;
-        }
+            },
+            orderBy: {
+                order: "asc"
+            }
+        });
+        return courseSectionsTitles;
     }
 
     async createSection(
@@ -40,50 +34,46 @@ export class CourseSectionModel {
         subdomain: string,
         courseCode: string
     ): Promise<CourseSectionCreateType> {
-        try {
-            const lastSectionOrder = await prisma.courseSection.findFirst({
-                where: {
-                    Course: {
-                        code: courseCode,
-                        organizationSubdomain: subdomain
-                    }
-                },
-                select: {
-                    order: true
-                },
-                orderBy: {
-                    order: "desc"
+        const lastSectionOrder = await prisma.courseSection.findFirst({
+            where: {
+                Course: {
+                    code: courseCode,
+                    organizationSubdomain: subdomain
                 }
-            });
-
-            if (lastSectionOrder) {
-                courseSection.order = lastSectionOrder.order + 1;
-            } else {
-                courseSection.order = 1;
+            },
+            select: {
+                order: true
+            },
+            orderBy: {
+                order: "desc"
             }
+        });
 
-            const createdCourseSection = await prisma.courseSection.create({
-                data: {
-                    ...courseSection,
-                    order: courseSection.order, // Provide a default value if undefined
-                    Course: {
-                        connect: {
-                            codeSubdomain: {
-                                code: courseCode,
-                                organizationSubdomain: subdomain
-                            }
+        if (lastSectionOrder) {
+            courseSection.order = lastSectionOrder.order + 1;
+        } else {
+            courseSection.order = 1;
+        }
+
+        const createdCourseSection = await prisma.courseSection.create({
+            data: {
+                ...courseSection,
+                order: courseSection.order, // Provide a default value if undefined
+                Course: {
+                    connect: {
+                        codeSubdomain: {
+                            code: courseCode,
+                            organizationSubdomain: subdomain
                         }
                     }
-                },
-                select: {
-                    title: true,
-                    order: true
                 }
-            });
-            return createdCourseSection;
-        } catch (err) {
-            throw err;
-        }
+            },
+            select: {
+                title: true,
+                order: true
+            }
+        });
+        return createdCourseSection;
     }
 
     async getCourseSectionContent(
@@ -91,45 +81,46 @@ export class CourseSectionModel {
         courseCode: string,
         sectionOrder: number
     ) {
-        try {
-            const courseSectionContent = await prisma.courseSection.findFirst({
-                where: {
-                    Course: {
-                        code: courseCode,
-                        organizationSubdomain: subdomain
-                    },
-                    order: sectionOrder
+        const courseSectionContent = await prisma.courseSection.findFirst({
+            where: {
+                Course: {
+                    code: courseCode,
+                    organizationSubdomain: subdomain
                 },
-                select: {
-                    title: true,
-                    order: true,
-                    content: true,
-                    Course: {
-                        select: {
-                            userId: true
-                        }
+                order: sectionOrder
+            },
+            select: {
+                title: true,
+                order: true,
+                content: true,
+                Course: {
+                    select: {
+                        userId: true
                     }
                 }
-            });
+            }
+        });
 
-            const ownerEmail = await prisma.user.findUnique({
-                where: {
-                    id: courseSectionContent?.Course?.userId
-                },
-                select: {
-                    email: true
-                }
-            });
-
-            const { Course, ...courseSectionContentWithOwner } = {
-                ...courseSectionContent,
-                ownerEmail: ownerEmail?.email
-            };
-
-            return courseSectionContentWithOwner;
-        } catch (err) {
-            throw err;
+        if (!courseSectionContent) {
+            return null;
         }
+
+        const ownerEmail = await prisma.user.findUnique({
+            where: {
+                id: courseSectionContent?.Course?.userId
+            },
+            select: {
+                email: true
+            }
+        });
+
+        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+        const { Course, ...courseSectionContentWithOwner } = {
+            ...courseSectionContent,
+            ownerEmail: ownerEmail?.email
+        };
+
+        return courseSectionContentWithOwner;
     }
 
     async updateCourseSection(
@@ -138,43 +129,39 @@ export class CourseSectionModel {
         courseCode: string,
         sectionOrder: number
     ) {
-        try {
-            const courseId = (await prisma.course.findUnique({
-                where: {
-                    codeSubdomain: {
-                        code: courseCode,
-                        organizationSubdomain: subdomain
-                    }
-                },
-                select: {
-                    id: true
+        const courseId = (await prisma.course.findUnique({
+            where: {
+                codeSubdomain: {
+                    code: courseCode,
+                    organizationSubdomain: subdomain
                 }
-            })) as { id: UUID };
-            const updatedCourseSectionData = await prisma.courseSection.update({
-                where: {
-                    // Course: {
-                    //     code: courseCode,
-                    //     organizationSubdomain: subdomain
-                    // },
-                    // order: sectionOrder
-                    courseOrder: {
-                        courseId: courseId.id,
-                        order: sectionOrder
-                    }
-                },
-                data: {
-                    ...courseSectionData,
-                    content: JSON.stringify(courseSectionData.content)
-                },
-                select: {
-                    title: true,
-                    content: true
+            },
+            select: {
+                id: true
+            }
+        })) as { id: UUID };
+        const updatedCourseSectionData = await prisma.courseSection.update({
+            where: {
+                // Course: {
+                //     code: courseCode,
+                //     organizationSubdomain: subdomain
+                // },
+                // order: sectionOrder
+                courseOrder: {
+                    courseId: courseId.id,
+                    order: sectionOrder
                 }
-            });
-            return updatedCourseSectionData;
-        } catch (err) {
-            throw err;
-        }
+            },
+            data: {
+                ...courseSectionData,
+                content: JSON.stringify(courseSectionData.content)
+            },
+            select: {
+                title: true,
+                content: true
+            }
+        });
+        return updatedCourseSectionData;
     }
 
     async deleteCourseSection(
@@ -182,62 +169,58 @@ export class CourseSectionModel {
         courseCode: string,
         sectionOrder: number
     ): Promise<boolean> {
-        try {
-            const courseId = (await prisma.course.findUnique({
-                where: {
-                    codeSubdomain: {
-                        code: courseCode,
-                        organizationSubdomain: subdomain
-                    }
-                },
-                select: {
-                    id: true
+        const courseId = (await prisma.course.findUnique({
+            where: {
+                codeSubdomain: {
+                    code: courseCode,
+                    organizationSubdomain: subdomain
                 }
-            })) as { id: UUID };
-            await prisma.courseSection.delete({
-                where: {
-                    // Course: {
-                    //     code: courseCode,
-                    //     organizationSubdomain: subdomain
-                    // },
-                    // order: sectionOrder
-                    courseOrder: {
-                        courseId: courseId.id,
-                        order: sectionOrder
-                    }
-                }
-            });
-
-            // Update the order of the sections
-            const courseSections = await prisma.courseSection.findMany({
-                where: {
-                    Course: {
-                        code: courseCode,
-                        organizationSubdomain: subdomain
-                    }
-                },
-                select: {
-                    id: true,
-                    order: true
-                },
-                orderBy: {
-                    order: "asc"
-                }
-            });
-            for (let i = 0; i < courseSections.length; i++) {
-                await prisma.courseSection.update({
-                    where: {
-                        id: courseSections[i].id
-                    },
-                    data: {
-                        order: i + 1
-                    }
-                });
+            },
+            select: {
+                id: true
             }
+        })) as { id: UUID };
+        await prisma.courseSection.delete({
+            where: {
+                // Course: {
+                //     code: courseCode,
+                //     organizationSubdomain: subdomain
+                // },
+                // order: sectionOrder
+                courseOrder: {
+                    courseId: courseId.id,
+                    order: sectionOrder
+                }
+            }
+        });
 
-            return true;
-        } catch (err) {
-            throw err;
+        // Update the order of the sections
+        const courseSections = await prisma.courseSection.findMany({
+            where: {
+                Course: {
+                    code: courseCode,
+                    organizationSubdomain: subdomain
+                }
+            },
+            select: {
+                id: true,
+                order: true
+            },
+            orderBy: {
+                order: "asc"
+            }
+        });
+        for (let i = 0; i < courseSections.length; i++) {
+            await prisma.courseSection.update({
+                where: {
+                    id: courseSections[i].id
+                },
+                data: {
+                    order: i + 1
+                }
+            });
         }
+
+        return true;
     }
 }

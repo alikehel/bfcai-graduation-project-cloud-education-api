@@ -1,4 +1,3 @@
-import { json } from "body-parser";
 // import { CourseSectionModel } from "../models/course-section.model";
 // import { CourseModel } from "../models/course.model";
 import { CourseSectionCommentModel } from "../models/course-section-comment.model";
@@ -8,9 +7,7 @@ import AppError from "../utils/AppError.util";
 import catchAsync from "../utils/catchAsync.util";
 import {
     CourseSectionCommentCreateSchema,
-    CourseSectionCommentCreateType,
-    CourseSectionCommentUpdateSchema,
-    CourseSectionCommentUpdateType
+    CourseSectionCommentUpdateSchema
 } from "../validation";
 
 // const courseModel = new CourseModel();
@@ -18,39 +15,37 @@ const userModel = new UserModel();
 // const courseSectionModel = new CourseSectionModel();
 const courseSectionCommentModel = new CourseSectionCommentModel();
 
-export const getAllCourseSectionComments = catchAsync(
-    async (req, res, next) => {
-        const subdomain = req.params.organization;
-        const courseCode = req.params.courseCode;
-        const sectionOrder = +req.params.sectionOrder;
+export const getAllCourseSectionComments = catchAsync(async (req, res) => {
+    const subdomain = req.params.organization;
+    const courseCode = req.params.courseCode;
+    const sectionOrder = +req.params.sectionOrder;
 
-        let page = 1;
-        if (req.query.page) {
-            page = +req.query.page;
-        }
-        const take = page * 10;
-        const skip = (page - 1) * 10;
-        // if (Number.isNaN(offset)) {
-        //     skip = 0;
-        // }
-
-        const courseSectionComments =
-            await courseSectionCommentModel.getAllCourseSectionComments(
-                subdomain,
-                courseCode,
-                sectionOrder,
-                skip,
-                take
-            );
-
-        res.status(200).json({
-            status: "success",
-            data: courseSectionComments
-        });
+    let page = 1;
+    if (req.query.page) {
+        page = +req.query.page;
     }
-);
+    const take = page * 10;
+    const skip = (page - 1) * 10;
+    // if (Number.isNaN(offset)) {
+    //     skip = 0;
+    // }
 
-export const createCourseSectionComment = catchAsync(async (req, res, next) => {
+    const courseSectionComments =
+        await courseSectionCommentModel.getAllCourseSectionComments(
+            subdomain,
+            courseCode,
+            sectionOrder,
+            skip,
+            take
+        );
+
+    res.status(200).json({
+        status: "success",
+        data: courseSectionComments
+    });
+});
+
+export const createCourseSectionComment = catchAsync(async (req, res) => {
     const courseSectionComment = CourseSectionCommentCreateSchema.parse(
         req.body
     );
@@ -86,7 +81,7 @@ export const createCourseSectionComment = catchAsync(async (req, res, next) => {
     });
 });
 
-export const updateCourseSectionComment = catchAsync(async (req, res, next) => {
+export const updateCourseSectionComment = catchAsync(async (req, res) => {
     const courseCode = req.params.courseCode;
     const courseSectionCommentData = CourseSectionCommentUpdateSchema.parse(
         req.body
@@ -137,7 +132,7 @@ export const updateCourseSectionComment = catchAsync(async (req, res, next) => {
     });
 });
 
-export const deleteCourseSectionComment = catchAsync(async (req, res, next) => {
+export const deleteCourseSectionComment = catchAsync(async (req, res) => {
     const courseCode = req.params.courseCode;
     const subdomain = req.params.organization;
     const sectionOrder = parseInt(req.params.sectionOrder);
@@ -160,7 +155,7 @@ export const deleteCourseSectionComment = catchAsync(async (req, res, next) => {
         throw new AppError("You are not the owner of this comment!", 401);
     }
 
-    const deleted = await courseSectionCommentModel.deleteCourseSectionComment(
+    await courseSectionCommentModel.deleteCourseSectionComment(
         subdomain,
         courseCode,
         sectionOrder,

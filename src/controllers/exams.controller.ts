@@ -1,7 +1,6 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { ExamModel } from "../models/exam.model";
 import { NotificationModel } from "../models/notification.model";
-import { UserModel } from "../models/user.model";
 import { checkToxicity } from "../services/ai.service";
 import { gradeAnswer } from "../services/gpt.service";
 import AppError from "../utils/AppError.util";
@@ -9,7 +8,6 @@ import catchAsync from "../utils/catchAsync.util";
 import { ExamAnswerSchema, ExamCreateSchema } from "../validation";
 const examModel = new ExamModel();
 const notificationModel = new NotificationModel();
-const userModel = new UserModel();
 export const createExam = catchAsync(async (req: Request, res: Response) => {
     const exam = ExamCreateSchema.parse(req.body);
     const subdomain = req.params.organization;
@@ -101,7 +99,7 @@ export const getExamWithoutAnswers = catchAsync(
         // console.log(new Date(Date.now()));
 
         const remainingMinutes =
-            (parseInt(status?.durationEnd as any) - Date.now()) / 1000 / 60;
+            (parseInt(status?.durationEnd as string) - Date.now()) / 1000 / 60;
 
         res.status(200).json({
             status: "success",
@@ -111,7 +109,6 @@ export const getExamWithoutAnswers = catchAsync(
 );
 
 export const answerExam = catchAsync(async (req: Request, res: Response) => {
-    const subdomain = req.params.organization;
     const examAnswers = ExamAnswerSchema.parse(req.body);
     // const courseCode = req.params.courseCode;
     const examId = req.params.examId;
@@ -120,8 +117,7 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
     const {
         parsedQuestions: exam,
         startTime,
-        endTime,
-        duration
+        endTime
     } = await examModel.getExamWithAnswers(examId);
     // console.log(exam);
 
@@ -218,12 +214,22 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
 
     // Grade the exam
     await examModel.updateExamStatus(examId, userID, "GRADING");
-    let examResult = new Array();
+    const examResult: {
+        questionType: "mcq" | "essay";
+        questionAnswer: string;
+        questionText: string;
+        isCorrect: boolean;
+    }[] = [];
     let score = 0;
     for (let i = 0; i < exam.length; i++) {
         const question = exam[i];
         const answer = examAnswers[i];
-        let answerResult;
+        let answerResult: {
+            questionType: "mcq" | "essay";
+            questionAnswer: string;
+            questionText: string;
+            isCorrect: boolean;
+        };
 
         if (question.questionType === "essay") {
             const essayAnswerGrade = await gradeAnswer(
@@ -237,6 +243,7 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
                     ...answer,
                     isCorrect: true
                 };
+                examResult.push(answerResult);
                 score++;
             } else {
                 answerResult = {
@@ -244,9 +251,10 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
                     ...answer,
                     isCorrect: false
                 };
+                examResult.push(answerResult);
             }
         } else if (question.questionType === "mcq") {
-            question.questionChoices.forEach((choice: any) => {
+            question.questionChoices.forEach((choice) => {
                 if (choice.isCorrect) {
                     if (choice.choiceText === answer.questionAnswer) {
                         answerResult = {
@@ -254,6 +262,7 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
                             ...answer,
                             isCorrect: true
                         };
+                        examResult.push(answerResult);
                         score++;
                     } else {
                         answerResult = {
@@ -261,11 +270,11 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
                             ...answer,
                             isCorrect: false
                         };
+                        examResult.push(answerResult);
                     }
                 }
             });
         }
-        examResult.push(answerResult);
     }
     score = Math.round((score / exam.length) * 100);
 

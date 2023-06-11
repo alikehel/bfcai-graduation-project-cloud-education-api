@@ -1,4 +1,3 @@
-import { json } from "body-parser";
 import { CourseSectionModel } from "../models/course-section.model";
 import { CourseModel } from "../models/course.model";
 import { UserModel } from "../models/user.model";
@@ -6,16 +5,14 @@ import AppError from "../utils/AppError.util";
 import catchAsync from "../utils/catchAsync.util";
 import {
     CourseSectionCreateSchema,
-    CourseSectionCreateType,
-    CourseSectionUpdateSchema,
-    CourseSectionUpdateType
+    CourseSectionUpdateSchema
 } from "../validation";
 
 const courseModel = new CourseModel();
 const userModel = new UserModel();
 const courseSectionModel = new CourseSectionModel();
 
-export const getAllCourseSectionsTitles = catchAsync(async (req, res, next) => {
+export const getAllCourseSectionsTitles = catchAsync(async (req, res) => {
     const subdomain = req.params.organization;
     const courseCode = req.params.courseCode;
 
@@ -31,7 +28,7 @@ export const getAllCourseSectionsTitles = catchAsync(async (req, res, next) => {
     });
 });
 
-export const createCourseSection = catchAsync(async (req, res, next) => {
+export const createCourseSection = catchAsync(async (req, res) => {
     const courseSectionTitle = CourseSectionCreateSchema.parse(req.body);
     const subdomain = req.params.organization;
     const courseCode = req.params.courseCode;
@@ -48,7 +45,7 @@ export const createCourseSection = catchAsync(async (req, res, next) => {
     });
 });
 
-export const getCourseSection = catchAsync(async (req, res, next) => {
+export const getCourseSection = catchAsync(async (req, res) => {
     const courseCode = req.params.courseCode;
     const subdomain = req.params.organization;
     const sectionOrder = parseInt(req.params.sectionOrder);
@@ -65,7 +62,7 @@ export const getCourseSection = catchAsync(async (req, res, next) => {
     }
 
     // TEST
-    let newCourseSectionContent = {
+    const newCourseSectionContent = {
         ...courseSectionContent,
         content: JSON.parse(courseSectionContent.content as string)
     };
@@ -76,7 +73,7 @@ export const getCourseSection = catchAsync(async (req, res, next) => {
     });
 });
 
-export const updateCourseSection = catchAsync(async (req, res, next) => {
+export const updateCourseSection = catchAsync(async (req, res) => {
     const courseCode = req.params.courseCode;
     const courseSectionData = CourseSectionUpdateSchema.parse(req.body);
     const subdomain = req.params.organization;
@@ -239,7 +236,7 @@ export const updateCourseSection = catchAsync(async (req, res, next) => {
     });
 });
 
-export const deleteCourseSection = catchAsync(async (req, res, next) => {
+export const deleteCourseSection = catchAsync(async (req, res) => {
     const courseCode = req.params.courseCode;
     const subdomain = req.params.organization;
     const sectionOrder = parseInt(req.params.sectionOrder);
@@ -262,7 +259,7 @@ export const deleteCourseSection = catchAsync(async (req, res, next) => {
         throw new AppError("You are not the owner of this course!", 401);
     }
 
-    const deleted = await courseSectionModel.deleteCourseSection(
+    await courseSectionModel.deleteCourseSection(
         subdomain,
         courseCode,
         sectionOrder
