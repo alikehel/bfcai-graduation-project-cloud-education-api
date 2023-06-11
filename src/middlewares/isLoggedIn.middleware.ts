@@ -33,7 +33,7 @@ export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
 
         // TODO: Check if user changed password after the token was issued
 
-        req.user = { id, email, subdomain, role };
+        // req.user = { id, email, subdomain, role };
         res.locals.user = { id, email, subdomain, role };
 
         //GRANT ACCESS
