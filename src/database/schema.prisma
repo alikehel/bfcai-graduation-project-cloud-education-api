@@ -32,6 +32,7 @@ model User {
   reviewedCourses       String[]
   examResult            ExamResult[]
   Notification          Notification[]
+  Leaderboard           Leaderboard?
 
   @@unique([email, organizationSubdomain], name: "emailSubdomain")
   @@map(name: "users")
@@ -45,18 +46,19 @@ model User {
 
 model Organization {
   // id                  String   @id @default(uuid())
-  name                String   @unique
+  name                String        @unique
   type                String // University - School - Independent
-  emailDomain         String   @unique // bfcai.bu.edu.eg -> blabla@bfcai.bu.edu.eg
-  subdomain           String   @id // bfcai -> www.bfcai.cloud-education.com
-  officialPhoneNumber String   @unique
+  emailDomain         String        @unique // bfcai.bu.edu.eg -> blabla@bfcai.bu.edu.eg
+  subdomain           String        @id // bfcai -> www.bfcai.cloud-education.com
+  officialPhoneNumber String        @unique
   country             String
   address             String
   // users               User[]
   User                User[]
   courses             Course[]
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  leaderBoard         Leaderboard[]
 
   @@map(name: "organizations")
 }
@@ -156,6 +158,19 @@ model ExamResult {
 
   @@unique([examId, userId], name: "examId_userId")
   @@map(name: "exams-results")
+}
+
+model Leaderboard {
+  id                    String       @id @default(uuid())
+  user                  User         @relation(fields: [userId], references: [id])
+  points                Int          @default(0)
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  userId                String       @unique
+  Organization          Organization @relation(fields: [organizationSubdomain], references: [subdomain])
+  organizationSubdomain String
+
+  @@map(name: "leaderboard")
 }
 
 model Notification {

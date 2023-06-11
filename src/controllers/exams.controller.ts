@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { ExamModel } from "../models/exam.model";
+import { LeaderboardModel } from "../models/leaderboard.model";
 import { NotificationModel } from "../models/notification.model";
 import { checkToxicity } from "../services/ai.service";
 import { gradeAnswer } from "../services/gpt.service";
@@ -8,6 +9,7 @@ import catchAsync from "../utils/catchAsync.util";
 import { ExamAnswerSchema, ExamCreateSchema } from "../validation";
 const examModel = new ExamModel();
 const notificationModel = new NotificationModel();
+const leaderboardModel = new LeaderboardModel();
 export const createExam = catchAsync(async (req: Request, res: Response) => {
     const exam = ExamCreateSchema.parse(req.body);
     const subdomain = req.params.organization;
@@ -113,6 +115,7 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
     // const courseCode = req.params.courseCode;
     const examId = req.params.examId;
     const userID = res.locals.user.id;
+    const subdomain = req.params.organization;
 
     const {
         parsedQuestions: exam,
@@ -279,6 +282,7 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
     score = Math.round((score / exam.length) * 100);
 
     await examModel.answerExam(examId, userID, examResult, score);
+    await leaderboardModel.updateLeaderboard(subdomain, userID, score);
 
     await notificationModel.sendNotification(
         "Exams",

@@ -8,6 +8,7 @@ import coursesSectionsRoutes from "./courses-sections.routes";
 import coursesRoutes from "./courses.routes";
 import examsRoutes from "./exams.routes";
 import filesRoutes from "./files.routes";
+import leaderboardRoutes from "./leaderboard.routes";
 import notificationsRoutes from "./notifications.routes";
 import organizationRoutes from "./organization.routes";
 import usersRoutes from "./users.routes";
@@ -22,6 +23,7 @@ router.use("/", coursesSectionsCommentsRoutes);
 router.use("/", usersRoutes);
 router.use("/", examsRoutes);
 router.use("/", notificationsRoutes);
+router.use("/", leaderboardRoutes);
 
 /*******************************************************************************
  * TEST ROUTES
