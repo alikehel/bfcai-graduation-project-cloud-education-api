@@ -231,4 +231,48 @@ export class ExamModel {
             }
         });
     }
+
+    async getExamsResults(subdomain: string, userId: string) {
+        const examsResults = await prisma.examResult.findMany({
+            select: {
+                id: true,
+                score: true,
+                exam: {
+                    select: {
+                        id: true,
+                        name: true,
+                        description: true
+                    }
+                }
+            },
+            where: {
+                user: {
+                    id: userId
+                },
+                status: "FINISHED"
+            }
+        });
+        return examsResults;
+    }
+
+    async getExamResult(subdomain: string, examResultId: string) {
+        const examResult = await prisma.examResult.findUnique({
+            select: {
+                id: true,
+                score: true,
+                answers: true,
+                exam: {
+                    select: {
+                        id: true,
+                        name: true,
+                        description: true
+                    }
+                }
+            },
+            where: {
+                id: examResultId
+            }
+        });
+        return examResult;
+    }
 }

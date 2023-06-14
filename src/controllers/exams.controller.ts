@@ -216,78 +216,125 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
     }
 
     // Grade the exam
-    await examModel.updateExamStatus(examId, userID, "GRADING");
-    const examResult: {
-        questionType: "mcq" | "essay";
-        questionAnswer: string;
-        questionText: string;
-        isCorrect: boolean;
-    }[] = [];
-    let score = 0;
-    for (let i = 0; i < exam.length; i++) {
-        const question = exam[i];
-        const answer = examAnswers[i];
-        let answerResult: {
+    try {
+        await examModel.updateExamStatus(examId, userID, "GRADING");
+        const examResult: {
             questionType: "mcq" | "essay";
             questionAnswer: string;
             questionText: string;
+            modelAnswer: string;
             isCorrect: boolean;
-        };
+        }[] = [];
+        let score = 0;
+        for (let i = 0; i < exam.length; i++) {
+            const question = exam[i];
+            const answer = examAnswers[i];
+            let answerResult: {
+                questionType: "mcq" | "essay";
+                questionAnswer: string;
+                questionText: string;
+                modelAnswer: string;
+                isCorrect: boolean;
+            };
 
-        if (question.questionType === "essay") {
-            const essayAnswerGrade = await gradeAnswer(
-                question.questionText,
-                question.questionAnswer,
-                answer.questionAnswer
-            );
-            if (essayAnswerGrade > 50) {
-                answerResult = {
-                    questionText: question.questionText,
-                    ...answer,
-                    isCorrect: true
-                };
-                examResult.push(answerResult);
-                score++;
-            } else {
-                answerResult = {
-                    questionText: question.questionText,
-                    ...answer,
-                    isCorrect: false
-                };
-                examResult.push(answerResult);
-            }
-        } else if (question.questionType === "mcq") {
-            question.questionChoices.forEach((choice) => {
-                if (choice.isCorrect) {
-                    if (choice.choiceText === answer.questionAnswer) {
-                        answerResult = {
-                            questionText: question.questionText,
-                            ...answer,
-                            isCorrect: true
-                        };
-                        examResult.push(answerResult);
-                        score++;
-                    } else {
-                        answerResult = {
-                            questionText: question.questionText,
-                            ...answer,
-                            isCorrect: false
-                        };
-                        examResult.push(answerResult);
-                    }
+            if (question.questionType === "essay") {
+                const essayAnswerGrade = await gradeAnswer(
+                    question.questionText,
+                    question.questionAnswer,
+                    answer.questionAnswer
+                );
+                if (essayAnswerGrade > 50) {
+                    answerResult = {
+                        questionText: question.questionText,
+                        ...answer,
+                        modelAnswer: question.questionAnswer,
+                        isCorrect: true
+                    };
+                    examResult.push(answerResult);
+                    score++;
+                } else {
+                    answerResult = {
+                        questionText: question.questionText,
+                        ...answer,
+                        modelAnswer: question.questionAnswer,
+                        isCorrect: false
+                    };
+                    examResult.push(answerResult);
                 }
-            });
+            } else if (question.questionType === "mcq") {
+                question.questionChoices.forEach((choice) => {
+                    if (choice.isCorrect) {
+                        if (choice.choiceText === answer.questionAnswer) {
+                            answerResult = {
+                                questionText: question.questionText,
+                                ...answer,
+                                modelAnswer: question.questionChoices.find(
+                                    (choice) => choice.isCorrect
+                                )?.choiceText as string,
+                                isCorrect: true
+                            };
+                            examResult.push(answerResult);
+                            score++;
+                        } else {
+                            answerResult = {
+                                questionText: question.questionText,
+                                ...answer,
+                                modelAnswer: question.questionChoices.find(
+                                    (choice) => choice.isCorrect
+                                )?.choiceText as string,
+                                isCorrect: false
+                            };
+                            examResult.push(answerResult);
+                        }
+                    }
+                });
+            }
         }
+        score = Math.round((score / exam.length) * 100);
+
+        await examModel.answerExam(examId, userID, examResult, score);
+        await leaderboardModel.updateLeaderboard(subdomain, userID, score);
+
+        await notificationModel.sendNotification(
+            "Exams",
+            "Your exam has been graded",
+            userID,
+            examId
+        );
+    } catch (err) {
+        await examModel.updateExamStatus(examId, userID, "INPROGRESS");
+        console.log(err);
     }
-    score = Math.round((score / exam.length) * 100);
+});
 
-    await examModel.answerExam(examId, userID, examResult, score);
-    await leaderboardModel.updateLeaderboard(subdomain, userID, score);
+export const getExamsResults = catchAsync(
+    async (req: Request, res: Response) => {
+        const subdomain = req.params.organization;
+        // const courseCode = req.params.courseCode;
+        const userID = res.locals.user.id;
 
-    await notificationModel.sendNotification(
-        "Exams",
-        "Your exam has been graded",
-        userID,
-        examId
-    );
+        const examsResults = await examModel.getExamsResults(subdomain, userID);
+
+        res.status(200).json({
+            status: "success",
+            data: examsResults
+        });
+    }
+);
+
+export const getExamResult = catchAsync(async (req: Request, res: Response) => {
+    const subdomain = req.params.organization;
+    // const courseCode = req.params.courseCode;
+    // const userID = res.locals.user.id;
+    const examResultId = req.params.examResultId;
+
+    const examResult = await examModel.getExamResult(subdomain, examResultId);
+
+    res.status(200).json({
+        status: "success",
+        data: {
+            ...examResult,
+            answers: JSON.parse(examResult?.answers as string)
+        }
+    });
 });

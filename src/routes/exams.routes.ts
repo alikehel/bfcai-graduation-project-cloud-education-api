@@ -3,8 +3,10 @@ import express from "express";
 import {
     answerExam,
     createExam,
+    getExamResult,
     getExamWithoutAnswers,
-    getExams
+    getExams,
+    getExamsResults
 } from "../controllers/exams.controller";
 
 import { courseExist } from "../middlewares/courseExist.middleware";
@@ -72,6 +74,24 @@ router.post(
     isLoggedIn,
     isAutherized(["STUDENT"]),
     answerExam
+);
+
+// Exams Results
+router.get(
+    "/:organization/exams-results",
+    orgExist,
+    isLoggedIn,
+    isAutherized(["ADMIN", "TEACHER", "STUDENT"]),
+    getExamsResults
+);
+
+// Exams Results
+router.get(
+    "/:organization/exams-results/:examResultId",
+    orgExist,
+    isLoggedIn,
+    isAutherized(["ADMIN", "TEACHER", "STUDENT"]),
+    getExamResult
 );
 
 export default router;
