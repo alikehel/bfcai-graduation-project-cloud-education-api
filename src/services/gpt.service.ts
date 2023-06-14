@@ -137,9 +137,16 @@ export const gradeAnswer = async (
         console.log(response.data.choices[0]);
 
         // return response.data.choices[0].message?.content;
-        return +(response.data.choices[0].message?.content
-            .match(/\d+/)
-            ?.at(0) as string);
+        if (
+            response.data.choices[0].message &&
+            response.data.choices[0].message.content
+        ) {
+            return +(response.data.choices[0].message.content
+                .match(/\d+/)
+                ?.at(0) as string);
+        } else {
+            throw new AppError(`Something went wrong with gpt`, 500);
+        }
     } catch (err) {
         throw new AppError(`Something went wrong with gpt`, 500);
     }
