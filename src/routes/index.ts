@@ -3,7 +3,7 @@ import { Router } from "express";
 import { isAutherized } from "../middlewares/isAutherized.middleware";
 import { isLoggedIn } from "../middlewares/isLoggedIn.middleware";
 import { orgExist } from "../middlewares/orgExist.middleware";
-import { gradeAnswer, summarize } from "../services/gpt.service";
+import { format, gradeAnswer, summarize } from "../services/gpt.service";
 import catchAsync from "../utils/catchAsync.util";
 import authRoutes from "./auth.routes";
 import coursesSectionsCommentsRoutes from "./courses-sections-comments.routes";
@@ -48,6 +48,30 @@ router.post(
         res.status(200).json({
             status: "success",
             data: summary
+        });
+    })
+);
+
+router.post(
+    "/:organization/format",
+    orgExist,
+    isLoggedIn,
+    isAutherized(["STUDENT", "TEACHER", "ADMIN"]),
+    catchAsync(async (req, res) => {
+        const { text } = req.body;
+
+        if (!text) {
+            throw new Error("Text is required");
+        }
+        if (typeof text !== "string") {
+            throw new Error("Text must be a string");
+        }
+
+        const formatted = await format(text);
+
+        res.status(200).json({
+            status: "success",
+            data: formatted
         });
     })
 );

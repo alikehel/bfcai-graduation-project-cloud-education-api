@@ -162,12 +162,58 @@ export const summarize = async (text: string) => {
                 {
                     role: "system",
                     content:
-                        "You are an assistant that summarizes a book content to points that can be put in a professor's powerpoint presentation."
+                        "You are an assistant that summarizes a book content."
                 },
                 {
                     role: "user",
                     content:
-                        "I will give you a piece of text, and I need you to summarize it in points that can be put in a professor's powerpoint presentation."
+                        "I will give you a piece of text, and I need you to summarize it."
+                },
+                {
+                    role: "assistant",
+                    content: "Ok"
+                },
+                // {
+                //     role: "user",
+                //     content:
+                //         "I need the summary to be like a presentation, so I need you to summarize it in points that can be put in a professor's powerpoint presentation with indication of the slides."
+                // },
+                // {
+                //     role: "assistant",
+                //     content: "Ok"
+                // },
+                {
+                    role: "user",
+                    content: text
+                }
+            ]
+        });
+
+        console.log(response.data.choices[0]);
+
+        // return response.data.choices[0].message?.content;
+        return response.data.choices[0].message?.content;
+    } catch (err) {
+        throw new AppError(`Something went wrong with gpt`, 500);
+    }
+};
+
+export const format = async (text: string) => {
+    try {
+        const response = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            temperature: 1,
+            // max_tokens: 20,
+            messages: [
+                {
+                    role: "system",
+                    content:
+                        "You are an assistant that formats text to points that can be put in a professor's powerpoint presentation."
+                },
+                {
+                    role: "user",
+                    content:
+                        "I will give you a piece of text, and I need you to format it in points that can be put in a professor's powerpoint presentation."
                 },
                 {
                     role: "assistant",
@@ -176,7 +222,7 @@ export const summarize = async (text: string) => {
                 {
                     role: "user",
                     content:
-                        "I need the summary to be like a presentation, so I need you to summarize it in points that can be put in a professor's powerpoint presentation with indication of the slides."
+                        "I need the formatted text to be like a presentation, so I need you to format it in points that can be put in a professor's powerpoint presentation with indication of the slides."
                 },
                 {
                     role: "assistant",
