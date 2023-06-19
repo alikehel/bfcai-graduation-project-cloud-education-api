@@ -116,6 +116,7 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
     const examId = req.params.examId;
     const userID = res.locals.user.id;
     const subdomain = req.params.organization;
+    const examName = await examModel.getExamName(examId);
 
     const {
         parsedQuestions: exam,
@@ -205,7 +206,7 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
             if (toxicity > 0.7) {
                 await notificationModel.sendNotification(
                     "Exams",
-                    `Your exam has not been graded because your answer "${answer.questionAnswer}" contains inappropriate content.`,
+                    `Your exam, ${examName}, has not been graded because your answer "${answer.questionAnswer}" contains inappropriate content.`,
                     userID,
                     examId
                 );
@@ -297,7 +298,7 @@ export const answerExam = catchAsync(async (req: Request, res: Response) => {
 
         await notificationModel.sendNotification(
             "Exams",
-            "Your exam has been graded",
+            `Your exam, ${examName}, has been graded`,
             userID,
             examId
         );

@@ -275,4 +275,16 @@ export class ExamModel {
         });
         return examResult;
     }
+
+    async getExamName(examId: string) {
+        const exam = await prisma.exam.findUnique({
+            select: {
+                name: true
+            },
+            where: {
+                id: examId
+            }
+        });
+        return exam?.name;
+    }
 }
