@@ -137,7 +137,15 @@ export class CourseModel {
         return true;
     }
 
-    async getCourseData(subdomain: string, courseCode: string) {
+    async getCourseData(subdomain: string, userId: string, courseCode: string) {
+        // const userReviewedCourses = await prisma.user.findUnique({
+        //     where: {
+        //         id: userId
+        //     },
+        //     select: {
+        //         reviewedCourses: true
+        //     }
+        // });
         const courseData = await prisma.course.findUnique({
             where: {
                 codeSubdomain: {
@@ -163,10 +171,29 @@ export class CourseModel {
                 }
             }
         });
+        // if (userReviewedCourses?.reviewedCourses.includes(courseCode)) {
+        //     return {
+        //         ...courseData,
+        //         isReviewed: true
+        //     };
+        // }
         return courseData;
     }
 
-    async getAllCourseData(subdomain: string, skip: number, take: number) {
+    async getAllCourseData(
+        subdomain: string,
+        userId: string,
+        skip: number,
+        take: number
+    ) {
+        // const userReviewedCourses = await prisma.user.findUnique({
+        //     where: {
+        //         id: userId
+        //     },
+        //     select: {
+        //         reviewedCourses: true
+        //     }
+        // });
         const courseData = await prisma.course.findMany({
             skip: skip,
             take: take,

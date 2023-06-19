@@ -105,10 +105,7 @@ export const deleteCourse = catchAsync(async (req, res) => {
 export const getCourse = catchAsync(async (req, res) => {
     const courseCode = req.params.courseCode;
     const subdomain = req.params.organization;
-    // const userID = (await userModel.getUserID(
-    //     res.locals.user.email,
-    //     subdomain
-    // )) as string;
+    const userID = res.locals.user.id;
 
     // Check if the current user is the owner or the admin
     // if (
@@ -118,7 +115,11 @@ export const getCourse = catchAsync(async (req, res) => {
     //     throw new AppError("You are not the owner of this course!", 401);
     // }
 
-    const courseData = await courseModel.getCourseData(subdomain, courseCode);
+    const courseData = await courseModel.getCourseData(
+        subdomain,
+        userID,
+        courseCode
+    );
 
     res.status(200).json({
         status: "success",
@@ -128,10 +129,7 @@ export const getCourse = catchAsync(async (req, res) => {
 
 export const getAllCourses = catchAsync(async (req, res) => {
     const subdomain = req.params.organization;
-    const userID = (await userModel.getUserID(
-        res.locals.user.email,
-        subdomain
-    )) as string;
+    const userID = res.locals.user.id;
 
     // Check if the current user is the owner or the admin
     // if (
@@ -177,7 +175,12 @@ export const getAllCourses = catchAsync(async (req, res) => {
         res.locals.user.role === "ADMIN" ||
         res.locals.user.role === "TEACHER"
     ) {
-        courses = await courseModel.getAllCourseData(subdomain, skip, take);
+        courses = await courseModel.getAllCourseData(
+            subdomain,
+            userID,
+            skip,
+            take
+        );
     } else {
         courses = await courseModel.getAllCourseDataForUser(
             subdomain,

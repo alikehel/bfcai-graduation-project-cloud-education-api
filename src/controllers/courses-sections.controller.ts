@@ -48,11 +48,13 @@ export const createCourseSection = catchAsync(async (req, res) => {
 export const getCourseSection = catchAsync(async (req, res) => {
     const courseCode = req.params.courseCode;
     const subdomain = req.params.organization;
+    const userId = res.locals.user.id;
     const sectionOrder = parseInt(req.params.sectionOrder);
 
     const courseSectionContent =
         await courseSectionModel.getCourseSectionContent(
             subdomain,
+            userId,
             courseCode,
             sectionOrder
         );

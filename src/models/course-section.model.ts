@@ -78,9 +78,18 @@ export class CourseSectionModel {
 
     async getCourseSectionContent(
         subdomain: string,
+        userId: string,
         courseCode: string,
         sectionOrder: number
     ) {
+        const userReviewedCourses = await prisma.user.findUnique({
+            where: {
+                id: userId
+            },
+            select: {
+                reviewedCourses: true
+            }
+        });
         const courseSectionContent = await prisma.courseSection.findFirst({
             where: {
                 Course: {
@@ -120,7 +129,17 @@ export class CourseSectionModel {
             ownerEmail: ownerEmail?.email
         };
 
-        return courseSectionContentWithOwner;
+        if (userReviewedCourses?.reviewedCourses.includes(courseCode)) {
+            return {
+                ...courseSectionContentWithOwner,
+                isReviewed: true
+            };
+        } else {
+            return {
+                ...courseSectionContentWithOwner,
+                isReviewed: false
+            };
+        }
     }
 
     async updateCourseSection(
