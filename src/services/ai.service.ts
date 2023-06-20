@@ -3,10 +3,13 @@ import AppError from "../utils/AppError.util";
 // import catchAsync from "../utils/catchAsync.util";
 
 const sentimentAnalyzerEndpoint =
-    "https://graduation-project-ai-api.onrender.com/sentiment_analyzer/";
+    "https://gp-ai-api.azurewebsites.net/sentiment_analyzer/";
 
 const toxicDetectionEndpoint =
-    "https://graduation-project-ai-api.onrender.com/toxic_comment/";
+    "https://gp-ai-api.azurewebsites.net/toxic_comment/";
+
+const summarizationEndpoint =
+    "https://gp-ai-api-summarization.azurewebsites.net/summarize/";
 
 // const summarizationEndpoint = "https://graduation-project-ai-api.onrender.com";
 
@@ -48,6 +51,26 @@ export const checkToxicity = async (comment: string) => {
     } catch (err) {
         throw new AppError(
             "Something went wrong with the toxicity detection ai api",
+            500
+        );
+    }
+};
+
+export const summarize = async (text: string) => {
+    try {
+        const response = await axios.post(summarizationEndpoint, {
+            string: text
+        });
+
+        const summary: string = response.data.message[0].summary_text;
+
+        // console.log(response.data);
+        // console.log(toxicity);
+
+        return summary;
+    } catch (err) {
+        throw new AppError(
+            "Something went wrong with the summarization ai api",
             500
         );
     }
