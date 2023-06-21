@@ -1,9 +1,11 @@
+import { CourseModel } from "../models/course.model";
 import { UserModel } from "../models/user.model";
 import AppError from "../utils/AppError.util";
 import catchAsync from "../utils/catchAsync.util";
 import { UserUpdateSchema } from "../validation";
 
 const userModel = new UserModel();
+const courseModel = new CourseModel();
 
 export const getAllUsers = catchAsync(async (req, res) => {
     const subdomain = req.params.organization;
@@ -51,6 +53,7 @@ export const getUser = catchAsync(async (req, res) => {
 });
 
 export const updateUser = catchAsync(async (req, res) => {
+    console.log("userData");
     const subdomain = req.params.organization;
     const userID = req.params["userId"];
 
@@ -75,6 +78,35 @@ export const updateUser = catchAsync(async (req, res) => {
         if (userData.role) {
             userData = { ...userData, role: undefined };
             // throw new AppError("You cannot change the role!", 400);
+        }
+        if (userData.courses) {
+            const enrolledCourses = await userModel.getEnrolledCourses(
+                subdomain,
+                userID
+            );
+            if (enrolledCourses) {
+                for (const course of userData.courses) {
+                    const coursePrerequisites =
+                        await courseModel.getCoursePrerequisites(
+                            subdomain,
+                            course
+                        );
+
+                    if (
+                        coursePrerequisites &&
+                        coursePrerequisites.prerequisites
+                    ) {
+                        for (const prerequisite of coursePrerequisites.prerequisites) {
+                            if (!enrolledCourses.includes(prerequisite)) {
+                                throw new AppError(
+                                    "The student does not have the prerequisites for this course!",
+                                    400
+                                );
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

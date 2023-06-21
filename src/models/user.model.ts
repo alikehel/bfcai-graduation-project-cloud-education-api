@@ -196,4 +196,20 @@ export class UserModel {
         });
         return user;
     }
+
+    async getEnrolledCourses(subdomain: string, userID: string) {
+        const courses = await prisma.user
+            .findUnique({
+                where: {
+                    id: userID
+                }
+            })
+            .courses({
+                select: {
+                    name: true,
+                    code: true
+                }
+            });
+        return courses;
+    }
 }

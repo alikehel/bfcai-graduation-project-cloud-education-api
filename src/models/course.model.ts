@@ -395,4 +395,24 @@ export class CourseModel {
         });
         return coursesCodes;
     }
+
+    async getCoursePrerequisites(subdomain: string, courseCode: string) {
+        const prerequisites = await prisma.course.findUnique({
+            where: {
+                codeSubdomain: {
+                    code: courseCode,
+                    organizationSubdomain: subdomain
+                }
+            },
+            select: {
+                prerequisites: {
+                    select: {
+                        code: true,
+                        name: true
+                    }
+                }
+            }
+        });
+        return prerequisites;
+    }
 }
