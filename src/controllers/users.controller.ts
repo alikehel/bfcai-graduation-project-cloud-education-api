@@ -79,30 +79,25 @@ export const updateUser = catchAsync(async (req, res) => {
             userData = { ...userData, role: undefined };
             // throw new AppError("You cannot change the role!", 400);
         }
-        if (userData.courses) {
-            const enrolledCourses = await userModel.getEnrolledCourses(
-                subdomain,
-                userID
-            );
-            if (enrolledCourses) {
-                for (const course of userData.courses) {
-                    const coursePrerequisites =
-                        await courseModel.getCoursePrerequisites(
-                            subdomain,
-                            course
-                        );
+    }
 
-                    if (
-                        coursePrerequisites &&
-                        coursePrerequisites.prerequisites
-                    ) {
-                        for (const prerequisite of coursePrerequisites.prerequisites) {
-                            if (!enrolledCourses.includes(prerequisite)) {
-                                throw new AppError(
-                                    "The student does not have the prerequisites for this course!",
-                                    400
-                                );
-                            }
+    if (userData.courses) {
+        const enrolledCourses = await userModel.getEnrolledCourses(
+            subdomain,
+            userID
+        );
+        if (enrolledCourses) {
+            for (const course of userData.courses) {
+                const coursePrerequisites =
+                    await courseModel.getCoursePrerequisites(subdomain, course);
+
+                if (coursePrerequisites && coursePrerequisites.prerequisites) {
+                    for (const prerequisite of coursePrerequisites.prerequisites) {
+                        if (!enrolledCourses.includes(prerequisite)) {
+                            throw new AppError(
+                                "The student does not have the prerequisites for this course!",
+                                400
+                            );
                         }
                     }
                 }
