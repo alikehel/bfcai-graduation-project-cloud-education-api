@@ -143,6 +143,7 @@ export class UserModel {
             },
             data: {
                 courses: {
+                    set: [],
                     connect: userData.courses?.map((courseCode) => ({
                         codeSubdomain: {
                             code: courseCode,
