@@ -93,7 +93,10 @@ export const updateUser = catchAsync(async (req, res) => {
 
                 if (coursePrerequisites && coursePrerequisites.prerequisites) {
                     for (const prerequisite of coursePrerequisites.prerequisites) {
-                        if (!enrolledCourses.includes(prerequisite)) {
+                        if (
+                            !enrolledCourses.includes(prerequisite) &&
+                            !userData.courses.includes(prerequisite.code)
+                        ) {
                             throw new AppError(
                                 "The student does not have the prerequisites for this course!",
                                 400
