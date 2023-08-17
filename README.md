@@ -129,6 +129,7 @@ The project is currently under development, and the following tasks are being wo
 - [ ] Integrate with AWS services
 - [ ] Move from Prisma to Drizzle-ORM for better performence and less abstractions
 - [ ] API versioning and Caching
+- [ ] Try artillery or k6 for load testing
 
 ## Contributing
 
