@@ -2,13 +2,13 @@
 
 > A Complete Education System on the cloud that aims to be a replacement for the traditional offline school or university education.
 
-This repository contains the backend API for the Online University Web Application. The application provides various features for multiple universities and schools, including user management, course management, exams, chatting, leaderboard, and more.
+This repository contains the backend API for the Online University Web Application. The application provides various features for multiple universities and schools, including user management, course management, exams, a leaderboard and more.
 
 ## Features
 
 - Multiple universities and schools can use the application and create their own instances.
 - Each organization has its own admin, teachers, and students.
-- Courses, exams, chatting, and leaderboard are available for each organization.
+- Courses, exams and a leaderboard are available for each organization.
 - Users have individual profile pages.
 - Course reviews are scanned for sentiment analysis and toxic/bad words using AI.
 - Comments sections are scanned for bad words using AI.
@@ -21,10 +21,10 @@ This repository contains the backend API for the Online University Web Applicati
 ## Links
 
 - [Cloud Education Demo - YouTube](https://youtube.com/playlist?list=PLzrcxuCFsyhCcLVWrTsY1RooZffVfrVHj)
-- [Swagger API Docs](https://cloud-education-api.up.railway.app/api-docs-dark-theme/)
-- [Cloud Education API URL](https://cloud-education-api.up.railway.app/)
-- [Cloud Education URL](https://www.cloud-education.systems/) or [Cloud Education URL](https://lecture-dashboard.vercel.app/)
-- [Front-End Repo](https://github.com/wagihmohamed/lecture-dashboard/)
+- [Front-End Repo](https://github.com/wagihmohamed/Cloud-Education)
+- [Project page on alikehel.dev](https://alikehel.dev/projects/cloud-education)
+
+The API ran on Railway in 2023 and is no longer hosted. The demo playlist shows it working.
 
 ## Technology Stack
 
